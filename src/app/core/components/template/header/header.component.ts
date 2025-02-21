@@ -14,4 +14,6 @@ export class HeaderComponent {
 
   @Output() toggleMenu: EventEmitter<void> = new EventEmitter()
 
+  userNickname: string = 'Emerson'
+
 }

@@ -26,7 +26,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .toolbar-header {
   @include mat.toolbar-overrides((
     container-background-color: var(--color-primary),
-    container-text-color: var(--color-primary-text)
+    container-text-color: var(--color-primary-text),
+    standard-height: 100px,
+    mobile-height: 100px
+
   ));
 
   @include mat.icon-button-overrides((
@@ -60,4 +63,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .v-middle {
   vertical-align: middle;
+}
+
+.empty-spacer {
+  flex: 1 1 auto;
 }
