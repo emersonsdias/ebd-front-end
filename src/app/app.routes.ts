@@ -4,13 +4,13 @@ import { ROUTES_KEYS } from './shared';
 
 export const routes: Routes = [
 
-  { path: '', component: HomePageComponent },
-  { path: ROUTES_KEYS.classrooms , component: ClassroomsPageComponent },
-  { path: ROUTES_KEYS.finance , component: FinancePageComponent },
-  { path: ROUTES_KEYS.help , component: HelpPageComponent },
-  { path: ROUTES_KEYS.home , component: HomePageComponent },
-  { path: ROUTES_KEYS.lessons , component: LessonsPageComponent },
-  { path: ROUTES_KEYS.management , component: ManagementsPageComponent },
-  { path: ROUTES_KEYS.settings , component: SettingsPageComponent },
+  { path: '', component: HomePageComponent, title: 'Início' },
+  { path: ROUTES_KEYS.classrooms , component: ClassroomsPageComponent, title: 'Turmas' },
+  { path: ROUTES_KEYS.finance , component: FinancePageComponent, title: 'Financeiro' },
+  { path: ROUTES_KEYS.help , component: HelpPageComponent, title: 'Ajuda e suporte' },
+  { path: ROUTES_KEYS.home , component: HomePageComponent, title: 'Início' },
+  { path: ROUTES_KEYS.lessons , component: LessonsPageComponent, title: 'Aulas' },
+  { path: ROUTES_KEYS.management , component: ManagementsPageComponent, title: 'Cadastros' },
+  { path: ROUTES_KEYS.settings , component: SettingsPageComponent, title: 'Configurações' },
 
 ];
