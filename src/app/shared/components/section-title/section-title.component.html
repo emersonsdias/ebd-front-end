@@ -1,7 +1,7 @@
 <div>
-  <!-- @if(sectionTitle != ROUTES_KEYS.home && sectionTitle != '' && sectionTitle != undefined) { -->
-    <h1>{{ sectionTitle || 'Desconhecido' }}</h1>
-    <mat-divider></mat-divider>
-    <br/>
-  <!-- } -->
+  @if(sectionTitle != ROUTES_KEYS.home && sectionTitle != '' && sectionTitle != undefined) {
+  <h2>{{ sectionTitle }}</h2>
+  <mat-divider></mat-divider>
+  <br />
+  }
 </div>

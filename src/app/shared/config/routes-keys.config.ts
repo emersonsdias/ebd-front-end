@@ -6,6 +6,7 @@ export const ROUTES_KEYS = {
   home: 'inicio',
   lessons: 'aulas',
   management: 'cadastro',
+  notFound: 'recurso-nao-encontrado',
   settings: 'configuracoes',
 
 }

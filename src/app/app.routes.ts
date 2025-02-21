@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ClassroomsPageComponent, FinancePageComponent, HelpPageComponent, HomePageComponent, LessonsPageComponent, ManagementsPageComponent, SettingsPageComponent } from './core';
-import { ROUTES_KEYS } from './shared';
+import { NotFoundPageComponent, ROUTES_KEYS } from './shared';
 
 export const routes: Routes = [
 
@@ -11,6 +11,8 @@ export const routes: Routes = [
   { path: ROUTES_KEYS.home , component: HomePageComponent, title: 'Início' },
   { path: ROUTES_KEYS.lessons , component: LessonsPageComponent, title: 'Aulas' },
   { path: ROUTES_KEYS.management , component: ManagementsPageComponent, title: 'Cadastros' },
+  { path: ROUTES_KEYS.notFound , component: NotFoundPageComponent, title: 'Essa página não existe' },
   { path: ROUTES_KEYS.settings , component: SettingsPageComponent, title: 'Configurações' },
 
+  { path: '**', redirectTo: ROUTES_KEYS.notFound, title: 'Essa página não existe' }
 ];
