@@ -27,9 +27,11 @@
   gap: 10px;
   justify-content: center;
 
-  span {
+  a {
     font-weight: bold;
     font-size: large;
+    text-decoration: none;
+    color: inherit;
   }
 }
 
@@ -42,4 +44,8 @@
   span {
     font-weight: bold;
   }
+}
+
+.menu-list a * {
+  color: var(--color-dark);
 }
