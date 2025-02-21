@@ -1,0 +1,5 @@
+export * from './components/template/footer/footer.component'
+export * from './components/template/header/header.component'
+export * from './components/template/main-content/main-content.component'
+export * from './components/template/side-nav/side-nav.component'
+export * from './services/storage/storage.service'

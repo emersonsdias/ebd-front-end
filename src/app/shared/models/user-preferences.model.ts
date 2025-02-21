@@ -1,3 +1,3 @@
 export interface UserPreferences {
-  keepLoggedIn?: boolean;
+  keepLoggedIn?: boolean
 }

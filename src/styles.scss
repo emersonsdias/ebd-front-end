@@ -1,7 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+/* Importing Bootstrap SCSS file. */
+@use 'bootstrap/scss/bootstrap' as bs;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+:root {
+  --color-primary: #641B53;
+  --color-primary-text: #E0E0E0;
+  --color-side-menu: #F4F1EB;
+  --color-main-body: #FAF9F6;
+
+  --color-dark: #263238;
+
+}
+
+.side-menu {
+  @include mat.sidenav-overrides((
+    container-background-color: var(--color-side-menu),
+    content-background-color: var(--color-side-menu),
+  ));
+}
+
+.toolbar-header {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--color-primary),
+    container-text-color: var(--color-primary-text)
+  ));
+
+  @include mat.icon-button-overrides((
+    icon-color: var(--color-primary-text),
+    state-layer-color: var(--color-primary-text),
+    hover-state-layer-opacity: 0.1
+  ));
+}
+
+.toolbar-footer {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--color-dark),
+    container-text-color: var(--color-primary-text)
+  ));
+
+  mat-icon {
+    color: var(--color-primary-text) !important;
+  };
+}
+
+.primary-button {
+  @include mat.button-overrides((
+    filled-container-color: var(--color-primary),
+    filled-label-text-color: var(--color-primary-text),
+  ));
+}
+
+.main-body {
+  background-color: var(--color-main-body);
+}
+
+.v-middle {
+  vertical-align: middle;
+}

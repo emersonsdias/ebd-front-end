@@ -1,0 +1,45 @@
+<mat-drawer-container autosize class="side-menu">
+  <mat-drawer #drawer [mode]="isSmallScreen ? 'over' : 'side'" [opened]="showSideNav" (closed)="toggleMenu(false)">
+    <div class="side-nav-img-container">
+      <img class="side-nav-img" src="/assets/img/logo.svg" />
+      <span>Portal EBD</span>
+    </div>
+    <mat-nav-list class="menu-list">
+      <mat-list-item (click)="navigateTo('home')">
+        <mat-icon matListIcon>home</mat-icon>
+        <span>Início</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('lessons')">
+        <mat-icon matListIcon>school</mat-icon>
+        <span>Aulas</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('classrooms')">
+        <mat-icon matListIcon>groups</mat-icon>
+        <span>Turmas</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('registers')">
+        <mat-icon matListIcon>app_registration</mat-icon>
+        <span>Cadastros</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('financial')">
+        <mat-icon matListIcon>account_balance</mat-icon>
+        <span>Financeiro</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('settings')">
+        <mat-icon matListIcon>settings</mat-icon>
+        <span>Configurações</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('help')">
+        <mat-icon matListIcon>help</mat-icon>
+        <span>Ajuda e suporte</span>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('logout')">
+        <mat-icon matListIcon>logout</mat-icon>
+        <span>Sair da conta</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <ng-content></ng-content>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,39 @@
+.mat-drawer {
+  width: auto;
+  flex-shrink: 0;
+}
+
+.mat-drawer-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.menu-list {
+  margin-inline: 20px;
+
+  mat-icon {
+    vertical-align: middle;
+  }
+
+  span {
+    padding-left: 20px;
+  }
+}
+
+.side-nav-img-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+
+  span {
+    font-weight: bold;
+    font-size: large;
+  }
+}
+
+.side-nav-img {
+  max-width: 50px;
+  max-height: 50px;
+}

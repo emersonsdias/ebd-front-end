@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { STORAGE_KEYS } from './storage-keys.config';
-import { UserPreferences } from '../models/user-preferences.model';
+import { UserPreferences } from '../../../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +28,9 @@ export class StorageService {
 
   private _setUserPreferences(userPreferences: UserPreferences | null): void {
     if (userPreferences === null) {
-      this.removeItem(STORAGE_KEYS.userPreferences);
+      this.removeItem(STORAGE_KEYS.userPreferences)
     } else {
-      this.setItem(STORAGE_KEYS.userPreferences, JSON.stringify(userPreferences));
+      this.setItem(STORAGE_KEYS.userPreferences, JSON.stringify(userPreferences))
     }
   }
 
