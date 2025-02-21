@@ -4,10 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { ROUTES_KEYS } from '../../../../shared';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-side-nav',
-  imports: [MatButtonModule, MatIconModule, MatListModule, MatSidenavModule],
+  imports: [MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, RouterModule],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
@@ -16,6 +18,7 @@ export class SideNavComponent {
   @ViewChild('drawer') drawer: MatDrawer | undefined
   showSideNav: boolean = true
   isSmallScreen: boolean = false
+  ROUTES_KEYS = ROUTES_KEYS;
 
   constructor(private breakpointObserver: BreakpointObserver) { }
 
@@ -33,6 +36,12 @@ export class SideNavComponent {
 
   toggleMenu(showSideNav: boolean | undefined = undefined) {
     this.showSideNav = showSideNav != undefined ? showSideNav : !this.showSideNav
+  }
+
+  closeDrawerIfOver() {
+    if (this.isSmallScreen) {
+      this.toggleMenu(false)
+    }
   }
 
 }
