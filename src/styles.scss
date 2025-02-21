@@ -14,6 +14,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   --color-dark: #263238;
 
+  --color-footer: #263238;
 }
 
 .side-menu {
@@ -41,13 +42,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .toolbar-footer {
   @include mat.toolbar-overrides((
-    container-background-color: var(--color-dark),
+    container-background-color: var(--color-footer),
     container-text-color: var(--color-primary-text)
   ));
 
   mat-icon {
     color: var(--color-primary-text) !important;
   };
+  padding-top: 20px;
 }
 
 .primary-button {
