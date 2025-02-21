@@ -2,10 +2,9 @@
   <button mat-icon-button (click)="toggleMenu.emit()">
     <mat-icon>menu</mat-icon>
   </button>
-  <!-- <a [routerLink]="['/']" routerLinkActive="router-link-active" class="app-name">EBD - Escola Bíblica Dominical</a> -->
   <span class="empty-spacer"></span>
-  <button mat-fab extended>
-    <mat-icon>account_circle</mat-icon>
-    {{ userNickname }}
+  <button mat-flat-button class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.login]">
+    <mat-icon>login</mat-icon>
+    <span>Entrar</span>
   </button>
 </mat-toolbar>

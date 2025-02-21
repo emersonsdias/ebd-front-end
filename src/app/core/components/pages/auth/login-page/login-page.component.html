@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <div class="img-container">
+          <img class="img-login" src="assets/img/logo.svg" />
+        </div>
+        <p class="app-name">Portal EBD</p>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Usuário</mat-label>
+          <input name="username" type="email" matInput
+            placeholder="Insira seu e-mail de acesso" [(ngModel)]="credentials.username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input name="password" [type]="hidePassword ? 'password' : 'text'" matInput
+            placeholder="Insira sua senha de acesso" [(ngModel)]="credentials.password" />
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <p>
+          <mat-checkbox class="check-keep-logged" [(ngModel)]="keepLoggedIn">
+            Manter logado
+          </mat-checkbox>
+        </p>
+      </div>
+      <div class="card-login-action">
+        <button mat-flat-button class="btn-primary" (click)="login()">
+          Entrar
+        </button>
+        <button mat-flat-button class="btn-secondary" (click)="signUp()">
+          Inscrever-se
+        </button>
+        <button mat-button (click)="forgotPassword()">
+          Esqueci minha senha
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<style>
+mat-card {
+  max-width: 500px;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+}
+
+.app-name {
+  font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.img-login {
+  max-width: 100px;
+  padding-bottom: 5px;
+}
+
+.card-login-action {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.check-keep-logged {
+  padding-left: 10px;
+}
+</style>

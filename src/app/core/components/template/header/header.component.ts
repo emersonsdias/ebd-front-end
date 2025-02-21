@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { ROUTES_KEYS } from '../../../../shared/config/routes-keys.config';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent {
 
   @Output() toggleMenu: EventEmitter<void> = new EventEmitter()
+  ROUTES_KEYS = ROUTES_KEYS;
 
   userNickname: string = 'Emerson'
 

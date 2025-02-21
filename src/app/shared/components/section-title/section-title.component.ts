@@ -13,7 +13,7 @@ import { filter, map } from 'rxjs/operators';
 })
 export class SectionTitleComponent {
 
-  @Input() sectionTitle: string | undefined;
+  @Input() sectionTitle: string | undefined
   ROUTES_KEYS = ROUTES_KEYS
 
   constructor(private router: Router, private route: ActivatedRoute) {}
@@ -31,7 +31,7 @@ export class SectionTitleComponent {
       }),
       filter(route => route.outlet === 'primary')
     ).subscribe(route => {
-      this.sectionTitle = route.snapshot.routeConfig?.title?.toString();
+      this.sectionTitle = route.snapshot.routeConfig?.title?.toString()
     });
   }
 

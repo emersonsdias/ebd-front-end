@@ -7,14 +7,18 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 :root {
-  --color-primary: #641B53;
+  // --color-primary: #641B53;
+  // --color-primary: #008AC3;
+  --color-primary: #2D2274;
   --color-primary-text: #E0E0E0;
+  --color-secondary: #D4C3FF;
+  --color-secondary-text: #263238;
+
   --color-side-menu: #F4F1EB;
   --color-main-body: #FAF9F6;
+  --color-footer: #263238;
 
   --color-dark: #263238;
-
-  --color-footer: #263238;
 }
 
 .side-menu {
@@ -27,10 +31,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .toolbar-header {
   @include mat.toolbar-overrides((
     container-background-color: var(--color-primary),
-    container-text-color: var(--color-primary-text),
-    standard-height: 100px,
-    mobile-height: 100px
-
+    container-text-color: var(--color-primary-text)
   ));
 
   @include mat.icon-button-overrides((
@@ -41,21 +42,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .toolbar-footer {
+  padding-top: 20px;
+
   @include mat.toolbar-overrides((
     container-background-color: var(--color-footer),
     container-text-color: var(--color-primary-text)
   ));
-
   mat-icon {
     color: var(--color-primary-text) !important;
   };
-  padding-top: 20px;
 }
 
-.primary-button {
+.btn-primary {
   @include mat.button-overrides((
     filled-container-color: var(--color-primary),
     filled-label-text-color: var(--color-primary-text),
+  ));
+}
+
+.btn-secondary {
+  @include mat.button-overrides((
+    filled-container-color: var(--color-secondary),
+    filled-label-text-color: var(--color-secondary-text)
   ));
 }
 
@@ -69,4 +77,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .empty-spacer {
   flex: 1 1 auto;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
 }
