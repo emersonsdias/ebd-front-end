@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FooterComponent, HeaderComponent, MainContentComponent, SideNavComponent } from './core';
+import { AuthService, FooterComponent, HeaderComponent, MainContentComponent, SideNavComponent, StorageService } from './core';
 import { LoaderComponent } from "./shared/components/loader/loader.component";
 
 @Component({
@@ -11,6 +11,19 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
 export class AppComponent {
 
   @ViewChild(SideNavComponent) sideNavComponent!: SideNavComponent;
+
+  constructor(
+    _storageService: StorageService,
+    _authService: AuthService,
+  ) {
+    if (_storageService.getRefreshToken()) {
+      try {
+        _authService.refreshToken()
+      } catch(_) {
+        console.error('Refresh roken failed')
+      }
+    }
+  }
 
   toggleSidenav() {
     this.sideNavComponent.toggleMenu()
