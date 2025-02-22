@@ -3,7 +3,7 @@ import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserRole } from '../../models/user-role.enum';
+import { UserRole } from '../../models/enums/user-role.enum';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 

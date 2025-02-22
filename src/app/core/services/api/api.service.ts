@@ -15,6 +15,11 @@ export class ApiService {
 
   constructor(private _http: HttpClient) { }
 
+  httpGetBlob(path: string): Observable<any>  {
+    const url = `${environment.apiUrl}${path}`
+    return this._http.get<Blob>(url, {responseType: 'blob' as 'json'})
+  }
+
   httpGet(path: string, options?: HttpRequestOptions): Observable<any> {
     return this._http.get<any>(`${environment.apiUrl}${path}`, { headers: this._mapToHeaders(options?.headers), params: this._optionsToParams(options) }).pipe(take(1))
   }
