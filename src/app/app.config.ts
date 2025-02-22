@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiAuthInterceptor } from './core';
+import { loaderInterceptor } from './shared';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([
-      apiAuthInterceptor
+      apiAuthInterceptor,
+      loaderInterceptor
     ])),
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ]
