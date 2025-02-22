@@ -6,9 +6,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { StorageService } from '../../../../services/storage/storage.service';
+import { NotificationService } from '../../../../../shared';
+import { first, take } from 'rxjs';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
   selector: 'app-login-page',
@@ -18,6 +21,7 @@ import { StorageService } from '../../../../services/storage/storage.service';
 })
 export class LoginPageComponent {
 
+  ROUTES_KEYS = ROUTES_KEYS
   hidePassword: boolean = true
   keepLoggedIn: boolean = false
   credentials: { username: string, password: string } = {
@@ -27,21 +31,19 @@ export class LoginPageComponent {
 
   constructor(
     private _authService: AuthService,
-    private _storageServive: StorageService
+    private _storageServive: StorageService,
+    private _notificationService: NotificationService,
+    private _router: Router
   ) { }
 
   login() {
-    console.log("LOGIN")
     this._authService.login(this.credentials.username, this.credentials.password, this.keepLoggedIn).subscribe({
       next: () => {
-        console.log("login com sucesso")
+        this._notificationService.success(`Seja bem vindo ${this._storageServive.getUserNickname()}`)
+        this._router.navigate(['/', ROUTES_KEYS.home])
       },
-      error: (err) => console.error(err)
+      error: () => this._notificationService.error(`Não foi possível autenticar`)
     })
-  }
-
-  forgotPassword() {
-    console.log("FORGOT PASSWORD")
   }
 
   signUp() {

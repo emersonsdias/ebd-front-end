@@ -30,10 +30,6 @@ export class SideNavComponent {
       });
   }
 
-  navigateTo(path: string) {
-    console.log("Navigate to", path)
-  }
-
   toggleMenu(showSideNav: boolean | undefined = undefined) {
     this.showSideNav = showSideNav != undefined ? showSideNav : !this.showSideNav
   }

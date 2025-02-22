@@ -1,0 +1,31 @@
+.dismisss-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-type {
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  margin-right: 5px;
+  border-radius: 25%;
+}
+
+.notification-title {
+  font-weight: 500;
+}
+
+.success {
+  background-color: var(--color-success);
+}
+
+.error {
+  background-color: var(--color-error);
+}
+
+.warning {
+  background-color: var(--color-warning);
+}

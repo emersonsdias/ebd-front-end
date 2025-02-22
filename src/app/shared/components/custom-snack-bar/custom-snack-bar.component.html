@@ -1,0 +1,14 @@
+<div class="d-flex flex-row">
+  @if(data.type && (data.type === 'success' || data.type === 'error' || data.type === 'warning')) {
+  <span class="notification-type" [ngClass]="{
+      'success': data.type === 'success',
+      'error': data.type === 'error',
+      'warning': data.type === 'warning'
+    }"></span>
+  }
+  <span class="notification-title">{{ data.title }}</span>
+  <button class="dismisss-button" mat-icon-button (click)="dismiss()">
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<span>{{ data.message }}</span>

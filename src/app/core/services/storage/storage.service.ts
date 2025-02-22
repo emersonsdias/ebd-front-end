@@ -35,31 +35,22 @@ export class StorageService {
   }
 
   removeItem(key: string): void {
-    this._getStorage(key).removeItem(key);
+    this._getStorage(key).removeItem(key)
   }
 
   setItem(key: string, value: any): void {
-    const storage = this._getStorage(key);
+    const storage = this._getStorage(key)
     storage.setItem(key, value);
   }
 
   getItem(key: string): any {
     const storage = this._getStorage(key)
     const item = storage.getItem(key)
-    try {
-      return item ? JSON.parse(item) : null
-    } catch (e) {
-      return item
-    }
+    return item ?? null
   }
 
-  getUserPreferences(): UserPreferences | null {
-    try {
-      return this.getItem(STORAGE_KEYS.userPreferences) ?? null
-    } catch (e) {
-      console.error(e)
-      return null
-    }
+  getUserPreferences(): UserPreferences {
+    return JSON.parse(this.getItem(STORAGE_KEYS.userPreferences)) ?? {}
   }
 
   setKeepLoggedIn(keepLoggedIn: boolean): void {
@@ -84,33 +75,32 @@ export class StorageService {
 
   setLocalUser(localUser: LocalUser | null) {
     if (localUser == null) {
-      this.removeItem(STORAGE_KEYS.localUser);
+      this.removeItem(STORAGE_KEYS.localUser)
     } else {
-      this.setItem(STORAGE_KEYS.localUser, JSON.stringify(localUser));
+      this.setItem(STORAGE_KEYS.localUser, JSON.stringify(localUser))
     }
   }
 
   getLocalUser(): LocalUser {
-    const localUser = this.getItem(STORAGE_KEYS.localUser);
-    try {
-      return localUser ? JSON.parse(localUser) : null;
-    } catch (e) {
-      return {};
-    }
+    return JSON.parse(this.getItem(STORAGE_KEYS.localUser)) || {}
   }
 
   setRefreshToken(token: string): void {
-    this.setItem(STORAGE_KEYS.refreshToken, token);
+    this.setItem(STORAGE_KEYS.refreshToken, token)
   }
 
   getRefreshToken(): string | null {
-    return this.getItem(STORAGE_KEYS.refreshToken);
+    return this.getItem(STORAGE_KEYS.refreshToken)
   }
 
   clearStorage() {
-    const userPreferences = this.getUserPreferences();
+    const userPreferences = this.getUserPreferences()
     localStorage.clear();
     sessionStorage.clear();
     this._setUserPreferences(userPreferences);
+  }
+
+  getUserNickname(): string | null {
+    return this.getLocalUser().nickname || null
   }
 }

@@ -1,3 +1,4 @@
+export * from './components/pages/auth/forgot-password-page/forgot-password-page.component'
 export * from './components/pages/auth/login-page/login-page.component'
 export * from './components/pages/classroom/classrooms-page/classrooms-page.component'
 export * from './components/pages/finance/finance-page/finance-page.component'

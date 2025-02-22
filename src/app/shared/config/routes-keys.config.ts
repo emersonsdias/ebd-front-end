@@ -2,6 +2,7 @@ export const ROUTES_KEYS = {
 
   classrooms: 'turmas',
   finance: 'financeiro',
+  forgotPassword: 'esqueci-minha-senha',
   help: 'ajuda-e-suporte',
   home: 'inicio',
   lessons: 'aulas',

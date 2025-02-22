@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-  <mat-card>
+  <mat-card class="mat-card-login">
     <mat-card-content>
       <div>
         <div class="img-container">
@@ -33,42 +33,10 @@
         <button mat-flat-button class="btn-secondary" (click)="signUp()">
           Inscrever-se
         </button>
-        <button mat-button (click)="forgotPassword()">
+        <button mat-button [routerLink]="['/', ROUTES_KEYS.forgotPassword]">
           Esqueci minha senha
         </button>
       </div>
     </mat-card-content>
   </mat-card>
 </div>
-<style>
-mat-card {
-  max-width: 500px;
-}
-
-.img-container {
-  display: flex;
-  justify-content: center;
-}
-
-.app-name {
-  font-size: xx-large;
-  font-weight: bold;
-  text-align: center;
-  color: var(--color-primary);
-}
-
-.img-login {
-  max-width: 100px;
-  padding-bottom: 5px;
-}
-
-.card-login-action {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.check-keep-logged {
-  padding-left: 10px;
-}
-</style>

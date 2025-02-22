@@ -16,9 +16,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   --color-side-menu: #F4F1EB;
   --color-main-body: #FAF9F6;
+  --color-login-card: #FFFFFF;
   --color-footer: #263238;
 
   --color-dark: #263238;
+
+  --color-success: green;
+  --color-error: red;
+  --color-warning: yellow;
 }
 
 .side-menu {
