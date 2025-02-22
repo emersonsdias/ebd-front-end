@@ -14,7 +14,8 @@ export class NotificationService {
       data: { title: title, message: message, type: type },
       duration: delay,
       horizontalPosition: 'end',
-      verticalPosition: 'top'
+      verticalPosition: 'top',
+      panelClass: ['notification', type]
     }
     this._snackBar.openFromComponent(CustomSnackBarComponent, config);
   }

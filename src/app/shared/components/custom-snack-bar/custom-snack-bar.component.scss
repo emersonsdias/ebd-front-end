@@ -1,4 +1,4 @@
-.dismisss-button {
+.notification-dismisss-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -16,16 +16,4 @@
 
 .notification-title {
   font-weight: 500;
-}
-
-.success {
-  background-color: var(--color-success);
-}
-
-.error {
-  background-color: var(--color-error);
-}
-
-.warning {
-  background-color: var(--color-warning);
 }

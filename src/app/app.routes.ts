@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ClassroomsPageComponent, FinancePageComponent, ForgotPasswordPageComponent, HelpPageComponent, HomePageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, SettingsPageComponent } from './core';
+import { ClassroomsPageComponent, FinancePageComponent, ForgotPasswordPageComponent, HelpPageComponent, HomePageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, SettingsPageComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS } from './shared';
 
 export const routes: Routes = [
@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: ROUTES_KEYS.management, component: ManagementsPageComponent, title: 'Cadastros' },
   { path: ROUTES_KEYS.notFound, component: NotFoundPageComponent, title: 'Essa página não existe' },
   { path: ROUTES_KEYS.settings, component: SettingsPageComponent, title: 'Configurações' },
+  { path: ROUTES_KEYS.signUp, component: UserRegisterPageComponent, title: 'Cadastro de usuário' },
 
   { path: '**', redirectTo: ROUTES_KEYS.notFound, title: 'Essa página não existe' }
 

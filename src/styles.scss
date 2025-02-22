@@ -3,14 +3,21 @@
 /* Importing Bootstrap SCSS file. */
 @use 'bootstrap/scss/bootstrap' as bs;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 :root {
-  // --color-primary: #641B53;
+  --color-primary: #641B53;
   // --color-primary: #008AC3;
-  --color-primary: #2D2274;
-  --color-primary-text: #E0E0E0;
+  // --color-primary: #2D2274;
+  --color-primary-text: #e0e0e0;
   --color-secondary: #D4C3FF;
   --color-secondary-text: #263238;
 
@@ -27,49 +34,79 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .side-menu {
-  @include mat.sidenav-overrides((
-    container-background-color: var(--color-side-menu),
-    content-background-color: var(--color-side-menu),
-  ));
+  @include mat.sidenav-overrides((container-background-color: var(--color-side-menu),
+      content-background-color: var(--color-side-menu),
+    ));
 }
 
 .toolbar-header {
-  @include mat.toolbar-overrides((
-    container-background-color: var(--color-primary),
-    container-text-color: var(--color-primary-text)
-  ));
+  @include mat.toolbar-overrides((container-background-color: var(--color-primary),
+      container-text-color: var(--color-primary-text)));
 
-  @include mat.icon-button-overrides((
-    icon-color: var(--color-primary-text),
-    state-layer-color: var(--color-primary-text),
-    hover-state-layer-opacity: 0.1
-  ));
+  @include mat.icon-button-overrides((icon-color: var(--color-primary-text),
+      state-layer-color: var(--color-primary-text),
+      hover-state-layer-opacity: 0.1));
 }
 
 .toolbar-footer {
   padding-top: 20px;
 
-  @include mat.toolbar-overrides((
-    container-background-color: var(--color-footer),
-    container-text-color: var(--color-primary-text)
-  ));
+  @include mat.toolbar-overrides((container-background-color: var(--color-footer),
+      container-text-color: var(--color-primary-text)));
+}
+
+.notification.success {
   mat-icon {
     color: var(--color-primary-text) !important;
-  };
+  }
+
+  .success {
+    background-color: var(--color-success);
+  }
+
+  @include mat.snack-bar-overrides((container-color: var(--color-success),
+    ));
+}
+
+.notification.error {
+  mat-icon {
+    color: var(--color-primary-text) !important;
+  }
+
+  .error {
+    background-color: var(--color-error);
+  }
+
+  @include mat.snack-bar-overrides((container-color: var(--color-error),
+    ));
+}
+
+.notification.warning {
+  mat-icon {
+    color: var(--color-dark) !important;
+  }
+
+  .warning {
+    background-color: var(--color-warning);
+  }
+
+  .notification-message {
+    color: var(--color-dark);
+  }
+
+  @include mat.snack-bar-overrides((container-color: var(--color-warning),
+    ));
 }
 
 .btn-primary {
-  @include mat.button-overrides((
-    filled-container-color: var(--color-primary),
-    filled-label-text-color: var(--color-primary-text),
-  ));
+  @include mat.button-overrides((filled-container-color: var(--color-primary),
+      filled-label-text-color: var(--color-primary-text),
+    ));
 }
 
 .btn-secondary {
-  @include mat.button-overrides((
-    filled-container-color: var(--color-secondary),
-    filled-label-text-color: var(--color-secondary-text)
-  ));
+  @include mat.button-overrides((filled-container-color: var(--color-secondary),
+      filled-label-text-color: var(--color-secondary-text)));
 }
 
 .main-body {

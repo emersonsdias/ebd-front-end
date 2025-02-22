@@ -10,7 +10,6 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { NotificationService } from '../../../../../shared';
-import { first, take } from 'rxjs';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
@@ -45,9 +44,4 @@ export class LoginPageComponent {
       error: () => this._notificationService.error(`Não foi possível autenticar`)
     })
   }
-
-  signUp() {
-    console.log("SIGN UP")
-  }
-
 }

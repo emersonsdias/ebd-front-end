@@ -10,5 +10,6 @@ export const ROUTES_KEYS = {
   management: 'cadastro',
   notFound: 'recurso-nao-encontrado',
   settings: 'configuracoes',
+  signUp: 'usuarios/cadastrar',
 
 }
