@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <mat-card class="mat-card-login">
+    <mat-card-content>
+      <div>
+        <div class="img-container">
+          <img class="img-login" src="assets/img/logo.svg" />
+        </div>
+        <p class="app-name">Portal EBD</p>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Usuário</mat-label>
+          <input name="username" type="email" matInput
+            placeholder="Insira seu e-mail de acesso" [(ngModel)]="credentials.username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input name="password" [type]="hidePassword ? 'password' : 'text'" matInput
+            placeholder="Insira sua senha de acesso" [(ngModel)]="credentials.password" />
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <p>
+          <mat-checkbox class="check-keep-logged" [(ngModel)]="keepLoggedIn">
+            Manter logado
+          </mat-checkbox>
+        </p>
+      </div>
+      <div class="card-login-action">
+        <button mat-flat-button class="btn-primary" (click)="login()">
+          Entrar
+        </button>
+        <button mat-flat-button class="btn-secondary" (click)="closeDialogAndNavigate(ROUTES_KEYS.signUp)">
+          Inscrever-se
+        </button>
+        <button mat-button (click)="closeDialogAndNavigate(ROUTES_KEYS.forgotPassword)">
+          Esqueci minha senha
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

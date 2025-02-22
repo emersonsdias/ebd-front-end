@@ -80,4 +80,8 @@ export class AuthService {
     this._isAdmin$.next(LOCAL_USER.roles?.includes(UserRole.ADMIN) ?? false)
   }
 
+  isAuthenticated(): Observable<boolean> {
+    return this._isAuthenticated$;
+  }
+
 }
