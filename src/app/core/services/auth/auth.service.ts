@@ -35,7 +35,7 @@ export class AuthService {
 
   login(username: string, password: string, keepLoogedIn: boolean = false): Observable<void> {
     const CREDENTIALS = { username: username, password: password }
-    this.logout()
+    this._storageService.clearStorage()
     return this._apiService.httpPost(`${this._path}/login`, CREDENTIALS).pipe(
       tap((response: TokenResponseDTO) => {
         this._storageService.setKeepLoggedIn(keepLoogedIn)
@@ -55,7 +55,6 @@ export class AuthService {
   }
 
   logout(routeAfterLogout: string = this._router.url) {
-    this._storageService.clearStorage()
     this._successfulAuthenticated$.next(false)
     this._isAuthenticated$.next(false)
     this._isAdmin$.next(false)

@@ -4,12 +4,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { ROUTES_KEYS } from '../../../../shared';
+import { DialogService, ROUTES_KEYS } from '../../../../shared';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-side-nav',
-  imports: [MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, RouterModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, RouterModule],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
@@ -20,14 +22,30 @@ export class SideNavComponent {
   isSmallScreen: boolean = false
   ROUTES_KEYS = ROUTES_KEYS;
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(
+    public authService: AuthService,
+    private _breakpointObserver: BreakpointObserver,
+    private _dialogService: DialogService,
+  ) { }
 
   ngOnInit() {
-    this.breakpointObserver.observe([Breakpoints.HandsetPortrait, Breakpoints.TabletPortrait])
+    this._breakpointObserver.observe([Breakpoints.HandsetPortrait, Breakpoints.TabletPortrait])
       .subscribe(result => {
         this.isSmallScreen = result.matches
         this.showSideNav = !result.matches
-      });
+      })
+    this.authService.isAuthenticated().subscribe({
+      next: (res) => {
+        if (!res) {
+          this.showSideNav = false
+        } else {
+          if (!this.isSmallScreen) {
+            this.showSideNav = true
+          }
+        }
+      }
+    })
+
   }
 
   toggleMenu(showSideNav: boolean | undefined = undefined) {
@@ -38,6 +56,18 @@ export class SideNavComponent {
     if (this.isSmallScreen) {
       this.toggleMenu(false)
     }
+  }
+
+  logout() {
+    const options = {
+      title: 'Sair',
+      message: 'Você tem certeza que deseja sair?'
+    }
+    this._dialogService.openConfirmation(options).then(res => {
+      if (res) {
+        this.authService.logout(ROUTES_KEYS.login)
+      }
+    })
   }
 
 }

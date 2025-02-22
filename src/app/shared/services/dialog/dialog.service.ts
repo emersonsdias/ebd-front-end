@@ -18,6 +18,7 @@ export class DialogService {
     if (!options.denyButton) {
       options.denyButton = 'Cancelar'
     }
+
     return new Promise((resolve, reject) => {
       this._dialog.open(DialogConfirmComponent, {
         data: {
