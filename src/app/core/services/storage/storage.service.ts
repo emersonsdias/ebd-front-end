@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { STORAGE_KEYS } from './storage-keys.config';
-import { UserPreferences } from '../../../shared';
+import { LocalUser, UserPreferences } from '../../../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -54,9 +54,8 @@ export class StorageService {
   }
 
   getUserPreferences(): UserPreferences | null {
-    const userPreferences = this.getItem(STORAGE_KEYS.userPreferences);
     try {
-      return (userPreferences == null) ? null : JSON.parse(userPreferences);
+      return this.getItem(STORAGE_KEYS.userPreferences) ?? null
     } catch (e) {
       console.error(e)
       return null
@@ -81,5 +80,37 @@ export class StorageService {
       return userPreferences.keepLoggedIn
     }
     return false
+  }
+
+  setLocalUser(localUser: LocalUser | null) {
+    if (localUser == null) {
+      this.removeItem(STORAGE_KEYS.localUser);
+    } else {
+      this.setItem(STORAGE_KEYS.localUser, JSON.stringify(localUser));
+    }
+  }
+
+  getLocalUser(): LocalUser {
+    const localUser = this.getItem(STORAGE_KEYS.localUser);
+    try {
+      return localUser ? JSON.parse(localUser) : null;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  setRefreshToken(token: string): void {
+    this.setItem(STORAGE_KEYS.refreshToken, token);
+  }
+
+  getRefreshToken(): string | null {
+    return this.getItem(STORAGE_KEYS.refreshToken);
+  }
+
+  clearStorage() {
+    const userPreferences = this.getUserPreferences();
+    localStorage.clear();
+    sessionStorage.clear();
+    this._setUserPreferences(userPreferences);
   }
 }
