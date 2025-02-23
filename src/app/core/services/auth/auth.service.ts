@@ -55,6 +55,7 @@ export class AuthService {
   }
 
   logout(routeAfterLogout: string = this._router.url) {
+    this._storageService.clearStorage()
     this._successfulAuthenticated$.next(false)
     this._isAuthenticated$.next(false)
     this._isAdmin$.next(false)
