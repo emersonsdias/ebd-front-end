@@ -45,12 +45,16 @@ export class StorageService {
 
   getItem(key: string): any {
     const storage = this._getStorage(key)
-    const item = storage.getItem(key)
-    return item ?? null
+    return storage.getItem(key)
   }
 
   getUserPreferences(): UserPreferences {
-    return JSON.parse(this.getItem(STORAGE_KEYS.userPreferences)) ?? {}
+    const userPreferences = this.getItem(STORAGE_KEYS.userPreferences);
+    try {
+      return userPreferences ? JSON.parse(userPreferences) : {}
+    } catch (_) {
+      return {};
+    }
   }
 
   setKeepLoggedIn(keepLoggedIn: boolean): void {
@@ -82,7 +86,12 @@ export class StorageService {
   }
 
   getLocalUser(): LocalUser {
-    return JSON.parse(this.getItem(STORAGE_KEYS.localUser)) || {}
+    const localUser = this.getItem(STORAGE_KEYS.localUser)
+    try {
+      return localUser ? JSON.parse(localUser) : {}
+    } catch(_) {
+      return {}
+    }
   }
 
   setRefreshToken(token: string): void {
@@ -90,7 +99,8 @@ export class StorageService {
   }
 
   getRefreshToken(): string | null {
-    return this.getItem(STORAGE_KEYS.refreshToken)
+    const refreshToken = this.getItem(STORAGE_KEYS.refreshToken)
+    return refreshToken
   }
 
   clearStorage() {

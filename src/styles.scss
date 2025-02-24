@@ -15,22 +15,22 @@ body {
 
 :root {
   --color-primary: #641B53;
-  // --color-primary: #008AC3;
-  // --color-primary: #2D2274;
   --color-primary-text: #e0e0e0;
   --color-secondary: #D4C3FF;
   --color-secondary-text: #263238;
 
-  --color-side-menu: #F4F1EB;
-  --color-main-body: #FAF9F6;
-  --color-login-card: #FFFFFF;
-  --color-footer: #263238;
-
+  --color-off-white-cream: #F4F1EB;
+  --color-off-white-gray: #FAF9F6;
+  --color-light-gray: #D3D3D3;
   --color-dark: #263238;
-
   --color-success: green;
   --color-error: red;
-  --color-warning: yellow;
+  --color-warning: orange;
+
+  --color-side-menu: var(--color-off-white-cream);
+  --color-main-body: var(--color-off-white-gray);
+  --color-login-card: white;
+  --color-footer: var(--color-dark);
 }
 
 .side-menu {
@@ -53,6 +53,39 @@ body {
 
   @include mat.toolbar-overrides((container-background-color: var(--color-footer),
       container-text-color: var(--color-primary-text)));
+}
+
+.alternate-table-colors {
+  @include mat.table-overrides((background-color: var(--color-off-white-gray),
+      row-item-label-text-color: var(--color-dark),
+      row-item-outline-width: 1px,
+      row-item-outline-color: var(--color-light-gray),
+    ));
+
+  .mat-row,
+  .mat-mdc-row,
+  .mat-mdc-cell {
+    border: 1px solid var(--color-light-gray);
+  }
+
+  .mat-mdc-row:nth-child(even) {
+    background-color: var(--color-off-white-cream);
+  }
+
+  th.mat-mdc-header-cell {
+    background: var(--color-dark);
+    color: var(--color-light-gray);
+  }
+
+}
+
+.alternate-table-colors {
+
+  .mat-row:hover,
+  .mat-mdc-row:hover {
+    background-color: var(--color-secondary);
+    cursor: pointer;
+  }
 }
 
 .notification.success {

@@ -1,21 +1,38 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { EnumTranslatePipe } from '../../../../../shared';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
 import { Person } from '../../../../models/person.model';
 import { PersonService } from '../../../../services/person/person.service';
+import { PhoneNumber } from '../../../../models/phone-number.model';
+import { RouterModule } from '@angular/router';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { Subscription } from 'rxjs';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-managements-page',
-  imports: [MatButtonModule, MatIconModule, MatTableModule],
+  imports: [CommonModule, EnumTranslatePipe, MatButtonModule, MatIconModule, MatMenuModule, MatTableModule, RouterModule],
   templateUrl: './managements-page.component.html',
   styleUrl: './managements-page.component.scss'
 })
 export class ManagementsPageComponent implements OnInit, OnDestroy {
 
+  ROUTES_KEYS = ROUTES_KEYS
   people: Person[] = []
-  displayedColumns: string[] = ['id', 'name', 'birthdate', 'actions'];
+  displayedColumns: string[] = [
+    'actions',
+    'name',
+    'phoneNumbers',
+    'email',
+    'birthdate',
+    'status',
+    'gender',
+    'educationLevel',
+    'maritalStatus',
+  ];
   private _subscriptions: Subscription[] = [];
 
   constructor(
@@ -53,7 +70,17 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
     this._subscriptions.push(subscription);
   }
 
-
-
+  formatPhoneNumbers(phoneNumbers: PhoneNumber[]): string {
+    if (!phoneNumbers) {
+      return ''
+    }
+    return phoneNumbers
+      .map(pn => {
+        const beforeLastFour = pn.phoneNumber.slice(0, -4)
+        const lastFour = pn.phoneNumber.slice(-4)
+        return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
+      })
+      .reduce((a, b) => `${a} / ${b}`)
+  }
 
 }

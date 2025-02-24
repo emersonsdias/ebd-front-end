@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService, FooterComponent, HeaderComponent, MainContentComponent, SideNavComponent, StorageService } from './core';
 import { LoaderComponent } from "./shared/components/loader/loader.component";
+import { finalize, take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,24 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   @ViewChild(SideNavComponent) sideNavComponent!: SideNavComponent;
 
   constructor(
-    _storageService: StorageService,
-    _authService: AuthService,
+    private _storageService: StorageService,
+    private _authService: AuthService,
   ) {
-    if (_storageService.getRefreshToken()) {
+  }
+
+  ngOnInit(): void {
+    if (this._storageService.getRefreshToken()) {
       try {
-        _authService.refreshToken()
-      } catch(_) {
+        const subscribe = this._authService
+          .refreshToken()
+          .pipe(take(1))
+          .subscribe()
+      } catch (_) {
         console.error('Refresh roken failed')
       }
     }

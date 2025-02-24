@@ -21,6 +21,6 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '**', redirectTo: ROUTES_KEYS.notFound, title: 'Essa página não existe' }
+  { path: '**', component: NotFoundPageComponent, title: 'Essa página não existe' }
 
 ];
