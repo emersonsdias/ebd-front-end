@@ -1,0 +1,23 @@
+.filter-expansion-header {
+  padding: 10px;
+  display: flex;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: auto;
+}
+
+.filter-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-data {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: 16px;
+}

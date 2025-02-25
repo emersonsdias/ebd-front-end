@@ -3,9 +3,122 @@
     Cadastrar
   </button>
 </p>
+<mat-accordion class="filter-accordion">
+  <mat-expansion-panel #expansionPanel>
+    <mat-expansion-panel-header class="filter-expansion-header">
+      <div>
+        <mat-panel-title class="filter-panel-title">
+          <mat-icon>filter_alt</mat-icon>
+          <span>Filtros</span>
+        </mat-panel-title>
+        <mat-panel-description class="filter-data">
+        </mat-panel-description>
+      </div>
+    </mat-expansion-panel-header>
+    <div>
+      <form [formGroup]="filter">
+        <mat-form-field>
+          <mat-label>Termo de busca:</mat-label>
+          <input formControlName="searchTerm" matInput placeholder="Digite um nome">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" multiple>
+            <mat-option [value]="true">Ativo</mat-option>
+            <mat-option [value]="false">Inativo</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Gênero</mat-label>
+          <mat-select formControlName="gender" multiple>
+            @for (gender of genderList; track $index) {
+            <mat-option [value]="gender">{{ gender | enumTranslate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Estado civil</mat-label>
+          <mat-select formControlName="maritalStatus" multiple>
+            @for (maritalStatus of maritalStatusList; track $index) {
+            <mat-option [value]="maritalStatus">{{ maritalStatus | enumTranslate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Escolaridade</mat-label>
+          <mat-select formControlName="educationLevel" multiple>
+            @for (educationLevel of educationLevelList; track $index) {
+            <mat-option [value]="educationLevel">{{ educationLevel | enumTranslate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </div>
+    <button mat-flat-button class="btn-secondary" (click)="filterPeople(); expansionPanel.close()">
+      <mat-icon>search</mat-icon>
+      <span>
+        Pesquisar
+      </span>
+    </button>
+    <button mat-button class="btn-secondary" (click)="filter.reset(); filterPeople(); expansionPanel.close()">
+      <mat-icon>filter_alt_off</mat-icon>
+      <span>
+        Limpar filtros
+      </span>
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-chip-listbox class="people-filter-chip">
+  @if (isFilterEmpty()) {
+  <mat-chip disabled>Nenhum filtro selecionados</mat-chip>
+  } @else {
+  <mat-chip disabled>Filtros selecionados</mat-chip>
+  }
+  @if (filter.get('searchTerm')?.value) {
+  <mat-chip class="search-term" (removed)="removeFilter('searchTerm', null)">
+    {{ filter.get('searchTerm')?.value }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
+  @for (status of filter.get('status')?.value; track $index) {
+  <mat-chip class="status" (removed)="removeFilter('status', status)">
+    {{ status ? 'Ativo' : 'Inativo' }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
+  @for (gender of filter.get('gender')?.value; track $index) {
+  <mat-chip class="gender" (removed)="removeFilter('gender', gender)">
+    {{ gender | enumTranslate }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
+  @for (maritalStatus of filter.get('maritalStatus')?.value; track $index) {
+  <mat-chip class="marital-status" (removed)="removeFilter('maritalStatus', maritalStatus)">
+    {{ maritalStatus | enumTranslate }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
+  @for (educationLevel of filter.get('educationLevel')?.value; track $index) {
+  <mat-chip class="education-level" (removed)="removeFilter('educationLevel', educationLevel)">
+    {{ educationLevel | enumTranslate }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
+</mat-chip-listbox>
 
 <div class="table-responsive">
-  <table mat-table [dataSource]="people" class="mat-elevation-z8 alternate-table-colors">
+  <table mat-table [dataSource]="filteredPeople" class="mat-elevation-z8 alternate-table-colors">
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Ações </th>
@@ -66,7 +179,7 @@
       <td mat-cell *matCellDef="let element"> {{element.maritalStatus | enumTranslate}} </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>

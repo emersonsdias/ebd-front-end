@@ -31,6 +31,7 @@ body {
   --color-main-body: var(--color-off-white-gray);
   --color-login-card: white;
   --color-footer: var(--color-dark);
+
 }
 
 .side-menu {
@@ -76,10 +77,6 @@ body {
     background: var(--color-dark);
     color: var(--color-light-gray);
   }
-
-}
-
-.alternate-table-colors {
 
   .mat-row:hover,
   .mat-mdc-row:hover {
@@ -142,6 +139,39 @@ body {
       filled-label-text-color: var(--color-secondary-text)));
 }
 
+.filter-accordion {
+  @include mat.expansion-overrides((header-collapsed-state-height: auto,
+      header-expanded-state-height: auto,
+    ));
+}
+
+.people-filter-chip {
+  @include mat.chips-overrides((label-text-size: 10px,
+    ));
+
+    padding: 10px;
+
+  .search-term {
+    background-color: #ad9fbd !important;
+  }
+
+  .status {
+    background-color: #cfd4d6 !important;
+  }
+
+  .gender {
+    background-color: #d2e9ae !important;
+  }
+
+  .marital-status {
+    background-color: #cfb8e7 !important;
+  }
+
+  .education-level {
+    background-color: #c3ecec !important;
+  }
+}
+
 .main-body {
   background-color: var(--color-main-body);
 }
@@ -157,4 +187,14 @@ body {
 .full-width {
   width: 100%;
   max-width: 100%;
+}
+
+
+
+.default-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  width: 100%;
+  max-width: 100vw;
 }
