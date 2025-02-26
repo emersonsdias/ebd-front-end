@@ -10,7 +10,8 @@ export const ROUTES_KEYS = {
   management: 'cadastro',
   notFound: 'recurso-nao-encontrado',
   people: 'pessoas',
-  personId: ':personId',
+  personId: 'personId',
+  register: 'cadastrar',
   settings: 'configuracoes',
   signUp: 'usuarios/cadastrar',
 

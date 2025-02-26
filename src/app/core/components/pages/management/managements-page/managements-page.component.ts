@@ -89,6 +89,11 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
       error: err => console.error('Erro ao buscar pessoas:', err)
     })
     this._subscriptions.push(peopleSubscription)
+
+    const valueChangesSubscription = this.filter.valueChanges.subscribe(() => {
+      this.filterPeople()
+    })
+    this._subscriptions.push(valueChangesSubscription)
   }
 
   ngOnDestroy(): void {

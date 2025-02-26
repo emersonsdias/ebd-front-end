@@ -16,6 +16,10 @@ export class PersonService {
     private _http: HttpClient
   ) { }
 
+  findById(id: string): Observable<Person> {
+    return this._apiService.httpGet(`${this._path}/${id}`)
+  }
+
   findAllPeople(): Observable<Person[]> {
     return this._apiService.httpGet(this._path)
   }

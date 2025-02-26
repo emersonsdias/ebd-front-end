@@ -33,6 +33,13 @@ body {
   --color-login-card: white;
   --color-footer: var(--color-dark);
 
+
+  @include mat.slide-toggle-overrides((
+    selected-track-color: var(--color-primary),
+    selected-hover-track-color: var(--color-primary),
+    selected-focus-track-color: var(--color-primary),
+    selected-pressed-track-color: var(--color-secondary)
+  ));
 }
 
 .side-menu {

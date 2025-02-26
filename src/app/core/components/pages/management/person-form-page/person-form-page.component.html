@@ -1,0 +1,63 @@
+@if (person.get('id')?.value) {
+<div class="container" style="display: flex; justify-content: space-between;">
+  <span>id: <strong>{{ person.get('id')?.value }}</strong></span>
+  <span>Criado em: <strong>{{ person.get('createdAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
+  <span>Última atualização: <strong>{{ person.get('updatedAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
+</div>
+}
+<form [formGroup]="person" class="container">
+  <div class="row">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Data de nascimento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthdate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput placeholder="exemplo@email.com.br" formControlName="email">
+    </mat-form-field>
+
+    <p>
+      <mat-button-toggle-group formControlName="gender">
+        @for(gender of genderList; track $index) {
+        <mat-button-toggle [value]="gender">{{ gender | enumTranslate }}</mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </p>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado Civil</mat-label>
+      <mat-select formControlName="maritalStatus">
+        <mat-option>Não informado</mat-option>
+        @for(maritalStatus of maritalStatusList; track $index) {
+        <mat-option [value]="maritalStatus">{{ maritalStatus | enumTranslate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Escolaridade</mat-label>
+      <mat-select formControlName="educationLevel">
+        <mat-option>Não informado</mat-option>
+        @for(educationLevel of educationLevelList; track $index) {
+        <mat-option [value]="educationLevel">{{ educationLevel | enumTranslate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="active" #active>
+      {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
+    </mat-slide-toggle>
+
+
+
+  </div>
+</form>
