@@ -21,3 +21,25 @@
   align-items: center;
   margin-left: 16px;
 }
+
+.data-not-found-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 15px;
+  height: 141px;
+  color: var(--color-medium-gray);
+  justify-content: center;
+  align-items: center;
+
+  border-style: dashed;
+  border-width: thin;
+  border-color: var(--color-medium-gray);
+  border-radius: 5px;
+}
+
+.date-buttons {
+  width: 150%;
+  transform: scale(0.7);
+  transform-origin: left;
+}

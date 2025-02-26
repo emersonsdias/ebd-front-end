@@ -8,7 +8,11 @@
     <mat-expansion-panel-header class="filter-expansion-header">
       <div>
         <mat-panel-title class="filter-panel-title">
+          @if (isFilterEmpty()) {
+          <mat-icon>filter_alt_off</mat-icon>
+          } @else {
           <mat-icon>filter_alt</mat-icon>
+          }
           <span>Filtros</span>
         </mat-panel-title>
         <mat-panel-description class="filter-data">
@@ -16,42 +20,74 @@
       </div>
     </mat-expansion-panel-header>
     <div>
-      <form [formGroup]="filter">
-        <mat-form-field>
-          <mat-label>Termo de busca:</mat-label>
-          <input formControlName="searchTerm" matInput placeholder="Digite um nome">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status" multiple>
-            <mat-option [value]="true">Ativo</mat-option>
-            <mat-option [value]="false">Inativo</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Gênero</mat-label>
-          <mat-select formControlName="gender" multiple>
-            @for (gender of genderList; track $index) {
-            <mat-option [value]="gender">{{ gender | enumTranslate }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Estado civil</mat-label>
-          <mat-select formControlName="maritalStatus" multiple>
-            @for (maritalStatus of maritalStatusList; track $index) {
-            <mat-option [value]="maritalStatus">{{ maritalStatus | enumTranslate }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Escolaridade</mat-label>
-          <mat-select formControlName="educationLevel" multiple>
-            @for (educationLevel of educationLevelList; track $index) {
-            <mat-option [value]="educationLevel">{{ educationLevel | enumTranslate }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+      <form [formGroup]="filter" class="container">
+        <div class="row">
+          <mat-form-field class="col-md-8 col-12" appearance="outline">
+            <mat-label>Termo de busca:</mat-label>
+            <input formControlName="searchTerm" matInput placeholder="Digite um nome">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-4 col-12" appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" multiple>
+              <mat-option [value]="true">Ativo</mat-option>
+              <mat-option [value]="false">Inativo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-md-6 col-12" appearance="outline">
+            <mat-label>Gênero</mat-label>
+            <mat-select formControlName="gender" multiple>
+              @for (gender of genderList; track $index) {
+              <mat-option [value]="gender">{{ gender | enumTranslate }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-12" appearance="outline">
+            <mat-label>Estado civil</mat-label>
+            <mat-select formControlName="maritalStatus" multiple>
+              @for (maritalStatus of maritalStatusList; track $index) {
+              <mat-option [value]="maritalStatus">{{ maritalStatus | enumTranslate }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-12" appearance="outline">
+            <mat-label>Escolaridade</mat-label>
+            <mat-select formControlName="educationLevel" multiple>
+              @for (educationLevel of educationLevelList; track $index) {
+              <mat-option [value]="educationLevel">{{ educationLevel | enumTranslate }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row">
+
+          <mat-form-field class="col-md-7 col-12" appearance="outline">
+            <mat-label>Aniversário</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Data inicial" formControlName="startBirthdate">
+              <input matEndDate placeholder="Data final" formControlName="endBirthdate">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <div class="date-buttons">
+              <button type="button" class="btn btn-outline-dark" (click)="pastWeek()">
+                Última semana
+              </button>
+              <button type="button" class="btn btn-outline-dark" (click)="thisWeek()">
+                Essa semana
+              </button>
+              <button type="button" class="btn btn-outline-dark" (click)="nextWeek()">
+                Próxima semana
+              </button>
+            </div>
+          </mat-form-field>
+        </div>
       </form>
     </div>
     <button mat-flat-button class="btn-secondary" (click)="filterPeople(); expansionPanel.close()">
@@ -115,11 +151,25 @@
     </button>
   </mat-chip>
   }
+  @if (filter.get('startBirthdate')?.value && filter.get('endBirthdate')?.value) {
+  <mat-chip class="birthdate" (removed)="removeFilter('startBirthdate', null);removeFilter('endBirthdate', null)">
+    aniversários {{ filter.get('startBirthdate')?.value | date: 'dd-MMM' }} a
+    {{ filter.get('endBirthdate')?.value | date: 'dd-MMM' }}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+  }
 </mat-chip-listbox>
 
 <div class="table-responsive">
-  <table mat-table [dataSource]="filteredPeople" class="mat-elevation-z8 alternate-table-colors">
 
+  @if (filteredPeople.length === 0) {
+  <div class="data-not-found-container">
+    <p>Não foram encontrados dados com os filtros selecionados</p>
+  </div>
+  } @else {
+  <table mat-table [dataSource]="filteredPeople" class="mat-elevation-z8 alternate-table-colors">
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Ações </th>
       <td mat-cell *matCellDef="let element">
@@ -182,4 +232,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  }
 </div>

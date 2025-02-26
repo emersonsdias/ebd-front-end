@@ -1,11 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EducationLevel } from '../../../../models/enums/education-level.enum';
 import { EnumTranslatePipe } from '../../../../../shared';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Gender } from '../../../../models/enums/gender.enum';
+import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
@@ -15,23 +21,22 @@ import { PhoneNumber } from '../../../../models/phone-number.model';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { Subscription } from 'rxjs';
-import { Gender } from '../../../../models/enums/gender.enum';
-import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
-import { EducationLevel } from '../../../../models/enums/education-level.enum';
-import { MatInputModule } from '@angular/material/input';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 interface FilterPeople {
   searchTerm: string,
   status: boolean[],
   gender: Gender[],
   maritalStatus: MaritalStatus[],
-  educationLevel: EducationLevel[]
+  educationLevel: EducationLevel[],
+  startBirthdate: Date,
+  endBirthdate: Date
 }
 
 @Component({
   selector: 'app-managements-page',
-  imports: [CommonModule, EnumTranslatePipe, FormsModule, MatButtonModule, MatChipsModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule, MatTableModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, EnumTranslatePipe, FormsModule, MatButtonModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule, MatTableModule, ReactiveFormsModule, RouterModule],
   templateUrl: './managements-page.component.html',
   styleUrl: './managements-page.component.scss'
 })
@@ -69,6 +74,8 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
       gender: [[]],
       educationLevel: [[]],
       maritalStatus: [[]],
+      startBirthdate: null,
+      endBirthdate: null
     })
   }
 
@@ -77,7 +84,7 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
     const peopleSubscription = this._personService.findAllPeople().subscribe({
       next: res => {
         this.people = res
-        this.filteredPeople = res
+        this.filterPeople()
       },
       error: err => console.error('Erro ao buscar pessoas:', err)
     })
@@ -145,7 +152,68 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
       .filter(p => !filter.educationLevel || filter.educationLevel.length === 0 || filter.educationLevel.includes(p.educationLevel))
       .filter(p => !filter.maritalStatus || filter.maritalStatus.length === 0 || filter.maritalStatus.includes(p.maritalStatus))
       .filter(p => !filter.searchTerm || p.name.toLowerCase().includes(filter.searchTerm.toLowerCase()))
+      .filter(p => {
+        if (!filter.startBirthdate || !filter.endBirthdate) {
+          return true
+        }
+        const birthdate = new Date(p.birthdate + 'T03:00:00Z')
+        const startBirthdate = new Date(filter.startBirthdate)
+        const endBirthdate = new Date(filter.endBirthdate)
+
+        const [dayStart, monthStart] = [startBirthdate.getDate(), startBirthdate.getMonth() + 1]
+        const [dayEnd, monthEnd] = [endBirthdate.getDate(), endBirthdate.getMonth() + 1]
+        const [birthDay, birthMonth] = [birthdate.getDate(), birthdate.getMonth() + 1]
+
+        const numA = monthStart * 100 + dayStart
+        const numB = monthEnd * 100 + dayEnd
+        const numC = birthMonth * 100 + birthDay
+
+        if (numA <= numB) {
+          return numC >= numA && numC <= numB;
+        } else {
+          return numC >= numA || numC <= numB;
+        }
+      })
   }
 
+  pastWeek() {
+    const today = new Date()
+    const day = today.getDay()
+    const initialDate = new Date(today)
+    initialDate.setDate(today.getDate() - day - 7)
+    const finalDate = new Date(today)
+    finalDate.setDate(today.getDate() - day - 1)
+
+    this.filter.get('startBirthdate')?.setValue(initialDate)
+    this.filter.get('endBirthdate')?.setValue(finalDate)
+  }
+
+  thisWeek() {
+    const today = new Date()
+    const day = today.getDay()
+
+    const initialDate = new Date(today)
+    initialDate.setDate(today.getDate() - day)
+
+    const finalDate = new Date(today)
+    finalDate.setDate(today.getDate() - day + 6)
+
+    this.filter.get('startBirthdate')?.setValue(initialDate)
+    this.filter.get('endBirthdate')?.setValue(finalDate)
+  }
+
+  nextWeek() {
+    const today = new Date()
+    const day = today.getDay()
+
+    const initialDate = new Date(today)
+    initialDate.setDate(today.getDate() - day + 7)
+
+    const finalDate = new Date(today)
+    finalDate.setDate(today.getDate() - day + 13)
+
+    this.filter.get('startBirthdate')?.setValue(initialDate)
+    this.filter.get('endBirthdate')?.setValue(finalDate)
+  }
 
 }
