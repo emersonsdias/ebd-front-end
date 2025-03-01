@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EducationLevel } from '../../../../models/enums/education-level.enum';
 import { EnumTranslatePipe } from '../../../../../shared';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { Gender } from '../../../../models/enums/gender.enum';
 import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -14,14 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Person } from '../../../../models/person.model';
 import { PersonService } from '../../../../services/person/person.service';
 import { PhoneNumber } from '../../../../models/phone-number.model';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { Subscription } from 'rxjs';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 interface FilterPeople {
@@ -36,11 +37,12 @@ interface FilterPeople {
 
 @Component({
   selector: 'app-managements-page',
-  imports: [CommonModule, EnumTranslatePipe, FormsModule, MatButtonModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule, MatTableModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, EnumTranslatePipe, FormsModule, MatButtonModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule, MatSortModule, MatTableModule, ReactiveFormsModule, RouterModule],
   templateUrl: './managements-page.component.html',
-  styleUrl: './managements-page.component.scss'
+  styleUrl: './managements-page.component.scss',
+  providers: [EnumTranslatePipe]
 })
-export class ManagementsPageComponent implements OnInit, OnDestroy {
+export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   genderList = Object.keys(Gender).map(key => Gender[key as keyof typeof Gender])
   maritalStatusList = Object.keys(MaritalStatus).map(key => MaritalStatus[key as keyof typeof MaritalStatus])
@@ -50,7 +52,7 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
 
   filter: FormGroup
   people: Person[] = []
-  filteredPeople: Person[] = []
+  filteredPeople = new MatTableDataSource<Person>([]);
   displayedColumns: string[] = [
     'actions',
     'name',
@@ -63,10 +65,12 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
     'maritalStatus',
   ]
   private _subscriptions: Subscription[] = []
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private _personService: PersonService,
     private _formBuilder: FormBuilder,
+    private _enumTranslatePipe: EnumTranslatePipe
   ) {
     this.filter = this._formBuilder.group({
       searchTerm: [null],
@@ -94,6 +98,37 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
       this.filterPeople()
     })
     this._subscriptions.push(valueChangesSubscription)
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+    const MAX_ATTEMPTS = 10
+    let count = 0
+    do {
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          if (this.sort) {
+            this.filteredPeople.sort = this.sort;
+            this.filteredPeople.sortingDataAccessor = (data: Person, sortHeaderId: string) => {
+              switch (sortHeaderId) {
+                case 'maritalStatus':
+                case 'gender':
+                case 'educationLevel':
+                  return this._enumTranslatePipe.transform(data[sortHeaderId])
+                case 'birthdate':
+                  if (data.birthdate) {
+                    return data.birthdate.substring(5,10)
+                  }
+                  return ''
+                default:
+                  return (data as any)[sortHeaderId]
+              }
+            }
+          }
+          resolve(null)
+        }, count * 100)
+      )
+      count++;
+    } while (!this.filteredPeople.sort && count < MAX_ATTEMPTS);
   }
 
   ngOnDestroy(): void {
@@ -147,16 +182,17 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
 
   filterPeople() {
     if (this.isFilterEmpty()) {
-      this.filteredPeople = this.people
+      this.filteredPeople.data = this.people
       return
     }
     const filter: FilterPeople = this.filter.value
-    this.filteredPeople = this.people
+
+    this.filteredPeople.data = this.people
       .filter(p => !filter.status || filter.status.length === 0 || filter.status.includes(p.active!))
       .filter(p => !filter.gender || filter.gender.length === 0 || filter.gender.includes(p.gender))
       .filter(p => !filter.educationLevel || filter.educationLevel.length === 0 || filter.educationLevel.includes(p.educationLevel))
       .filter(p => !filter.maritalStatus || filter.maritalStatus.length === 0 || filter.maritalStatus.includes(p.maritalStatus))
-      .filter(p => !filter.searchTerm || p.name.toLowerCase().includes(filter.searchTerm.toLowerCase()))
+      .filter(p => !filter.searchTerm || p.name?.toLowerCase().includes(filter.searchTerm.toLowerCase()) || p.email?.toLowerCase().includes(filter.searchTerm.toLowerCase()))
       .filter(p => {
         if (!filter.startBirthdate || !filter.endBirthdate) {
           return true
@@ -174,9 +210,9 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
         const numC = birthMonth * 100 + birthDay
 
         if (numA <= numB) {
-          return numC >= numA && numC <= numB;
+          return numC >= numA && numC <= numB
         } else {
-          return numC >= numA || numC <= numB;
+          return numC >= numA || numC <= numB
         }
       })
   }
@@ -220,5 +256,6 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
     this.filter.get('startBirthdate')?.setValue(initialDate)
     this.filter.get('endBirthdate')?.setValue(finalDate)
   }
+
 
 }

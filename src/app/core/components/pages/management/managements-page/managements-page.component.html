@@ -24,7 +24,7 @@
         <div class="row">
           <mat-form-field class="col-md-8 col-12" appearance="outline">
             <mat-label>Termo de busca:</mat-label>
-            <input formControlName="searchTerm" matInput placeholder="Digite um nome">
+            <input formControlName="searchTerm" matInput placeholder="Digite um nome ou e-mail">
           </mat-form-field>
 
           <mat-form-field class="col-md-4 col-12" appearance="outline">
@@ -164,12 +164,12 @@
 
 <div class="table-responsive">
 
-  @if (filteredPeople.length === 0) {
+  @if (filteredPeople.filteredData.length === 0) {
   <div class="data-not-found-container">
     <p>Não foram encontrados dados com os filtros selecionados</p>
   </div>
   } @else {
-  <table mat-table [dataSource]="filteredPeople" class="mat-elevation-z8 alternate-table-colors">
+  <table mat-table [dataSource]="filteredPeople" class="mat-elevation-z8 alternate-table-colors" matSort>
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Ações </th>
       <td mat-cell *matCellDef="let element">
@@ -190,42 +190,42 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="phoneNumbers">
-      <th mat-header-cell *matHeaderCellDef> Telefone </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefone </th>
       <td mat-cell *matCellDef="let element"> {{ formatPhoneNumbers(element.phoneNumbers) }} </td>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> E-mail </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </th>
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
 
     <ng-container matColumnDef="birthdate">
-      <th mat-header-cell *matHeaderCellDef> Aniversário </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Aniversário </th>
       <td mat-cell *matCellDef="let element"> {{element.birthdate | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
       <td mat-cell *matCellDef="let element"> {{element.active ? 'Ativo' : 'Inativo'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="gender">
-      <th mat-header-cell *matHeaderCellDef> Gênero </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Gênero </th>
       <td mat-cell *matCellDef="let element"> {{element.gender | enumTranslate}} </td>
     </ng-container>
 
     <ng-container matColumnDef="educationLevel">
-      <th mat-header-cell *matHeaderCellDef> Escolaridade </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortingDataAccessor="teste"> Escolaridade </th>
       <td mat-cell *matCellDef="let element"> {{element.educationLevel | enumTranslate}} </td>
     </ng-container>
 
     <ng-container matColumnDef="maritalStatus">
-      <th mat-header-cell *matHeaderCellDef> Estado Civil </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado Civil </th>
       <td mat-cell *matCellDef="let element"> {{element.maritalStatus | enumTranslate}} </td>
     </ng-container>
 
