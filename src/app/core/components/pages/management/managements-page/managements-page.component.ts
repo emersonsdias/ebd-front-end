@@ -127,7 +127,7 @@ export class ManagementsPageComponent implements OnInit, OnDestroy {
         const lastFour = pn.phoneNumber.slice(-4)
         return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
       })
-      .reduce((a, b) => `${a} / ${b}`)
+      .reduce((a, b) => `${a} / ${b}`, '')
   }
 
   isFilterEmpty(): boolean {

@@ -8,6 +8,10 @@ export class EnumTranslatePipe implements PipeTransform {
 
   transform(value: Gender | EducationLevel | MaritalStatus, ...args: unknown[]): string {
 
+    if (!value) {
+      return value
+    }
+
     if (Object.values(Gender).includes(value as Gender)) {
       switch (value) {
         case Gender.FEMALE:
