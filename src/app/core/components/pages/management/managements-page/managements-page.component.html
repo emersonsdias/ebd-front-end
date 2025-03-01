@@ -67,7 +67,7 @@
         </div>
         <div class="row">
 
-          <mat-form-field class="col-md-7 col-12" appearance="outline">
+          <mat-form-field class="col-md-4 col-12" appearance="outline">
             <mat-label>Aniversário</mat-label>
             <mat-date-range-input [rangePicker]="picker">
               <input matStartDate placeholder="Data inicial" formControlName="startBirthdate">
@@ -96,7 +96,7 @@
         Pesquisar
       </span>
     </button>
-    <button mat-button class="btn-secondary" (click)="filter.reset(); filterPeople(); expansionPanel.close()">
+    <button mat-button class="btn-secondary" (click)="filter.reset();">
       <mat-icon>filter_alt_off</mat-icon>
       <span>
         Limpar filtros

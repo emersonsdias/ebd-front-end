@@ -1,29 +1,36 @@
 @if (person.get('id')?.value) {
-<div class="container" style="display: flex; justify-content: space-between;">
+<div class="container d-flex" style="justify-content: space-between; padding: 15px;">
   <span>id: <strong>{{ person.get('id')?.value }}</strong></span>
-  <span>Criado em: <strong>{{ person.get('createdAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
-  <span>Última atualização: <strong>{{ person.get('updatedAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
+  <div class="d-flex flex-column" style="text-align: end;">
+    <span>Criado em: <strong>{{ person.get('createdAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
+    <span>Última atualização: <strong>{{ person.get('updatedAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
+  </div>
 </div>
 }
 <form [formGroup]="person" class="container">
-  <div class="row">
 
-    <mat-form-field appearance="outline">
+  <p class="section-title">Dados de Pessoa</p>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
       <mat-label>Nome</mat-label>
       <input matInput placeholder="Insira o nome" formControlName="name">
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="col-md-4 col-12">
       <mat-label>Data de nascimento</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="birthdate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+  </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>E-mail</mat-label>
-      <input matInput placeholder="exemplo@email.com.br" formControlName="email">
-    </mat-form-field>
+  <div class="row">
+    <p>
+      <mat-slide-toggle formControlName="active" #active>
+        {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
+      </mat-slide-toggle>
+    </p>
 
     <p>
       <mat-button-toggle-group formControlName="gender">
@@ -32,8 +39,10 @@
         }
       </mat-button-toggle-group>
     </p>
+  </div>
 
-    <mat-form-field appearance="outline">
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-6 col-12">
       <mat-label>Estado Civil</mat-label>
       <mat-select formControlName="maritalStatus">
         <mat-option>Não informado</mat-option>
@@ -43,7 +52,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="col-md-6 col-12">
       <mat-label>Escolaridade</mat-label>
       <mat-select formControlName="educationLevel">
         <mat-option>Não informado</mat-option>
@@ -52,12 +61,115 @@
         }
       </mat-select>
     </mat-form-field>
-
-    <mat-slide-toggle formControlName="active" #active>
-      {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
-    </mat-slide-toggle>
-
-
-
   </div>
+
+  <div class="row">
+    <mat-divider></mat-divider>
+    <p class="section-title">Dados de Contato</p>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-md-8 col-12">
+        <mat-label>E-mail</mat-label>
+        <input matInput placeholder="exemplo@email.com.br" formControlName="email">
+      </mat-form-field>
+    </div>
+
+    <div formArrayName="phoneNumbers">
+      @for (phoneNumberControl of phoneNumbers.controls; track $index; let last = $last) {
+      <div [formGroupName]="$index" class="row">
+        <mat-form-field appearance="outline" class="col-md-3 col-12" style="max-width: 100px;">
+          <mat-label>DDD</mat-label>
+          <input matInput placeholder="(41)" formControlName="areaCode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-9 col-12" style="max-width: 250px;">
+          <mat-label>Telefone</mat-label>
+          <input matInput placeholder="99999-9999" formControlName="phoneNumber">
+          <button mat-icon-button matSuffix (click)="removePhoneNumber($index)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      }
+      <p>
+        <button mat-flat-button class="btn-secondary" (click)="addPhoneNumber()">
+          <mat-icon>add</mat-icon>
+          <span>
+            Adicionar telefone
+          </span>
+        </button>
+      </p>
+    </div>
+
+    <mat-divider></mat-divider>
+    <p class="section-title">Endereço</p>
+
+    <div class="row" formGroupName="address">
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-md-9 col-12">
+          <mat-label>Logradouro</mat-label>
+          <input matInput placeholder="Insira o logradouro" formControlName="street">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-3 col-12">
+          <mat-label>Número</mat-label>
+          <input matInput placeholder="Insira o número" formControlName="number">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-md-6 col-12">
+          <mat-label>Complemento</mat-label>
+          <input matInput placeholder="Insira o complemento" formControlName="complement">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-6 col-12">
+          <mat-label>Bairro</mat-label>
+          <input matInput placeholder="Insira o bairro" formControlName="neighborhood">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-md-3 col-12">
+          <mat-label>CEP</mat-label>
+          <input matInput placeholder="Insira o cep" formControlName="zipCode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-3 col-12">
+          <mat-label>UF</mat-label>
+          <mat-select (selectionChange)="changeState($event.value.id)" [compareWith]="compareObjectId"
+            [formControl]="stateControl">
+            <mat-option>UF</mat-option>
+            @for (state of states; track $index) {
+            <mat-option [value]="state">{{ state.abbreviation }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-6 col-12">
+          <mat-label>Cidade</mat-label>
+          <mat-select [compareWith]="compareObjectId" formControlName="city">
+            <mat-option>Selecione uma cidade</mat-option>
+            @for (city of cities; track $index) {
+            <mat-option [value]="city">{{ city.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <button mat-flat-button type="submit" class="btn-primary" (click)="save(person)">
+    <mat-icon>save</mat-icon>
+    <span>
+      Salvar
+    </span>
+  </button>
+
+  <a mat-button type="button" class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.management]" >
+    <mat-icon>cancel</mat-icon>
+    <span>
+      Cancelar
+    </span>
+  </a>
 </form>

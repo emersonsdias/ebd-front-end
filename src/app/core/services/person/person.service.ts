@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs';
 import { Person } from '../../models/person.model';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +12,15 @@ export class PersonService {
 
   constructor(
     private _apiService: ApiService,
-    private _http: HttpClient
   ) { }
+
+  create(person: Person): Observable<Person> {
+    return this._apiService.httpPost(this._path, person)
+  }
+
+  update(person: Person) {
+    return this._apiService.httpPut(`${this._path}/${person.id}`, person)
+  }
 
   findById(id: string): Observable<Person> {
     return this._apiService.httpGet(`${this._path}/${id}`)

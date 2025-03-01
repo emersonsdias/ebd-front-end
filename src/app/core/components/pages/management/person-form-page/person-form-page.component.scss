@@ -1,0 +1,20 @@
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.input-container input {
+  flex: 1;
+  text-align: center;
+}
+
+.separator {
+  font-weight: bold;
+}
+
+.section-title {
+  font-size: large;
+  font-weight: bold;
+}

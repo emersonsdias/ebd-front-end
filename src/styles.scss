@@ -34,12 +34,10 @@ body {
   --color-footer: var(--color-dark);
 
 
-  @include mat.slide-toggle-overrides((
-    selected-track-color: var(--color-primary),
-    selected-hover-track-color: var(--color-primary),
-    selected-focus-track-color: var(--color-primary),
-    selected-pressed-track-color: var(--color-secondary)
-  ));
+  @include mat.slide-toggle-overrides((selected-track-color: var(--color-primary),
+      selected-hover-track-color: var(--color-primary),
+      selected-focus-track-color: var(--color-primary),
+      selected-pressed-track-color: var(--color-secondary)));
 }
 
 .side-menu {
@@ -140,6 +138,10 @@ body {
   @include mat.button-overrides((filled-container-color: var(--color-primary),
       filled-label-text-color: var(--color-primary-text),
     ));
+
+  @include mat.fab-overrides((container-color: var(--color-primary),
+      foreground-color: var(--color-primary-text),
+      ripple-color: rgba(255, 255, 255, 0.3)));
 }
 
 .btn-secondary {
@@ -154,10 +156,10 @@ body {
 }
 
 .people-filter-chip {
+  padding: 10px;
+
   @include mat.chips-overrides((label-text-size: 10px,
     ));
-
-    padding: 10px;
 
   .search-term {
     background-color: #ad9fbd !important;
