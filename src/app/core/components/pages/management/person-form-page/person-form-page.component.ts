@@ -4,7 +4,7 @@ import { Address } from '../../../../models/address.model';
 import { City } from '../../../../models/city.model';
 import { CommonModule } from '@angular/common';
 import { EducationLevel } from '../../../../models/enums/education-level.enum';
-import { EnumTranslatePipe, NotificationService, ROUTES_KEYS } from '../../../../../shared';
+import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Gender } from '../../../../models/enums/gender.enum';
@@ -181,6 +181,15 @@ export class PersonFormPageComponent implements OnInit {
         console.error('Update person failed.', err)
       }
     })
+  }
+
+  downloadPersonPdf(person: Person) {
+    console.log(person)
+    if (!person.id) {
+      this._notificationService.error('Não foi possível baixar PDF pois não foi encontrado o ID da pessoa')
+      return
+    }
+    Utils.downloadPdf(person.name, this._personService.findPersonPdf(person.id))
   }
 
 }

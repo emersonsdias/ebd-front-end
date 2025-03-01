@@ -30,7 +30,7 @@ export class PersonService {
     return this._apiService.httpGet(this._path)
   }
 
-  downloadPersonPdf(personId: string): Observable<Blob> {
+  findPersonPdf(personId: string): Observable<Blob> {
     const url = `${this._path}/${personId}/report/pdf`;
     return this._apiService.httpGetBlob(`${this._path}/${personId}/report/pdf`)
   }

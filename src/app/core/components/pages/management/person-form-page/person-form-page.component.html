@@ -6,6 +6,14 @@
     <span>Última atualização: <strong>{{ person.get('updatedAt')?.value | date: 'dd/MM/yyyy HH:mm' }}</strong></span>
   </div>
 </div>
+<div class="container text-end">
+  <button mat-flat-button class="btn-secondary" (click)="downloadPersonPdf(person.value)">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>
+      Baixar PDF
+    </span>
+  </button>
+</div>
 }
 <form [formGroup]="person" class="container">
 
@@ -166,7 +174,7 @@
     </span>
   </button>
 
-  <a mat-button type="button" class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.management]" >
+  <a mat-button type="button" class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.management]">
     <mat-icon>cancel</mat-icon>
     <span>
       Cancelar

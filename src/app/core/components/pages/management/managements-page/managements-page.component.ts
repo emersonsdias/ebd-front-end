@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EducationLevel } from '../../../../models/enums/education-level.enum';
-import { EnumTranslatePipe } from '../../../../../shared';
+import { EnumTranslatePipe, NotificationService, Utils } from '../../../../../shared';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Gender } from '../../../../models/enums/gender.enum';
 import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
@@ -70,7 +70,8 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
   constructor(
     private _personService: PersonService,
     private _formBuilder: FormBuilder,
-    private _enumTranslatePipe: EnumTranslatePipe
+    private _enumTranslatePipe: EnumTranslatePipe,
+    private _notificationService: NotificationService
   ) {
     this.filter = this._formBuilder.group({
       searchTerm: [null],
@@ -119,6 +120,8 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
                     return data.birthdate.substring(5,10)
                   }
                   return ''
+                case 'phoneNumbers':
+                  return this.formatPhoneNumbers(data.phoneNumbers)
                 default:
                   return (data as any)[sortHeaderId]
               }
@@ -135,21 +138,12 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
     this._subscriptions.forEach(subscription => subscription.unsubscribe())
   }
 
-  downloadPersonPdf(personId: string) {
-    const subscription = this._personService.downloadPersonPdf(personId).subscribe({
-      next: (response: Blob) => {
-        const url = window.URL.createObjectURL(response)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `pessoa_${personId}.pdf`
-        a.click()
-        window.URL.revokeObjectURL(url)
-      },
-      error: (err) => {
-        console.error('Erro ao baixar o arquivo:', err)
-      }
-    })
-    this._subscriptions.push(subscription)
+  downloadPersonPdf(person: Person) {
+    if (!person.id) {
+      this._notificationService.error('Não foi possível baixar PDF pois não foi encontrado o ID da pessoa')
+      return
+    }
+    Utils.downloadPdf(person.name, this._personService.findPersonPdf(person.id))
   }
 
   formatPhoneNumbers(phoneNumbers: PhoneNumber[]): string {
@@ -162,7 +156,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
         const lastFour = pn.phoneNumber.slice(-4)
         return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
       })
-      .reduce((a, b) => `${a} / ${b}`, '')
+      .reduce((a, b) => `${a} ${a === '' ? '' : '/'} ${b}`, '')
   }
 
   isFilterEmpty(): boolean {
