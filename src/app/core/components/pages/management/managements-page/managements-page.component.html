@@ -76,14 +76,14 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
             <div class="date-buttons">
-              <button type="button" class="btn btn-outline-dark" (click)="pastWeek()">
-                Última semana
+              <button type="button" class="btn btn-outline-dark" (click)="lastMonth()">
+                Mês passado
               </button>
-              <button type="button" class="btn btn-outline-dark" (click)="thisWeek()">
-                Essa semana
+              <button type="button" class="btn btn-outline-dark" (click)="thisMonth()">
+                Mês atual
               </button>
-              <button type="button" class="btn btn-outline-dark" (click)="nextWeek()">
-                Próxima semana
+              <button type="button" class="btn btn-outline-dark" (click)="nextMonth()">
+                Próximo mês
               </button>
             </div>
           </mat-form-field>

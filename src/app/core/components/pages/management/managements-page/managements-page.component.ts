@@ -211,7 +211,47 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
       })
   }
 
-  pastWeek() {
+  lastMonth(): void {
+    let today = new Date();
+    let initialDate = new Date();
+    initialDate.setDate(1);
+    initialDate.setMonth(today.getMonth() - 1);
+    let finalDate = new Date();
+    finalDate.setDate(1);
+    finalDate.setMonth(today.getMonth())
+    finalDate.setDate(finalDate.getDate() - 1);
+
+    this.filter.get('startBirthdate')?.setValue(initialDate);
+    this.filter.get('endBirthdate')?.setValue(finalDate);
+  }
+
+  thisMonth(): void {
+    let today = new Date();
+    let initialDate = new Date();
+    initialDate.setDate(1);
+    let finalDate = new Date();
+    finalDate.setDate(1);
+    finalDate.setMonth(today.getMonth() + 1)
+    finalDate.setDate(finalDate.getDate() - 1);
+
+    this.filter.get('startBirthdate')?.setValue(initialDate);
+    this.filter.get('endBirthdate')?.setValue(finalDate);
+  }
+
+  nextMonth(): void {
+    let today = new Date();
+    let initialDate = new Date();
+    initialDate.setDate(1);
+    initialDate.setMonth(today.getMonth() + 1);
+    let finalDate = new Date();
+    finalDate.setMonth(today.getMonth() + 2)
+    finalDate.setDate(0);
+
+    this.filter.get('startBirthdate')?.setValue(initialDate);
+    this.filter.get('endBirthdate')?.setValue(finalDate);
+  }
+
+  lastWeek() {
     const today = new Date()
     const day = today.getDay()
     const initialDate = new Date(today)
