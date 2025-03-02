@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Address } from '../../../../models/address.model';
-import { City } from '../../../../models/city.model';
 import { CommonModule } from '@angular/common';
-import { EducationLevel } from '../../../../models/enums/education-level.enum';
 import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Gender } from '../../../../models/enums/gender.enum';
 import { LocationService } from '../../../../services/location/location.service';
-import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,9 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PersonService } from '../../../../services/person/person.service';
-import { PhoneNumber } from '../../../../models/phone-number.model';
-import { State } from '../../../../models/state.model';
-import { Person } from '../../../../models/person.model';
+import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 
 @Component({
   selector: 'app-person-form-page',
@@ -33,13 +26,13 @@ import { Person } from '../../../../models/person.model';
 export class PersonFormPageComponent implements OnInit {
 
   ROUTES_KEYS = ROUTES_KEYS
-  cities: City[] = []
+  cities: CityDTO[] = []
   educationLevelList = Object.keys(EducationLevel).map(key => EducationLevel[key as keyof typeof EducationLevel])
   genderList = Object.keys(Gender).map(key => Gender[key as keyof typeof Gender])
   maritalStatusList = Object.keys(MaritalStatus).map(key => MaritalStatus[key as keyof typeof MaritalStatus])
   person: FormGroup
-  stateControl = new FormControl<State | null>(null)
-  states: State[] = []
+  stateControl = new FormControl<StateDTO | null>(null)
+  states: StateDTO[] = []
   submitted: boolean = false
 
   constructor(
@@ -76,7 +69,7 @@ export class PersonFormPageComponent implements OnInit {
     if (personId) {
       this._personService.findById(personId).subscribe({
         next: async personResponse => {
-          if (personResponse.address.city?.state.id) {
+          if (personResponse.address?.city?.state?.id) {
             this.stateControl.setValue(personResponse.address.city.state)
             this.cities = await firstValueFrom(this._locationService.findCitiesByStateId(personResponse.address.city?.state.id))
           }
@@ -107,7 +100,7 @@ export class PersonFormPageComponent implements OnInit {
     this.phoneNumbers.push(this._buildPhoneNumber())
   }
 
-  private _buildPhoneNumber(phoneNumber: PhoneNumber | null = null) {
+  private _buildPhoneNumber(phoneNumber: PhoneNumberDTO | null = null) {
     return this._formBuilder.group({
       id: [phoneNumber?.id || null],
       areaCode: [phoneNumber?.areaCode || null],
@@ -117,7 +110,7 @@ export class PersonFormPageComponent implements OnInit {
     })
   }
 
-  private _buildAddress(address: Address | null = null) {
+  private _buildAddress(address: AddressDTO | null = null) {
     return this._formBuilder.group({
       id: [address?.id || null],
       street: [address?.street || null],
@@ -126,7 +119,6 @@ export class PersonFormPageComponent implements OnInit {
       neighborhood: [address?.neighborhood || null],
       zipCode: [address?.zipCode || null],
       city: [address?.city || null],
-      active: [address?.active || null],
       createdAt: [address?.createdAt || null],
       updatedAt: [address?.updatedAt || null]
     })
@@ -148,7 +140,7 @@ export class PersonFormPageComponent implements OnInit {
       console.error('Invalid form')
       return
     }
-    const person: Person = this.person.value
+    const person: PersonDTO = this.person.value
     if (person.id) {
       this.update(person)
     } else {
@@ -156,7 +148,7 @@ export class PersonFormPageComponent implements OnInit {
     }
   }
 
-  create(person: Person) {
+  create(person: PersonDTO) {
     this._personService.create(person).subscribe({
       next: () => {
         this.submitted = true
@@ -170,7 +162,7 @@ export class PersonFormPageComponent implements OnInit {
 
   }
 
-  update(person: Person) {
+  update(person: PersonDTO) {
     this._personService.update(person).subscribe({
       next: () => {
         this.submitted = true
@@ -183,13 +175,12 @@ export class PersonFormPageComponent implements OnInit {
     })
   }
 
-  downloadPersonPdf(person: Person) {
-    console.log(person)
+  downloadPersonPdf(person: PersonDTO) {
     if (!person.id) {
       this._notificationService.error('Não foi possível baixar PDF pois não foi encontrado o ID da pessoa')
       return
     }
-    Utils.downloadPdf(person.name, this._personService.findPersonPdf(person.id))
+    Utils.downloadPdf(`Relatòrio ${person.name || person.id}`, this._personService.findPersonPdf(person.id))
   }
 
 }

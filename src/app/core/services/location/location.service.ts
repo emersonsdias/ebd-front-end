@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { State } from '../../models/state.model';
 import { Observable } from 'rxjs';
-import { City } from '../../models/city.model';
+import { StateDTO, CityDTO } from '../../models/api/data-contracts';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +14,11 @@ export class LocationService {
         private _apiService: ApiService,
   ) { }
 
-    findAllStates(): Observable<State[]> {
+    findAllStates(): Observable<StateDTO[]> {
       return this._apiService.httpGet(`${this._path}/states`)
     }
 
-    findCitiesByStateId(stateId: number): Observable<City[]> {
+    findCitiesByStateId(stateId: number): Observable<CityDTO[]> {
       return this._apiService.httpGet(`${this._path}/states/${stateId}/cities`)
     }
 }

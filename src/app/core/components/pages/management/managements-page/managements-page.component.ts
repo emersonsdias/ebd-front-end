@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EducationLevel } from '../../../../models/enums/education-level.enum';
 import { EnumTranslatePipe, NotificationService, Utils } from '../../../../../shared';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Gender } from '../../../../models/enums/gender.enum';
-import { MaritalStatus } from '../../../../models/enums/marital-status.enum';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -17,12 +14,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Person } from '../../../../models/person.model';
 import { PersonService } from '../../../../services/person/person.service';
-import { PhoneNumber } from '../../../../models/phone-number.model';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { Subscription } from 'rxjs';
+import { EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO } from '../../../../models/api/data-contracts';
 
 
 interface FilterPeople {
@@ -51,8 +47,8 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
   ROUTES_KEYS = ROUTES_KEYS
 
   filter: FormGroup
-  people: Person[] = []
-  filteredPeople = new MatTableDataSource<Person>([]);
+  people: PersonDTO[] = []
+  filteredPeople = new MatTableDataSource<PersonDTO>([]);
   displayedColumns: string[] = [
     'actions',
     'name',
@@ -109,7 +105,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
         setTimeout(() => {
           if (this.sort) {
             this.filteredPeople.sort = this.sort;
-            this.filteredPeople.sortingDataAccessor = (data: Person, sortHeaderId: string) => {
+            this.filteredPeople.sortingDataAccessor = (data: PersonDTO, sortHeaderId: string) => {
               switch (sortHeaderId) {
                 case 'maritalStatus':
                 case 'gender':
@@ -117,7 +113,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
                   return this._enumTranslatePipe.transform(data[sortHeaderId])
                 case 'birthdate':
                   if (data.birthdate) {
-                    return data.birthdate.substring(5,10)
+                    return data.birthdate.substring(5, 10)
                   }
                   return ''
                 case 'phoneNumbers':
@@ -138,22 +134,23 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
     this._subscriptions.forEach(subscription => subscription.unsubscribe())
   }
 
-  downloadPersonPdf(person: Person) {
+  downloadPersonPdf(person: PersonDTO) {
     if (!person.id) {
       this._notificationService.error('Não foi possível baixar PDF pois não foi encontrado o ID da pessoa')
       return
     }
-    Utils.downloadPdf(person.name, this._personService.findPersonPdf(person.id))
+    Utils.downloadPdf(`Relatório ${person.name || person.id}`, this._personService.findPersonPdf(person.id))
   }
 
-  formatPhoneNumbers(phoneNumbers: PhoneNumber[]): string {
+  formatPhoneNumbers(phoneNumbers: PhoneNumberDTO[] | undefined): string {
     if (!phoneNumbers) {
       return ''
     }
     return phoneNumbers
+      .filter(pn => pn.areaCode && pn.phoneNumber)
       .map(pn => {
-        const beforeLastFour = pn.phoneNumber.slice(0, -4)
-        const lastFour = pn.phoneNumber.slice(-4)
+        const beforeLastFour = pn.phoneNumber!.slice(0, -4)
+        const lastFour = pn.phoneNumber!.slice(-4)
         return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
       })
       .reduce((a, b) => `${a} ${a === '' ? '' : '/'} ${b}`, '')
@@ -183,9 +180,9 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
 
     this.filteredPeople.data = this.people
       .filter(p => !filter.status || filter.status.length === 0 || filter.status.includes(p.active!))
-      .filter(p => !filter.gender || filter.gender.length === 0 || filter.gender.includes(p.gender))
-      .filter(p => !filter.educationLevel || filter.educationLevel.length === 0 || filter.educationLevel.includes(p.educationLevel))
-      .filter(p => !filter.maritalStatus || filter.maritalStatus.length === 0 || filter.maritalStatus.includes(p.maritalStatus))
+      .filter(p => !filter.gender || filter.gender.length === 0 || (p.gender && filter.gender.includes(p.gender)))
+      .filter(p => !filter.educationLevel || filter.educationLevel.length === 0 || (p.educationLevel && filter.educationLevel.includes(p.educationLevel)))
+      .filter(p => !filter.maritalStatus || filter.maritalStatus.length === 0 || (p.maritalStatus && filter.maritalStatus.includes(p.maritalStatus)))
       .filter(p => !filter.searchTerm || p.name?.toLowerCase().includes(filter.searchTerm.toLowerCase()) || p.email?.toLowerCase().includes(filter.searchTerm.toLowerCase()))
       .filter(p => {
         if (!filter.startBirthdate || !filter.endBirthdate) {

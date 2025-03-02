@@ -3,18 +3,9 @@ import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserRole } from '../../models/enums/user-role.enum';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
-
-interface TokenResponseDTO {
-  access_token: string
-  refresh_token: string
-  token_type: string
-  expires_in: number
-  created_at: number
-}
+import { CredentialsDTO, TokenResponseDTO, UserRole } from '../../models/api/data-contracts';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +25,7 @@ export class AuthService {
   ) { }
 
   login(username: string, password: string, keepLoogedIn: boolean = false): Observable<void> {
-    const CREDENTIALS = { username: username, password: password }
+    const CREDENTIALS: CredentialsDTO = { username: username, password: password }
     this._storageService.clearStorage()
     return this._apiService.httpPost(`${this._path}/login`, CREDENTIALS).pipe(
       tap((response: TokenResponseDTO) => {
@@ -64,7 +55,7 @@ export class AuthService {
 
   private _successfulAuthenticate(tokenResponse: TokenResponseDTO) {
     const LOCAL_USER = this._storageService.getLocalUser() || {}
-    const TOKEN_DATA = this._jwtHelper.decodeToken(tokenResponse.access_token)
+    const TOKEN_DATA = this._jwtHelper.decodeToken(tokenResponse.access_token!)
 
     LOCAL_USER.accessToken = tokenResponse.access_token
     LOCAL_USER.userId = TOKEN_DATA.user_id
@@ -73,7 +64,7 @@ export class AuthService {
     LOCAL_USER.roles = TOKEN_DATA.roles
 
     this._storageService.setLocalUser(LOCAL_USER);
-    this._storageService.setRefreshToken(tokenResponse.refresh_token)
+    this._storageService.setRefreshToken(tokenResponse.refresh_token!)
 
     this._successfulAuthenticated$.next(true)
     this._isAuthenticated$.next(true)

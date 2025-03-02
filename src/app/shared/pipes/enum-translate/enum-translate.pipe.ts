@@ -6,10 +6,10 @@ import { EducationLevel, Gender, MaritalStatus } from '../../../core';
 })
 export class EnumTranslatePipe implements PipeTransform {
 
-  transform(value: Gender | EducationLevel | MaritalStatus, ...args: unknown[]): string {
+  transform(value: Gender | EducationLevel | MaritalStatus | undefined, ...args: unknown[]): string {
 
     if (!value) {
-      return value
+      return ''
     }
 
     if (Object.values(Gender).includes(value as Gender)) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs';
-import { Person } from '../../models/person.model';
+import { PersonDTO, PersonReportDTO } from '../../models/api/data-contracts';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +14,23 @@ export class PersonService {
     private _apiService: ApiService,
   ) { }
 
-  create(person: Person): Observable<Person> {
+  create(person: PersonDTO): Observable<PersonDTO> {
     return this._apiService.httpPost(this._path, person)
   }
 
-  update(person: Person) {
+  update(person: PersonDTO) {
     return this._apiService.httpPut(`${this._path}/${person.id}`, person)
   }
 
-  findById(id: string): Observable<Person> {
+  findById(id: string): Observable<PersonDTO> {
     return this._apiService.httpGet(`${this._path}/${id}`)
   }
 
-  findAllPeople(): Observable<Person[]> {
+  findPersonReportById(id: string): Observable<PersonReportDTO> {
+    return this._apiService.httpGet(`${this._path}/${id}/report`)
+  }
+
+  findAllPeople(): Observable<PersonDTO[]> {
     return this._apiService.httpGet(this._path)
   }
 
