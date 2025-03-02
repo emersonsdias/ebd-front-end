@@ -1,6 +1,7 @@
 export const ROUTES_KEYS = {
 
   classrooms: 'turmas',
+  edit: 'editar',
   finance: 'financeiro',
   forgotPassword: 'esqueci-minha-senha',
   help: 'ajuda-e-suporte',
@@ -11,7 +12,7 @@ export const ROUTES_KEYS = {
   notFound: 'recurso-nao-encontrado',
   people: 'pessoas',
   personId: 'personId',
-  register: 'cadastrar',
+  register: 'registrar',
   settings: 'configuracoes',
   signUp: 'usuarios/cadastrar',
 

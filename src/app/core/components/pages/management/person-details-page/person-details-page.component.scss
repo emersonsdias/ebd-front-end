@@ -1,0 +1,21 @@
+.person-resume {
+  span {
+    font-weight: bold;
+    font-size: x-large;
+  }
+}
+
+.person-data {
+  span {
+    font-weight: 600;
+  }
+
+  mat-card-content {
+    display: flex;
+    justify-content: space-between
+  }
+
+  mat-card-content:not(:last-child) {
+    border-bottom: 1px dotted var(--color-medium-gray);
+  }
+}

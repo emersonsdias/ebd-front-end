@@ -1,0 +1,135 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ report?.person?.name }}</mat-card-title>
+      <div>
+        <button mat-icon-button (click)="downloadPersonPdf(report?.person!)">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+        <a mat-icon-button [routerLink]="[ROUTES_KEYS.edit]">
+          <mat-icon>edit</mat-icon>
+        </a>
+      </div>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card appearance="outlined">
+
+
+      <mat-card-content>
+        <mat-card-header>
+          <mat-card-subtitle>
+            Dados pessoais
+          </mat-card-subtitle>
+        </mat-card-header>
+        <div class="person-data">
+          <div class="row">
+            <div class="col">
+              <mat-card-content>
+                Gênero:
+                <span>{{ report?.person?.gender | enumTranslate }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Data de nascimento:
+                <span>{{ report?.person?.birthdate | date: 'dd/MM/yyyy' }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Escolaridade:
+                <span>{{ report?.person?.educationLevel | enumTranslate }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Estado civil:
+                <span>{{ report?.person?.maritalStatus | enumTranslate }}</span>
+              </mat-card-content>
+            </div>
+
+            <div class="col">
+              <mat-card-content>
+                Telefone:
+                <span>{{ formatPhoneNumbers(report?.person?.phoneNumbers) }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                E-mail:
+                <span>{{ report?.person?.email }}</span>
+              </mat-card-content>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-card-content>
+                Logradouro:
+                <span>{{ formatAddress(report?.person?.address) }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Bairro:
+                <span>{{ report?.person?.address?.neighborhood }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Cidade / UF:
+                <span>{{ report?.person?.address?.city?.name + ' / ' +
+                  report?.person?.address?.city?.state?.abbreviation
+                  }}</span>
+              </mat-card-content>
+            </div>
+            <div class="col">
+              <mat-card-content>
+                Status:
+                <span>{{ report?.person?.active ? 'Ativo' : 'Inativo' }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Criado em:
+                <span>{{ report?.person?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </mat-card-content>
+              <mat-card-content>
+                Última atualização:
+                <span>{{ report?.person?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </mat-card-content>
+            </div>
+          </div>
+        </div>
+
+
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+
+      <mat-card-content>
+        <mat-card-header>
+          <mat-card-subtitle>
+            Resumo
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row text-center person-resume">
+            <div class="col d-flex flex-column">
+              <span> {{ report?.attendedLessons }}</span>
+              Presenças
+            </div>
+            <div class="col d-flex flex-column">
+              <span> {{ report?.missedLessons }}</span>
+              Ausências
+            </div>
+            <div class="col d-flex flex-column">
+              <span> {{ report?.attendedLessons! / report?.totalLessons! | percent: '1.0-1'}}</span>
+              Aproveitamento
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+
+        <mat-card-content>
+          <mat-card-header>
+            <mat-card-subtitle>
+              Histórico de presenças
+            </mat-card-subtitle>
+          </mat-card-header>
+        </mat-card-content>
+      </mat-card-content>
+
+
+    </mat-card>
+  </mat-card-content>
+</mat-card>

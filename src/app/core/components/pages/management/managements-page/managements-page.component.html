@@ -177,7 +177,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <a mat-menu-item [routerLink]="[ROUTES_KEYS.people, element.id]" title="Ver detalhes de pessoa">
+          <a mat-menu-item [routerLink]="[ROUTES_KEYS.people, element.id, ROUTES_KEYS.edit]" title="Ver detalhes de pessoa">
             <mat-icon>edit</mat-icon>
             <span>Editar</span>
           </a>
@@ -230,7 +230,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[ROUTES_KEYS.people, row.id]"></tr>
   </table>
   }
 </div>
