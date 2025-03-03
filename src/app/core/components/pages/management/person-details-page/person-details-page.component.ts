@@ -9,10 +9,12 @@ import { AddressDTO, PersonDTO, PersonReportDTO, PhoneNumberDTO } from '../../..
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { EnumTranslatePipe } from '../../../../../shared/pipes/enum-translate/enum-translate.pipe';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 @Component({
   selector: 'app-person-details-page',
-  imports: [CommonModule, EnumTranslatePipe, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule, RouterModule],
+  imports: [CommonModule, EnumTranslatePipe, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule, RouterModule, MatIconModule, MatExpansionModule],
   templateUrl: './person-details-page.component.html',
   styleUrl: './person-details-page.component.scss'
 })

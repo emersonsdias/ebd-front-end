@@ -14,8 +14,6 @@
   </mat-card-header>
   <mat-card-content>
     <mat-card appearance="outlined">
-
-
       <mat-card-content>
         <mat-card-header>
           <mat-card-subtitle>
@@ -87,12 +85,9 @@
             </div>
           </div>
         </div>
-
-
       </mat-card-content>
 
       <mat-divider></mat-divider>
-
 
       <mat-card-content>
         <mat-card-header>
@@ -111,7 +106,7 @@
               Ausências
             </div>
             <div class="col d-flex flex-column">
-              <span> {{ report?.attendedLessons! / report?.totalLessons! | percent: '1.0-1'}}</span>
+              <span> {{ report?.attendedLessons! / report?.totalLessons! | percent: '1.1-1'}}</span>
               Aproveitamento
             </div>
           </div>
@@ -119,16 +114,51 @@
 
         <mat-divider></mat-divider>
 
-
         <mat-card-content>
-          <mat-card-header>
-            <mat-card-subtitle>
-              Histórico de presenças
-            </mat-card-subtitle>
-          </mat-card-header>
+          <div style="text-align: center;">
+            Histórico de presenças
+          </div>
+          @for(classroomAttendance of report?.attendancesByClassroom; track $index) {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-card-subtitle>
+                {{ classroomAttendance.classroom?.name }}
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              @for(attendance of classroomAttendance.attendances; track $index) {
+              @let lastMonth = classroomAttendance.attendances?.[$index - 1]?.lesson?.lessonDate | date: 'MMMM';
+              @let currentMonth = (attendance.lesson?.lessonDate | date: 'MMMM');
+              @if (currentMonth !== lastMonth) {
+              <div class="container text-center">
+                <div class="attendance-mounth">
+                  {{ attendance.lesson?.lessonDate | date: 'MMMM' }}
+                </div>
+              </div>
+              }
+              <div class="container attendance-lesson">
+                <div class="row">
+                  <span class="col-md-1 col">
+                    <span class="lesson-date">
+                      {{ attendance.lesson?.lessonDate | date: 'dd' }}
+                    </span>
+                  </span>
+                  <span class="col lesson-number">
+                    {{ 'Lição ' + attendance.lesson?.lessonNumber }}
+                  </span>
+                  <span class="col attendance-icon">
+                    <mat-icon>
+                      {{ attendance.present ? 'check_circle' : 'close' }}
+                    </mat-icon>
+                  </span>
+                </div>
+              </div>
+              }
+            </mat-card-content>
+          </mat-card>
+          }
         </mat-card-content>
       </mat-card-content>
-
 
     </mat-card>
   </mat-card-content>
