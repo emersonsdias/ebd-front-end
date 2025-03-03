@@ -198,8 +198,7 @@ export interface AttendanceItemDTO {
   quantity?: number;
   /** @format int64 */
   attendanceId?: number;
-  /** @format int64 */
-  itemId?: number;
+  item?: ItemDTO;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -212,6 +211,18 @@ export interface AttendanceOfferDTO {
   /** @format int64 */
   attendanceId?: number;
   offer?: OfferDTO;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export interface ItemDTO {
+  /** @format int64 */
+  id?: number;
+  name?: string;
+  icon?: string;
+  active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -324,18 +335,6 @@ export interface VisitorOfferDTO {
   updatedAt?: string;
 }
 
-export interface ItemDTO {
-  /** @format int64 */
-  id?: number;
-  name?: string;
-  icon?: string;
-  active?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
 export interface AgeRangeDTO {
   /** @format int64 */
   id?: number;
@@ -412,8 +411,6 @@ export interface ClassroomAttendanceDTO {
   attendedLessons?: number;
   /** @format int32 */
   missedLessons?: number;
-  /** @format double */
-  attendanceRate?: number;
 }
 
 export interface PersonReportDTO {
