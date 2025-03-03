@@ -1,4 +1,5 @@
-<mat-card appearance="outlined">
+<a [routerLink]="['/', ROUTES_KEYS.management]"> Voltar para cadastros</a>
+<mat-card appearance="outlined" class="person-details-card">
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ report?.person?.name }}</mat-card-title>
@@ -24,6 +25,10 @@
           <div class="row">
             <div class="col">
               <mat-card-content>
+                Id:
+                <span>{{ report?.person?.id }}</span>
+              </mat-card-content>
+              <mat-card-content>
                 Gênero:
                 <span>{{ report?.person?.gender | enumTranslate }}</span>
               </mat-card-content>
@@ -44,11 +49,24 @@
             <div class="col">
               <mat-card-content>
                 Telefone:
-                <span>{{ formatPhoneNumbers(report?.person?.phoneNumbers) }}</span>
+                <span>
+                  @for(phoneNumber of report?.person?.phoneNumbers; track $index; let first = $first) {
+                  @if (!first) {
+                  <br>
+                  }
+                  <a target="_blank" style="text-decoration: none; color: inherit;" [href]="'https://wa.me/55' + phoneNumber.areaCode + phoneNumber.phoneNumber">
+                    {{ formatPhoneNumber(phoneNumber) }}
+                  </a>
+                  }
+                </span>
               </mat-card-content>
               <mat-card-content>
                 E-mail:
-                <span>{{ report?.person?.email }}</span>
+                <span>
+                  <a target="_blank" style="text-decoration: none; color: inherit;" [href]="'mailto:' + report?.person?.email">
+                    {{ report?.person?.email }}
+                  </a>
+                </span>
               </mat-card-content>
             </div>
           </div>
@@ -92,7 +110,7 @@
       <mat-card-content>
         <mat-card-header>
           <mat-card-subtitle>
-            Resumo
+            Resumo Geral
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
@@ -111,21 +129,41 @@
             </div>
           </div>
         </mat-card-content>
+        <mat-card-content class="classroom-atendances">
+          <mat-accordion multi>
+            <mat-expansion-panel disabled>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Histórico de presenças </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
 
-        <mat-divider></mat-divider>
+            @for(classroomAttendance of report?.attendancesByClassroom; track $index) {
+            @let rate = classroomAttendance.attendedLessons! / classroomAttendance.totalLessons!;
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> {{ 'Turma: ' + classroomAttendance.classroom?.name }} </mat-panel-title>
+                <mat-panel-description>
+                  <span></span>
+                  <span>
+                    Aproveitamento
+                    <span>{{ rate | percent: '1.1-1'}}</span>
+                  </span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-        <mat-card-content>
-          <div style="text-align: center;">
-            Histórico de presenças
-          </div>
-          @for(classroomAttendance of report?.attendancesByClassroom; track $index) {
-          <mat-card appearance="outlined">
-            <mat-card-header>
-              <mat-card-subtitle>
-                {{ classroomAttendance.classroom?.name }}
-              </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
+              <div class="row text-center">
+                <div class="col">
+                  Presenças:
+                  <span>{{ classroomAttendance.attendedLessons }}</span>
+                </div>
+                <div class="col">
+                  Ausências:
+                  <span>{{ classroomAttendance.missedLessons }}</span>
+                </div>
+              </div>
+
+              <mat-divider></mat-divider>
+
               @for(attendance of classroomAttendance.attendances; track $index) {
               @let lastMonth = classroomAttendance.attendances?.[$index - 1]?.lesson?.lessonDate | date: 'MMMM';
               @let currentMonth = (attendance.lesson?.lessonDate | date: 'MMMM');
@@ -145,6 +183,19 @@
                   </span>
                   <span class="col lesson-number">
                     {{ 'Lição ' + attendance.lesson?.lessonNumber }}
+                    <span class="empty-spacer"></span>
+                    @if(attendance.items && attendance.items.length > 0) {
+                    <mat-chip-row class="attendance-items">
+                      @for(item of attendance.items; track $index) {
+                      @let icon = item.item?.icon;
+                      @if(isSvgIcon(icon)) {
+                      <mat-icon [svgIcon]="icon!">{{item.item?.icon}}</mat-icon>
+                      } @else {
+                      <mat-icon>{{icon}}</mat-icon>
+                      }
+                      }
+                    </mat-chip-row>
+                    }
                   </span>
                   <span class="col attendance-icon">
                     <mat-icon>
@@ -154,9 +205,10 @@
                 </div>
               </div>
               }
-            </mat-card-content>
-          </mat-card>
-          }
+            </mat-expansion-panel>
+            }
+          </mat-accordion>
+
         </mat-card-content>
       </mat-card-content>
 

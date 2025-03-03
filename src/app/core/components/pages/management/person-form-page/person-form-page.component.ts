@@ -150,10 +150,10 @@ export class PersonFormPageComponent implements OnInit {
 
   create(person: PersonDTO) {
     this._personService.create(person).subscribe({
-      next: () => {
+      next: (res) => {
         this.submitted = true
         this._notificationService.success(`Pessoa ${person.name} criada com sucesso`)
-        this._router.navigate([ROUTES_KEYS.management])
+        this._router.navigate(['/', ROUTES_KEYS.management, ROUTES_KEYS.people, res.id])
       },
       error: (err) => {
         console.error('Create person failed.', err)
@@ -164,10 +164,10 @@ export class PersonFormPageComponent implements OnInit {
 
   update(person: PersonDTO) {
     this._personService.update(person).subscribe({
-      next: () => {
+      next: (res) => {
         this.submitted = true
         this._notificationService.success(`Pessoa ${person.name} alterada com sucesso`)
-        this._router.navigate([ROUTES_KEYS.management])
+        this._router.navigate(['/', ROUTES_KEYS.management, ROUTES_KEYS.people, res.id])
       },
       error: (err) => {
         console.error('Update person failed.', err)

@@ -50,7 +50,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
   people: PersonDTO[] = []
   filteredPeople = new MatTableDataSource<PersonDTO>([]);
   displayedColumns: string[] = [
-    'actions',
+    // 'actions',
     'name',
     'phoneNumbers',
     'email',
@@ -148,12 +148,17 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
     }
     return phoneNumbers
       .filter(pn => pn.areaCode && pn.phoneNumber)
-      .map(pn => {
-        const beforeLastFour = pn.phoneNumber!.slice(0, -4)
-        const lastFour = pn.phoneNumber!.slice(-4)
-        return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
-      })
+      .map(this.formatPhoneNumber)
       .reduce((a, b) => `${a} ${a === '' ? '' : '/'} ${b}`, '')
+  }
+
+  formatPhoneNumber(phoneNumber: PhoneNumberDTO | undefined): string {
+    if (!phoneNumber || !phoneNumber.areaCode || !phoneNumber.phoneNumber) {
+      return ''
+    }
+    const beforeLastFour = phoneNumber.phoneNumber!.slice(0, -4)
+    const lastFour = phoneNumber.phoneNumber!.slice(-4)
+    return `(${phoneNumber.areaCode}) ${beforeLastFour}-${lastFour}`
   }
 
   isFilterEmpty(): boolean {

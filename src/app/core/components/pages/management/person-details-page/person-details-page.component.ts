@@ -10,11 +10,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { EnumTranslatePipe } from '../../../../../shared/pipes/enum-translate/enum-translate.pipe';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @Component({
   selector: 'app-person-details-page',
-  imports: [CommonModule, EnumTranslatePipe, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule, RouterModule, MatIconModule, MatExpansionModule],
+  imports: [CommonModule, EnumTranslatePipe, MatCardModule, MatChipsModule, MatDividerModule, MatButtonModule, MatIconModule, RouterModule, MatIconModule, MatExpansionModule],
   templateUrl: './person-details-page.component.html',
   styleUrl: './person-details-page.component.scss'
 })
@@ -61,12 +62,17 @@ export class PersonDetailsPageComponent implements OnInit {
     }
     return phoneNumbers
       .filter(pn => pn.areaCode && pn.phoneNumber)
-      .map(pn => {
-        const beforeLastFour = pn.phoneNumber!.slice(0, -4)
-        const lastFour = pn.phoneNumber!.slice(-4)
-        return `(${pn.areaCode}) ${beforeLastFour}-${lastFour}`
-      })
-      .reduce((a, b) => `${a} ${a === '' ? '' : '/'} ${b}`, '')
+      .map(this.formatPhoneNumber)
+      .reduce((a, b) => `${a} ${a === '' ? '' : '<br>'} ${b}`, '')
+  }
+
+  formatPhoneNumber(phoneNumber: PhoneNumberDTO | undefined): string {
+    if (!phoneNumber || !phoneNumber.areaCode || !phoneNumber.phoneNumber) {
+      return ''
+    }
+    const beforeLastFour = phoneNumber.phoneNumber!.slice(0, -4)
+    const lastFour = phoneNumber.phoneNumber!.slice(-4)
+    return `(${phoneNumber.areaCode}) ${beforeLastFour}-${lastFour}`
   }
 
   formatAddress(address: AddressDTO | undefined) {
@@ -74,6 +80,13 @@ export class PersonDetailsPageComponent implements OnInit {
       return ''
     }
     return address.street + (address.number ? ', ' + address.number : '') + (address.complement ? ', ' + address.complement : '')
+  }
+
+  isSvgIcon(icon: string | undefined): boolean {
+    if (!icon) {
+      return false
+    }
+    return icon.includes('svg:')
   }
 
 }
