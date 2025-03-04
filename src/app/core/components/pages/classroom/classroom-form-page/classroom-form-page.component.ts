@@ -90,7 +90,7 @@ export class ClassroomFormPageComponent implements OnInit {
         this._router.navigate(['/', ROUTES_KEYS.classrooms])
       },
       error: (err) => {
-        console.error('Create person failed.', err)
+        console.error('Create classroom failed.', err)
       }
     })
   }
@@ -103,7 +103,7 @@ export class ClassroomFormPageComponent implements OnInit {
         this._router.navigate(['/', ROUTES_KEYS.classrooms])
       },
       error: (err) => {
-        console.error('Update person failed.', err)
+        console.error('Update classroom failed.', err)
       }
     })
   }

@@ -1,1 +1,53 @@
-<p>lesson-form-page works!</p>
+<form [formGroup]="lesson" class="container">
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Número da aula</mat-label>
+      <input matInput placeholder="Insira o número da aula" formControlName="lessonNumber">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Data da aula</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="lessonDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Turma</mat-label>
+      <mat-select formControlName="classroomId" [compareWith]="compareObjectId">
+        @for (classroom of classrooms; track $index) {
+        <mat-option [value]="classroom.id">
+          {{ classroom.name }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <p>
+      <mat-slide-toggle formControlName="active" #active>
+        {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
+      </mat-slide-toggle>
+    </p>
+  </div>
+
+  <button mat-flat-button type="submit" class="btn-primary" (click)="save(lesson)">
+    <mat-icon>save</mat-icon>
+    <span>
+      Salvar
+    </span>
+  </button>
+
+  <a mat-button type="button" class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.lessons]">
+    <mat-icon>cancel</mat-icon>
+    <span>
+      Cancelar
+    </span>
+  </a>
+</form>

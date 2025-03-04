@@ -36,16 +36,19 @@ export const routes: Routes = [
           { path: '', component: LessonsPageComponent, title: 'Aulas' },
           {
             path: `${ROUTES_KEYS.register}`,
+            canDeactivate: [unsavedChangesGuard],
             component: LessonFormPageComponent,
             title: 'Cadastro de aula'
           },
           {
             path: `:${ROUTES_KEYS.lessonId}`,
+            canDeactivate: [unsavedChangesGuard],
             component: LessonFormPageComponent,
             title: 'Editar aula'
           },
           {
             path: `:${ROUTES_KEYS.lessonId}/${ROUTES_KEYS.lessonAttendance}`,
+            canDeactivate: [unsavedChangesGuard],
             component: LessonAttendancePageComponent,
             title: 'Realizar chamada'
           }
