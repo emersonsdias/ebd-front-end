@@ -7,6 +7,8 @@ export const ROUTES_KEYS = {
   forgotPassword: 'esqueci-minha-senha',
   help: 'ajuda-e-suporte',
   home: 'inicio',
+  lessonAttendance: 'chamada',
+  lessonId: 'lessonId',
   lessons: 'aulas',
   login: 'login',
   management: 'cadastro',

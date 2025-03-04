@@ -1,0 +1,41 @@
+.lessons-card {
+  background-color: var(--color-off-white-cream);
+}
+
+.lessons-card-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-top: 15px;
+}
+
+.individual-lesson-card {
+  min-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  mat-card-title {
+    font-size: small;
+    font-weight: bold;
+  }
+
+  mat-card-subtitle {
+    font-size: small;
+  }
+
+  mat-card-content {
+    font-size: small;
+
+  }
+
+  .lesson-perfomance {
+    font-size: small;
+    color: var(--color-medium-gray);
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}

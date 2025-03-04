@@ -17,6 +17,7 @@ body {
   --color-primary: #641B53;
   --color-primary-text: #e0e0e0;
   --color-secondary: #D4C3FF;
+  --color-secondary-dark: color-mix(in srgb, var(--color-secondary) 60%, black);
   --color-secondary-text: #263238;
 
   --color-off-white-cream: #F4F1EB;
@@ -67,8 +68,7 @@ body {
       row-item-label-text-color: var(--color-dark),
       row-item-outline-width: 1px,
       row-item-outline-color: var(--color-light-gray),
-      row-item-label-text-size: small
-    ));
+      row-item-label-text-size: small));
 
   .mat-sort-header-arrow {
     color: var(--color-light-gray) !important;
@@ -140,13 +140,75 @@ body {
 }
 
 .btn-primary {
-  @include mat.button-overrides((filled-container-color: var(--color-primary),
+  @include mat.button-overrides((
+      text-label-text-color: var(--color-primary),
+      text-hover-state-layer-opacity: 15%,
+      ripple-color: color-mix(in srgb, var(--color-primary) 50%, white),
+
+      filled-container-color: var(--color-primary),
       filled-label-text-color: var(--color-primary-text),
+      filled-ripple-color: color-mix(in srgb, var(--color-primary) 70%, black),
+      filled-hover-state-layer-opacity: 30%,
+
+      outlined-label-text-color: var(--color-primary),
+      outlined-outline-color: var(--color-primary),
+      outlined-ripple-color: color-mix(in srgb, var(--color-primary) 90%, white),
+      outlined-hover-state-layer-opacity: 15%,
+
+      protected-label-text-color: var(--color-primary),
+      protected-hover-state-layer-opacity: 15%,
+      protected-ripple-color: color-mix(in srgb, var(--color-primary) 70%, white),
     ));
 
-  @include mat.fab-overrides((container-color: var(--color-primary),
+  @include mat.fab-overrides((
+      container-color: var(--color-primary),
       foreground-color: var(--color-primary-text),
-      ripple-color: rgba(255, 255, 255, 0.3)));
+      ripple-color: color-mix(in srgb, var(--color-primary) 70%, white),
+      hover-state-layer-opacity: 30%,
+
+      small-container-color: var(--color-primary),
+      small-foreground-color: var(--color-primary-text),
+      small-ripple-color: color-mix(in srgb, var(--color-primary) 70%, white),
+      small-hover-state-layer-opacity: 30%,
+    ));
+
+  @include mat.icon-button-overrides((icon-color: var(--color-primary)));
+}
+
+.btn-secondary {
+  @include mat.button-overrides((
+      text-label-text-color: var(--color-secondary-dark),
+      text-hover-state-layer-opacity: 15%,
+      ripple-color: color-mix(in srgb, var(--color-secondary) 90%, white),
+
+      filled-container-color: var(--color-secondary),
+      filled-label-text-color: var(--color-secondary-text),
+      filled-ripple-color: color-mix(in srgb, var(--color-secondary) 90%, black),
+      filled-hover-state-layer-opacity: 30%,
+
+      outlined-label-text-color: var(--color-secondary-dark),
+      outlined-outline-color: var(--color-secondary-dark),
+      outlined-ripple-color: color-mix(in srgb, var(--color-secondary) 90%, white),
+      outlined-hover-state-layer-opacity: 15%,
+
+      protected-label-text-color: var(--color-secondary-dark),
+      protected-ripple-color: color-mix(in srgb, var(--color-secondary) 70%, white),
+      protected-hover-state-layer-opacity: 15%,
+    ));
+
+  @include mat.fab-overrides((
+      container-color: var(--color-secondary),
+      foreground-color: var(--color-secondary-text),
+      ripple-color: color-mix(in srgb, var(--color-secondary) 70%, white),
+      hover-state-layer-opacity: 20%,
+
+      small-container-color: var(--color-secondary),
+      small-foreground-color: var(--color-secondary-text),
+      small-ripple-color: color-mix(in srgb, var(--color-secondary) 70%, white),
+      small-hover-state-layer-opacity: 20%,
+    ));
+
+  @include mat.icon-button-overrides((icon-color: var(--color-secondary-dark)));
 }
 
 .btn-secondary {
@@ -204,12 +266,15 @@ body {
   max-width: 100%;
 }
 
-
-
 .default-form {
   display: flex;
   flex-direction: column;
   min-width: 150px;
   width: 100%;
   max-width: 100vw;
+}
+
+.individual-lesson-card:hover {
+  @include mat.card-overrides((outlined-outline-color: var(--color-primary),
+    ));
 }
