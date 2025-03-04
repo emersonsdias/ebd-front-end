@@ -135,7 +135,6 @@ export class PersonFormPageComponent implements OnInit {
   }
 
   save(form: FormGroup) {
-    console.log(form.value)
     if (form.invalid) {
       console.error('Invalid form')
       return
@@ -159,7 +158,6 @@ export class PersonFormPageComponent implements OnInit {
         console.error('Create person failed.', err)
       }
     })
-
   }
 
   update(person: PersonDTO) {

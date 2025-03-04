@@ -1,1 +1,73 @@
-<p>classrooms-page works!</p>
+<p>
+  <a mat-flat-button class="btn-primary" [routerLink]="[ROUTES_KEYS.register]">
+    Cadastrar
+  </a>
+</p>
+<div class="table-responsive">
+  <table mat-table [dataSource]="classrooms" class="mat-elevation-z8 alternate-table-colors" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ageRange">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Faixa etária </th>
+      <td mat-cell *matCellDef="let element">
+        @let minAge = element.ageRange.minAge || 0;
+        @let maxAge = element.ageRange.maxAge || null;
+        @if (maxAge) {
+        De {{minAge}} a {{maxAge}} anos
+        } @else {
+        @if (minAge == 0) {
+        Sem limite de idade
+        } @else {
+        A partir de {{ minAge }} anos
+        }
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="students">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estudantes </th>
+      <td mat-cell *matCellDef="let element">{{ element.students.length || 0 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="teachers">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Professores </th>
+      <td mat-cell *matCellDef="let element">{{ element.teachers.length || 0 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lessons">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Aulas </th>
+      <td mat-cell *matCellDef="let element">{{ element.lessons.length || 0 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastLesson">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Última aula </th>
+      <td mat-cell *matCellDef="let element">{{ (findLastLesson(element.lessons)?.lessonDate | date: 'dd/MM/yyyy') ||
+        '...' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nextLesson">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Próxima aula </th>
+      <td mat-cell *matCellDef="let element">{{ (findNextLesson(element.lessons)?.lessonDate | date: 'dd/MM/yyyy') ||
+        '...' }}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Criado em </th>
+      <td mat-cell *matCellDef="let element">{{ element.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Atualizado em </th>
+      <td mat-cell *matCellDef="let element">{{ element.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]"></tr>
+
+  </table>
+</div>

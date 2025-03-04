@@ -1,0 +1,46 @@
+<form [formGroup]="classroom" class="container">
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Faixa etária</mat-label>
+      <mat-select formControlName="ageRange" [compareWith]="compareObjectId">
+        @for (ageRange of ageRangeList; track $index) {
+        <mat-option [value]="ageRange">
+          {{ ageRange.name }}
+          <span>(de {{ ageRange.minAge || 0 }}</span>
+          <span> a {{ ageRange.maxAge || 'sem limite' }})</span>
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <p>
+      <mat-slide-toggle formControlName="active" #active>
+        {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
+      </mat-slide-toggle>
+    </p>
+  </div>
+
+  <button mat-flat-button type="submit" class="btn-primary" (click)="save(classroom)">
+    <mat-icon>save</mat-icon>
+    <span>
+      Salvar
+    </span>
+  </button>
+
+  <a mat-button type="button" class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.classrooms]">
+    <mat-icon>cancel</mat-icon>
+    <span>
+      Cancelar
+    </span>
+  </a>
+</form>

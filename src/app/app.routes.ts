@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, ClassroomsPageComponent, FinancePageComponent, ForgotPasswordPageComponent, HelpPageComponent, HomePageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SettingsPageComponent, UserRegisterPageComponent } from './core';
+import { authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, FinancePageComponent, ForgotPasswordPageComponent, HelpPageComponent, HomePageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SettingsPageComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -13,10 +13,27 @@ export const routes: Routes = [
   { path: ROUTES_KEYS.signUp, component: UserRegisterPageComponent, title: 'Cadastro de usuário' },
   {
     path: '', canActivate: [authGuard], children: [
-      { path: ROUTES_KEYS.classrooms, component: ClassroomsPageComponent, title: 'Turmas' },
+      {
+        path: ROUTES_KEYS.classrooms, children: [
+          { path: '', component: ClassroomsPageComponent, title: 'Turmas' },
+          {
+            path: `${ROUTES_KEYS.classrooms}/${ROUTES_KEYS.register}`,
+            canDeactivate: [unsavedChangesGuard],
+            component: ClassroomFormPageComponent,
+            title: 'Cadastrar turma'
+          },
+          {
+            path: `${ROUTES_KEYS.classrooms}/:${ROUTES_KEYS.classroomId}`,
+            canDeactivate: [unsavedChangesGuard],
+            component: ClassroomFormPageComponent,
+            title: 'Editar turma'
+          }
+        ]
+      },
       { path: ROUTES_KEYS.finance, component: FinancePageComponent, title: 'Financeiro' },
       { path: ROUTES_KEYS.lessons, component: LessonsPageComponent, title: 'Aulas' },
-      { path: ROUTES_KEYS.management, children: [
+      {
+        path: ROUTES_KEYS.management, children: [
           { path: '', component: ManagementsPageComponent, title: 'Cadastros' },
           {
             path: `${ROUTES_KEYS.people}/${ROUTES_KEYS.register}`,

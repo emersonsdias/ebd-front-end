@@ -48,7 +48,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
 
   filter: FormGroup
   people: PersonDTO[] = []
-  filteredPeople = new MatTableDataSource<PersonDTO>([]);
+  filteredPeople = new MatTableDataSource<PersonDTO>([])
   displayedColumns: string[] = [
     // 'actions',
     'name',

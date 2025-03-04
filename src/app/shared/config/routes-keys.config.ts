@@ -1,5 +1,6 @@
 export const ROUTES_KEYS = {
 
+  classroomId: 'classroomId',
   classrooms: 'turmas',
   edit: 'editar',
   finance: 'financeiro',
