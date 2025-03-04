@@ -11,10 +11,15 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { Observable } from 'rxjs';
 import { DialogService } from '../../../../../shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-lessons-page',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatDividerModule, MatIconModule, RouterModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatDividerModule, MatIconModule, RouterModule,
+    MatFormFieldModule, MatDatepickerModule, MatInputModule
+  ],
   templateUrl: './lessons-page.component.html',
   styleUrl: './lessons-page.component.scss'
 })
@@ -23,6 +28,7 @@ export class LessonsPageComponent implements OnInit {
   ROUTES_KEYS = ROUTES_KEYS
   lessons: LessonDTO[] = []
   isAdmin: Observable<boolean>
+  maxDate = new Date
 
   constructor(
     _authService: AuthService,
@@ -34,7 +40,7 @@ export class LessonsPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await setTimeout(() => { }, 0)
-    this._lessonService.findAllLessons({maxRecentLessons: 100}).subscribe({
+    this._lessonService.findLessonsByOptions({ maxRecentLessons: 100 }).subscribe({
       next: lessonsReponse => this.lessons = lessonsReponse
     })
   }
@@ -55,5 +61,14 @@ export class LessonsPageComponent implements OnInit {
       return 0
     }
     return attendances.filter(a => !a.present).length
+  }
+
+  findLessonsByPeriod(startDate: string, endDate: string) {
+    if (!endDate) {
+      endDate = startDate
+    }
+    this._lessonService.findLessonsByOptions({ startDate: startDate, endDate: endDate }).subscribe({
+      next: lessonsReponse => this.lessons = lessonsReponse
+    })
   }
 }

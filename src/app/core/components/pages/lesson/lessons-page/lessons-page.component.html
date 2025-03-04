@@ -5,7 +5,22 @@
       <mat-card-title-group>
         <mat-card-title> Últimas aulas </mat-card-title>
         <div>
-          <button mat-icon-button>
+          <mat-form-field style="display: none;">
+            <mat-label>Escolha um período</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+              <input matStartDate placeholder="Data inicial" #startDate>
+              <input matEndDate placeholder="Data final" #endDate>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker touchUi #picker>
+              <mat-datepicker-actions>
+                <button mat-button matDatepickerCancel class="btn-secondary">Cancelar</button>
+                <button mat-flat-button class="btn-primary" matDatepickerApply
+                  (click)="findLessonsByPeriod(startDate.value, endDate.value)">Buscar aulas por período</button>
+              </mat-datepicker-actions>
+            </mat-date-range-picker>
+          </mat-form-field>
+          <button mat-icon-button (click)="picker.open()">
             <mat-icon>calendar_month</mat-icon>
           </button>
           <a mat-icon-button [routerLink]="['/', ROUTES_KEYS.lessons, ROUTES_KEYS.register]">
@@ -19,7 +34,8 @@
       @for(lesson of lessons; track $index) {
       @let presentStudents = countPresentStudents(lesson.attendances);
       @let absentStudents = countAbsentStudents(lesson.attendances);
-      <mat-card appearance="outlined" class="individual-lesson-card" [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
+      <mat-card appearance="outlined" class="individual-lesson-card"
+        [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
         <mat-card-header>
           <mat-card-title-group>
             <mat-card-title>
@@ -47,16 +63,16 @@
           </div>
         </mat-card-content>
         @if (isAdmin | async) {
-          <mat-card-footer class="container">
-            <div class="row">
-              <button mat-button class="btn-primary" [routerLink]="[lesson.id]">
-                <mat-icon>edit</mat-icon>
-                <span>
-                  Editar
-                </span>
-              </button>
-            </div>
-          </mat-card-footer>
+        <mat-card-footer class="container">
+          <div class="row">
+            <button mat-button class="btn-primary" [routerLink]="[lesson.id]">
+              <mat-icon>edit</mat-icon>
+              <span>
+                Editar
+              </span>
+            </button>
+          </div>
+        </mat-card-footer>
         }
       </mat-card>
       }
