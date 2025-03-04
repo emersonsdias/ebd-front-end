@@ -46,7 +46,7 @@
             </span>
           </div>
         </mat-card-content>
-        @if (true) {
+        @if (isAdmin | async) {
           <mat-card-footer class="container">
             <div class="row">
               <button mat-button class="btn-primary" [routerLink]="[lesson.id]">

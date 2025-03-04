@@ -68,11 +68,15 @@ export class AuthService {
 
     this._successfulAuthenticated$.next(true)
     this._isAuthenticated$.next(true)
-    this._isAdmin$.next(LOCAL_USER.roles?.includes(UserRole.ADMIN) ?? false)
+    this._isAdmin$.next(LOCAL_USER.roles?.map(r => r.toString()).includes('ROLE_' + UserRole.ADMIN) ?? false)
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this._isAuthenticated$;
+    return this._isAuthenticated$
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this._isAdmin$
   }
 
 }

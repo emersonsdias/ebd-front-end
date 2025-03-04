@@ -7,11 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { NotificationService } from '../../../../../shared';
-import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login-form',

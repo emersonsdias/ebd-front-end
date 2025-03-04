@@ -8,6 +8,9 @@ import { LessonService } from '../../../../services/lesson/lesson.service';
 import { AttendanceDTO, LessonDTO } from '../../../../models/api/data-contracts';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { Observable } from 'rxjs';
+import { DialogService } from '../../../../../shared';
 
 @Component({
   selector: 'app-lessons-page',
@@ -18,12 +21,16 @@ import { CommonModule } from '@angular/common';
 export class LessonsPageComponent implements OnInit {
 
   ROUTES_KEYS = ROUTES_KEYS
-
   lessons: LessonDTO[] = []
+  isAdmin: Observable<boolean>
 
   constructor(
-    private _lessonService: LessonService
-  ) { }
+    _authService: AuthService,
+    private _lessonService: LessonService,
+    private _dialogService: DialogService
+  ) {
+    this.isAdmin = _authService.isAdmin()
+  }
 
   async ngOnInit(): Promise<void> {
     await setTimeout(() => { }, 0)
