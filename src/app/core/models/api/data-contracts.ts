@@ -179,6 +179,7 @@ export interface AttendanceDTO {
   present?: boolean;
   /** @format uuid */
   studentId?: string;
+  studentName?: string;
   lesson?: SimpleLessonDTO;
   /** @uniqueItems true */
   items?: AttendanceItemDTO[];
@@ -359,6 +360,7 @@ export interface ClassroomDTO {
   teachers?: TeacherDTO[];
   /** @uniqueItems true */
   students?: StudentDTO[];
+  lessons?: SimpleLessonDTO[];
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
