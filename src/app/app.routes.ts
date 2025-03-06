@@ -4,15 +4,15 @@ import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './share
 
 export const routes: Routes = [
 
-  { path: '', component: HomePageComponent, title: 'Início' },
   { path: ROUTES_KEYS.forgotPassword, component: ForgotPasswordPageComponent, title: 'Esqueci minha senha' },
   { path: ROUTES_KEYS.help, component: HelpPageComponent, title: 'Ajuda e suporte' },
-  { path: ROUTES_KEYS.home, component: HomePageComponent, title: 'Início' },
   { path: ROUTES_KEYS.login, component: LoginPageComponent, title: 'Login' },
-  { path: ROUTES_KEYS.notFound, component: NotFoundPageComponent, title: 'Essa página não existe' },
   { path: ROUTES_KEYS.signUp, component: UserRegisterPageComponent, title: 'Cadastro de usuário' },
   {
     path: '', canActivate: [authGuard], children: [
+      { path: '', component: HomePageComponent, title: 'Início' },
+      { path: ROUTES_KEYS.home, component: HomePageComponent, title: 'Início' },
+      { path: ROUTES_KEYS.notFound, component: NotFoundPageComponent, title: 'Essa página não existe' },
       {
         path: ROUTES_KEYS.classrooms, children: [
           { path: '', component: ClassroomsPageComponent, title: 'Turmas' },
