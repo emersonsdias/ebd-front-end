@@ -30,7 +30,7 @@ export class PersonService {
     return this._apiService.httpGet(`${this._path}/${id}/report`)
   }
 
-  findAllPeople(): Observable<PersonDTO[]> {
+  findAll(): Observable<PersonDTO[]> {
     return this._apiService.httpGet(this._path)
   }
 

@@ -81,8 +81,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   async ngOnInit(): Promise<void> {
-    await setTimeout(() => { }, 0)
-    const peopleSubscription = this._personService.findAllPeople().subscribe({
+    const peopleSubscription = this._personService.findAll().subscribe({
       next: res => {
         this.people = res
         this.filterPeople()

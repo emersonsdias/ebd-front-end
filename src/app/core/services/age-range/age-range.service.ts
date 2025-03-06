@@ -14,7 +14,7 @@ export class AgeRangeService {
       private _apiService: ApiService
     ) { }
 
-    findAllAgeRanges(): Observable<AgeRangeDTO[]> {
+    findAll(): Observable<AgeRangeDTO[]> {
       return this._apiService.httpGet(this._path)
     }
 

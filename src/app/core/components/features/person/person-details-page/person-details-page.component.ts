@@ -32,7 +32,6 @@ export class PersonDetailsPageComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await setTimeout(() => { }, 0)
     const personId = this._route.snapshot.paramMap.get(ROUTES_KEYS.personId)
     if (!personId) {
       this._router.navigate([ROUTES_KEYS.management])

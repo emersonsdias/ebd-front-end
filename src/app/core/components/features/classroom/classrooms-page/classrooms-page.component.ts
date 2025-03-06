@@ -35,8 +35,7 @@ export class ClassroomsPageComponent implements OnInit{
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await setTimeout(() => { }, 0)
-    this._classroomService.findAllClassrooms().subscribe({
+    this._classroomService.findAll().subscribe({
       next: classroomsResponse => this.classrooms.data = classroomsResponse
     })
   }

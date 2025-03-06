@@ -53,9 +53,8 @@ export class LessonFormPageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    setTimeout(() => { }, 0)
-    this.classrooms = await firstValueFrom(this._classroomService.findAllClassrooms())
-    const lessonId = this._route.snapshot.paramMap.get(ROUTES_KEYS.lessonId)
+    this.classrooms = await firstValueFrom(this._classroomService.findAll())
+    const lessonId = Number(this._route.snapshot.paramMap.get(ROUTES_KEYS.lessonId))
 
     if (lessonId) {
       this._lessonService.findById(lessonId).subscribe({

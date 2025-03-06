@@ -50,11 +50,9 @@ export class ClassroomFormPageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    setTimeout(() => { }, 0)
+    this.ageRangeList = await firstValueFrom(this._ageRangeService.findAll())
 
-    this.ageRangeList = await firstValueFrom(this._ageRangeService.findAllAgeRanges())
-
-    const classroomId = this._route.snapshot.paramMap.get(ROUTES_KEYS.classroomId)
+    const classroomId = Number(this._route.snapshot.paramMap.get(ROUTES_KEYS.classroomId))
 
     if (classroomId) {
       this._classroomService.findById(classroomId).subscribe({

@@ -39,8 +39,7 @@ export class LessonsPageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await setTimeout(() => { }, 0)
-    this._lessonService.findLessonsByOptions({ maxRecentLessons: 100 }).subscribe({
+    this._lessonService.findByOptions({ maxRecentLessons: 100 }).subscribe({
       next: lessonsReponse => this.lessons = lessonsReponse
     })
   }
@@ -67,7 +66,7 @@ export class LessonsPageComponent implements OnInit {
     if (!endDate) {
       endDate = startDate
     }
-    this._lessonService.findLessonsByOptions({ startDate: startDate, endDate: endDate }).subscribe({
+    this._lessonService.findByOptions({ startDate: startDate, endDate: endDate }).subscribe({
       next: lessonsReponse => this.lessons = lessonsReponse
     })
   }

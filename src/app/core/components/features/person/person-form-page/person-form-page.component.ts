@@ -60,8 +60,6 @@ export class PersonFormPageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await setTimeout(() => { }, 0)
-
     this.states = await firstValueFrom(this._locationService.findAllStates())
 
     const personId = this._route.snapshot.paramMap.get(ROUTES_KEYS.personId)

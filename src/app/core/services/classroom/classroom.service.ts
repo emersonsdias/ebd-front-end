@@ -22,11 +22,11 @@ export class ClassroomService {
     return this._apiService.httpPut(`${this._path}/${classroom.id}`, classroom)
   }
 
-  findAllClassrooms(): Observable<ClassroomDTO[]> {
+  findAll(): Observable<ClassroomDTO[]> {
     return this._apiService.httpGet(this._path)
   }
 
-  findById(classroomId: string) {
+  findById(classroomId: number): Observable<ClassroomDTO> {
     return this._apiService.httpGet(`${this._path}/${classroomId}`)
   }
 

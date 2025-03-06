@@ -22,7 +22,7 @@ export class LessonService {
     return this._apiService.httpPut(`${this._path}/${lesson.id}`, lesson)
   }
 
-  findLessonsByOptions(options: { startDate?: string, endDate?: string, maxRecentLessons?: number } | undefined = undefined): Observable<LessonDTO[]> {
+  findByOptions(options: { startDate?: string, endDate?: string, maxRecentLessons?: number } | undefined = undefined): Observable<LessonDTO[]> {
     const params = new Map
     if (options?.startDate) params.set('startDate', options.startDate)
     if (options?.endDate) params.set('endDate', options.endDate)
@@ -30,7 +30,7 @@ export class LessonService {
     return this._apiService.httpGet(this._path, { params: params })
   }
 
-  findById(lessonId: string) {
+  findById(lessonId: number): Observable<LessonDTO> {
     return this._apiService.httpGet(`${this._path}/${lessonId}`)
   }
 }
