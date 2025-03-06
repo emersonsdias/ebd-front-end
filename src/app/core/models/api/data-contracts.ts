@@ -237,6 +237,7 @@ export interface LessonDTO {
   lessonNumber?: number;
   /** @format date */
   lessonDate?: string;
+  status?: LessonStatus;
   notes?: string;
   /** @format int64 */
   classroomId?: number;
@@ -250,6 +251,12 @@ export interface LessonDTO {
   createdAt?: string;
   /** @format date-time */
   updatedAt?: string;
+}
+
+export enum LessonStatus {
+  OPEN = "OPEN",
+  CLOSED = "CLOSED",
+  REPORTED = "REPORTED",
 }
 
 export interface OfferDTO {
@@ -270,6 +277,7 @@ export interface SimpleLessonDTO {
   lessonNumber?: number;
   /** @format date */
   lessonDate?: string;
+  status?: LessonStatus;
   notes?: string;
   /** @format int64 */
   classroomId?: number;
