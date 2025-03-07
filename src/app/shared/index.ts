@@ -1,3 +1,4 @@
+export * from './components/custom-icon/custom-icon.component'
 export * from './components/custom-snack-bar/custom-snack-bar.component'
 export * from './components/dialog-confirm/dialog-confirm.component'
 export * from './components/loader/loader.component'

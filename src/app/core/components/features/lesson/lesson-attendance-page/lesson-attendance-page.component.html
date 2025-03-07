@@ -1,1 +1,228 @@
-<p>lesson-attendance-page works!</p>
+<mat-card appearance="outlined" class="lesson-card">
+  <form [formGroup]="lesson" class="container">
+
+    <mat-card-header>
+      <a mat-icon-button [routerLink]="['/', ROUTES_KEYS.lessons]">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </a>
+      <mat-card-title-group>
+        <mat-card-title class="lesson-title">{{ 'Aula ' + lesson.get('lessonNumber')?.value }} - {{
+          lesson.get('lessonDate')?.value | date:
+          'dd/MM'}}</mat-card-title>
+        <mat-card-subtitle>{{ 'Turma ' + classroom?.name }}</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+
+    <mat-card-content class="d-flex flex-column gap-3">
+      <div class="row gap-3">
+        <div class="col-sm d-flex flex-column gap-3">
+          <mat-card appearance="outlined">
+            <mat-card-header class="attendance-sub-card">
+              <div>
+                Items da classe
+              </div>
+              <span>
+                Adicione os items
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="container d-flex flex-column gap-2">
+                @for (item of items; track $index) {
+                <div class="row mini-card">
+                  <div class="col-auto">
+                    <app-custom-icon [icon]="item.icon"></app-custom-icon>
+                  </div>
+                  <div class="col">
+                    {{ item.name }}
+                  </div>
+                  <div class="col-auto">
+                    <button mat-icon-button class="v-middle">
+                      <mat-icon>keyboard_arrow_down</mat-icon>
+                    </button>
+                    <span>{{ countALessonItems(lesson.value, item.id) }}</span>
+                    <button mat-icon-button class="v-middle">
+                      <mat-icon>keyboard_arrow_up</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card appearance="outlined">
+            <mat-card-header class="attendance-sub-card">
+              <div>
+                Ofertas
+              </div>
+              <span>
+                Adicione as ofertas
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="container d-flex flex-column gap-2">
+                <div class="row mini-card">
+                  <div class="col-auto">
+                    <mat-icon class="v-middle">attach_money</mat-icon>
+                  </div>
+                  <div class="col">
+                    Ofertas
+                  </div>
+                  <div class="col-auto">
+                    <span>{{ sumLessonOffers(lesson.value) | currency: 'R$' }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="custom-card-actions">
+              <button mat-flat-button class="btn-secondary col">
+                <mat-icon>
+                  remove
+                </mat-icon>
+                Remover
+              </button>
+              <button mat-flat-button class="btn-primary col">
+                <mat-icon>
+                  add
+                </mat-icon>
+                Adicionar
+              </button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card appearance="outlined">
+            <mat-card-header class="attendance-sub-card">
+              <div>
+                Visitantes
+              </div>
+              <span>
+                Adicione os visitantes
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="container d-flex flex-column gap-2">
+
+                @if (!lesson.get('visitors')?.value || lesson.get('visitors')?.value.length === 0) {
+                <div class="row mini-card">
+                  <div class="col-auto">
+                    <mat-icon class="v-middle">groups</mat-icon>
+                  </div>
+                  <div class="col">
+                    Sem visitantes nessa aula
+                  </div>
+                </div>
+                }
+
+                @for (visitor of lesson.get('visitors')?.value; track $index) {
+                <div class="row mini-card">
+                  <div class="col-auto">
+                    <mat-icon class="v-middle">person</mat-icon>
+                  </div>
+                  <div class="col">
+                    {{ visitor.name }}
+                  </div>
+                </div>
+                }
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="custom-card-actions">
+              <button mat-flat-button class="btn-secondary col">
+                <mat-icon>
+                  remove
+                </mat-icon>
+                Remover
+              </button>
+              <button mat-flat-button class="btn-primary col">
+                <mat-icon>
+                  person_add
+                </mat-icon>
+                Adicionar
+              </button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card appearance="outlined">
+            <mat-card-header class="attendance-sub-card">
+              <div>
+                Anotações
+              </div>
+              <span>
+                Insira aqui as anotações da aula
+              </span>
+            </mat-card-header>
+            <mat-card-content class="d-flex">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Anotações</mat-label>
+                <textarea matInput placeholder="Insira as anotações da aula" formControlName="notes"
+                  [maxlength]="maxNotesLength" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10">
+                ></textarea>
+                <mat-hint align="end">{{ lesson.get('notes')?.value?.length || 0 }}/{{ maxNotesLength }}</mat-hint>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-sm">
+          <mat-card appearance="outlined" class="col">
+            <mat-card-header class="attendance-sub-card">
+              <div>
+                Chamadas dos alunos
+              </div>
+              <span>
+                Clique sobre o aluno para confirmar presença ou falta
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+
+              <div class="container">
+                <div formArrayName="attendances" class="container student-container gap-2">
+                  @for (attendanceControl of attendances.controls; track $index; let last = $last) {
+                  @let isPresent = attendanceControl.get('present')?.value;
+                  <div [formGroupName]="$index" class="row student-card"
+                    (click)="attendanceControl.get('present')?.setValue(!(isPresent))"
+                    (auxclick)="attendanceControl.get('present')?.setValue(isPresent == null ? false : !isPresent)"
+                    (contextmenu)="$event.preventDefault()" [ngClass]="{
+              'student-is-present': attendanceControl.get('present')?.value,
+              'student-is-absent': attendanceControl.get('present')?.value !== null && !attendanceControl.get('present')?.value
+              }">
+                    <div class="col">
+                      {{ attendanceControl.get('studentName')?.value }}
+                    </div>
+                    <div class="col-auto">
+                      <mat-icon class="v-middle">
+                        @if (attendanceControl.get('present')?.value || attendanceControl.get('present')?.value == null)
+                        {
+                        check_circle
+                        } @else {
+                        warning
+                        }
+                      </mat-icon>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row">
+        <button mat-flat-button class="btn-primary">
+          <mat-icon>
+            save
+          </mat-icon>
+          Enviar relatório
+        </button>
+      </div>
+      <div class="row">
+        <a mat-button class="btn-primary" [routerLink]="['/', ROUTES_KEYS.lessons]">
+          <mat-icon>
+            cancel
+          </mat-icon>
+          Cancelar
+        </a>
+      </div>
+
+    </mat-card-content>
+  </form>
+</mat-card>

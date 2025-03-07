@@ -1,0 +1,107 @@
+.lesson-title {
+  font-weight: 800;
+}
+
+.lesson-card {
+  background-color: var(--color-off-white-cream);
+
+  .attendance-sub-card {
+    align-items: center;
+    flex-direction: column;
+    div {
+      font-weight: bold;
+    }
+
+    span {
+      font-size: small;
+      font-weight: 500;
+      color: var(--color-medium-gray);
+      text-align: center;
+    }
+  }
+}
+
+.student-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-card {
+  align-items: center;
+  font-size: small;
+  font-weight: 500;
+  min-height: 35px;
+  padding-inline: 10px;
+  border-radius: 50vw;
+  border: solid 2px var(--color-light-gray);
+  box-shadow:
+    inset 5px 0 0 var(--color-light-gray),
+    inset -5px 0 0 var(--color-light-gray);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.mini-card button.mat-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: normal; /* Evita que o conteúdo afete a altura do botão */
+}
+
+.student-card {
+  cursor: pointer;
+  align-items: center;
+  font-size: small;
+  font-weight: 500;
+  min-height: 35px;
+  padding-left: 10px;
+  border-radius: 50vw;
+  border: solid 2px var(--color-light-gray);
+  box-shadow:
+    inset 5px 0 0 var(--color-light-gray),
+    inset -5px 0 0 var(--color-light-gray);
+
+  mat-icon {
+    color: var(--color-light-gray);
+  }
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: var(--color-light-gray);
+  }
+}
+
+.student-is-present {
+  border: solid 2px var(--color-success);
+  box-shadow:
+    inset 5px 0 0 var(--color-success),
+    inset -5px 0 0 var(--color-success);
+
+  mat-icon {
+    color: var(--color-success);
+  }
+}
+
+.student-is-absent {
+  border: solid 2px var(--color-warning);
+  box-shadow:
+    inset 5px 0 0 var(--color-warning),
+    inset -5px 0 0 var(--color-warning);
+
+  mat-icon {
+    color: var(--color-warning);
+  }
+}
+
+
+.custom-card-actions {
+  padding-inline: 15px;
+}

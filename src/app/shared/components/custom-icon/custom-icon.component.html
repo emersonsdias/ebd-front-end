@@ -1,0 +1,5 @@
+@if (isSvgIcon(icon)) {
+  <mat-icon [svgIcon]="icon!.replace('svg:', '')" class="v-middle"></mat-icon>
+} @else {
+  <mat-icon class="v-middle">{{icon}}</mat-icon>
+}
