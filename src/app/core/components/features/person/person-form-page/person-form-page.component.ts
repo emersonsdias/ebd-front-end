@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,11 +16,25 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PersonService } from '../../../../services/person/person.service';
-import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 
 @Component({
   selector: 'app-person-form-page',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatButtonToggleModule, MatDatepickerModule, MatDividerModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, EnumTranslatePipe, MatSlideToggleModule, RouterModule],
+  imports: [
+    CommonModule,
+    EnumTranslatePipe,
+    FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatDatepickerModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   templateUrl: './person-form-page.component.html',
   styleUrl: './person-form-page.component.scss'
 })

@@ -1,24 +1,31 @@
+import { AttendanceDTO, LessonDTO } from '../../../../models/api/data-contracts';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { LessonService } from '../../../../services/lesson/lesson.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { LessonService } from '../../../../services/lesson/lesson.service';
-import { AttendanceDTO, LessonDTO } from '../../../../models/api/data-contracts';
-import { MatDividerModule } from '@angular/material/divider';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../services/auth/auth.service';
-import { Observable } from 'rxjs';
-import { DialogService } from '../../../../../shared';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-lessons-page',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatDividerModule, MatIconModule, RouterModule,
-    MatFormFieldModule, MatDatepickerModule, MatInputModule
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    RouterModule,
   ],
   templateUrl: './lessons-page.component.html',
   styleUrl: './lessons-page.component.scss'
@@ -33,7 +40,6 @@ export class LessonsPageComponent implements OnInit {
   constructor(
     _authService: AuthService,
     private _lessonService: LessonService,
-    private _dialogService: DialogService
   ) {
     this.isAdmin = _authService.isAdmin()
   }

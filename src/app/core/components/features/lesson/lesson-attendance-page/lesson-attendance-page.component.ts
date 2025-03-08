@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AttendanceDTO, AttendanceOfferDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, VisitorItemDTO, VisitorOfferDTO } from '../../../../models/api/data-contracts';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { LessonService } from '../../../../services/lesson/lesson.service';
-import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CustomIconComponent, DialogService, NotificationService } from '../../../../../shared';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { AttendanceDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, LessonItemDTO } from '../../../../models/api/data-contracts';
+import { firstValueFrom } from 'rxjs';
+import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { ItemService } from '../../../../services/item/item.service';
+import { Component, OnInit } from '@angular/core';
+import { CustomIconComponent, DialogService, NotificationService } from '../../../../../shared';
 import { DialogVisitorComponent } from './dialog-visitor/dialog-visitor.component';
+import { ItemService } from '../../../../services/item/item.service';
+import { LessonService } from '../../../../services/lesson/lesson.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
+import { filter } from 'rxjs/operators';
 import { DialogOfferComponent } from './dialog-offer/dialog-offer.component';
-import { DialogOfferManagementComponent } from './dialog-offer-management/dialog-offer-management.component';
-import { DialogItemComponent } from './dialog-item/dialog-item.component';
-import { DialogItemManagementComponent } from './dialog-item-management/dialog-item-management.component';
 
 @Component({
   selector: 'app-lesson-attendance-page',
@@ -44,7 +42,6 @@ export class LessonAttendancePageComponent implements OnInit {
   classroom: ClassroomDTO | undefined
   items: ItemDTO[] = []
   submitted: boolean = false
-  offerSubject = new BehaviorSubject<number>(0)
 
   readonly maxNotesLength = 255
 
@@ -60,14 +57,17 @@ export class LessonAttendancePageComponent implements OnInit {
   ) {
     this.lesson = this._formBuilder.group({
       id: [null],
-      lessonNumber: [null],
-      lessonDate: [null],
+      number: [null],
+      topic: [null],
+      date: [null],
       status: [null],
       notes: [null, [Validators.maxLength(this.maxNotesLength)]],
       classroomId: [null],
       visitors: this._formBuilder.array([]),
       attendances: this._formBuilder.array([]),
       teachings: this._formBuilder.array([]),
+      items: this._formBuilder.array([]),
+      offers: this._formBuilder.array([this._buildOffer()]),
       active: [null],
       createdAt: [null],
       updatedAt: [null]
@@ -84,7 +84,6 @@ export class LessonAttendancePageComponent implements OnInit {
     try {
       lesson = await firstValueFrom(this._lessonService.findById(lessonId))
       this.lesson.patchValue(lesson)
-      this._sumLessonOffers()
       if (!lesson?.classroomId) {
         console.error('It is not possible to call a class without an associated group');
         this._router.navigate(['/', ROUTES_KEYS.lessons]);
@@ -123,6 +122,10 @@ export class LessonAttendancePageComponent implements OnInit {
       .forEach(attendanceForm => this.attendances.push(attendanceForm))
   }
 
+  get offers(): FormArray {
+    return this.lesson.get('offers') as FormArray
+  }
+
   get attendances(): FormArray {
     return this.lesson.get('attendances') as FormArray
   }
@@ -132,11 +135,11 @@ export class LessonAttendancePageComponent implements OnInit {
   }
 
   private _isPastLesson(lesson: LessonDTO): boolean {
-    if (!lesson.lessonDate) {
+    if (!lesson.date) {
       return false
     }
     const today = new Date()
-    const lessonDate = new Date(lesson.lessonDate)
+    const lessonDate = new Date(lesson.date)
     today.setHours(0, 0, 0, 0)
     return lessonDate < today
   }
@@ -145,11 +148,8 @@ export class LessonAttendancePageComponent implements OnInit {
     return student => ({
       id: undefined,
       present: undefined,
-      studentId: student.id,
-      studentName: student.personName,
+      person: student.person,
       lesson: this.lesson.value,
-      items: [],
-      offers: [],
       active: true,
       createdAt: undefined,
       updatedAt: undefined
@@ -163,8 +163,6 @@ export class LessonAttendancePageComponent implements OnInit {
       studentId: [attendance.studentId],
       studentName: [attendance.studentName],
       lesson: [attendance.lesson],
-      items: this._formBuilder.array(attendance.items || []),
-      offers: this._formBuilder.array(attendance.offers || []),
       active: [null],
       createdAt: [null],
       updatedAt: [null]
@@ -176,99 +174,82 @@ export class LessonAttendancePageComponent implements OnInit {
       id: [visitor?.id || null],
       name: [visitor?.name || null, [Validators.required]],
       lessonId: [visitor?.lessonId || null],
-      items: this._formBuilder.array(visitor?.items || []),
-      offers: this._formBuilder.array(visitor?.offers || []),
       createdAt: [visitor?.createdAt || null],
       updatedAt: [visitor?.updatedAt || null]
     })
   }
 
-  private _buildOffer(offer: OfferDTO | undefined) {
+  private _buildOffer(offer: OfferDTO | undefined = undefined) {
     return this._formBuilder.group({
       id: [offer?.id || null],
-      amount: [offer?.amount || null, [Validators.required, Validators.min(0.01)]],
+      amount: [offer?.amount || null, [Validators.required, Validators.min(0.00)]],
       active: [offer?.active || null],
       createdAt: [offer?.createdAt || null],
       updatedAt: [offer?.updatedAt || null]
     })
   }
 
-  private _buildLessonItem(item: ItemDTO) {
+  private _buildLessonItem(item: ItemDTO, quantity: number | null = null) {
     return this._formBuilder.group({
       id: [null],
-      quantity: [null],
+      quantity: [quantity],
       item: [item],
       createdAt: [null],
       updatedAt: [null]
     })
   }
 
-  countALessonItems(lesson: LessonDTO | undefined, itemId: number | undefined): number {
+  countLessonItems(lesson: LessonDTO | undefined, itemId: number | undefined): number {
     if (!lesson || !itemId) {
       return 0
     }
-    const studentsItems = (lesson.attendances || [])
-      .flatMap(attendance => attendance.items)
-      .filter(attendanceItem => attendanceItem?.item?.id === itemId)
+    return (lesson.items || [])
+      .filter(lessonItem => lessonItem?.item?.id === itemId)
       .reduce((sum, attendanceItem) => sum + (Number(attendanceItem?.quantity) || 0), 0)
-
-    const visitorsItems = (lesson.visitors || [])
-      .flatMap(visitor => visitor.items)
-      .filter(visitorItem => visitorItem?.item?.id === itemId)
-      .reduce((sum, attendanceItem) => sum + (Number(attendanceItem?.quantity) || 0), 0)
-
-    return studentsItems + visitorsItems
   }
 
-  private _sumLessonOffers(): void {
-    const lesson: LessonDTO = this.lesson.value
-    if (!lesson) {
-      this.offerSubject.next(0)
+  async addItem(lesson: FormGroup, item: ItemDTO): Promise<void> {
+    const lessonItems = lesson.get('items') as FormArray
+    const lessonItem = lessonItems.controls.find((control) => (control as FormGroup).get('item')?.value?.id === item.id) as FormGroup | undefined
+
+    if (!lessonItem) {
+      lessonItems.push(this._buildLessonItem(item, 1))
+    } else {
+      const quantityControl = lessonItem.get('quantity')
+      if (quantityControl) {
+        quantityControl.setValue(quantityControl.value + 1)
+      }
+    }
+  }
+
+  async removeItem(lesson: FormGroup, item: ItemDTO): Promise<void> {
+    const lessonItems = lesson.get('items') as FormArray
+    const lessonItemIndex = lessonItems.controls.findIndex((control) => (control as FormGroup).get('item')?.value?.id === item.id)
+
+    if (lessonItemIndex === -1) {
       return
     }
+    const lessonItem = lessonItems.at(lessonItemIndex) as FormGroup
+    const quantityControl = lessonItem.get('quantity')
 
-    const studentsOffers = (lesson.attendances || [])
-      .flatMap((attendance: AttendanceDTO) => attendance.offers)
-      .map((attendandanceOffer?: AttendanceOfferDTO) => attendandanceOffer?.offer)
-      .map((offer?: OfferDTO) => offer?.amount || 0)
-      .reduce((sum: number, offerAmount: number) => sum! + Number(offerAmount), 0)
+    if (quantityControl) {
+      const currentQuantity = quantityControl.value
 
-    const visitorsOffers = (lesson.visitors || [])
-      .flatMap((visitor: VisitorDTO) => visitor.offers)
-      .map((visitorOffer?: VisitorOfferDTO) => visitorOffer?.offer)
-      .map((offer?: OfferDTO) => offer?.amount || 0)
-      .reduce((sum: number, offerAmount: number) => sum! + Number(offerAmount), 0)
-
-    this.offerSubject.next(studentsOffers + visitorsOffers)
+      if (currentQuantity > 1) {
+        quantityControl.setValue(currentQuantity - 1)
+      } else {
+        lessonItems.removeAt(lessonItemIndex)
+      }
+    }
   }
 
-  async addOffer(offerData: OfferDTO | undefined = undefined): Promise<void> {
-    const data = {
-      form: this._buildOffer(offerData),
-      attendances: this.attendances,
-      visitors: this.visitors
+  async manageOffers(): Promise<void> {
+    const offersArray = this.lesson.get('offers') as FormArray
+    if (offersArray.length === 0) {
+      offersArray.push(this._buildOffer())
     }
-    const response = await this._dialogService.openComponent(DialogOfferComponent, data).then()
-
-    if (response?.form?.valid && response.parent?.valid) {
-      const offer = this._formBuilder.group({
-        offer: response.form
-      })
-      response.parent.get('offers')?.push(offer)
-    }
-    this._sumLessonOffers()
-  }
-
-  async addItem(item: ItemDTO) {
-    const data = {
-      form: this._buildLessonItem(item),
-      attendances: this.attendances,
-      visitors: this.visitors
-    }
-    const response = await this._dialogService.openComponent(DialogItemComponent, data).then()
-    if (response?.form?.valid && response.parent?.valid) {
-      response.parent.get('items')?.push(response?.form)
-    }
+    const offerControl = offersArray.at(0) as FormGroup;
+    await this._dialogService.openComponent(DialogOfferComponent, offerControl)
   }
 
   async addVisitor(visitorData: VisitorDTO | undefined = undefined): Promise<void> {
@@ -282,12 +263,11 @@ export class LessonAttendancePageComponent implements OnInit {
     await this._dialogService.openComponent(DialogVisitorComponent, visitorData || {}).then()
   }
 
-  removeVisitor(visitor: AbstractControl) {
+  async removeVisitor(visitor: AbstractControl): Promise<void> {
     const index = this.visitors.controls.indexOf(visitor)
     if (index !== -1) {
       this.visitors.removeAt(index)
     }
-    this._sumLessonOffers()
   }
 
 
@@ -301,18 +281,6 @@ export class LessonAttendancePageComponent implements OnInit {
       })
       return
     }
-    console.log(form.value)
-  }
-
-  async managementOffers(): Promise<void> {
-    const data = { attendances: this.attendances, visitors: this.visitors }
-    await this._dialogService.openComponent(DialogOfferManagementComponent, data).then()
-    this._sumLessonOffers()
-  }
-
-  async managementItems(item: ItemDTO): Promise<void> {
-    const data = { item: item, attendances: this.attendances, visitors: this.visitors }
-    await this._dialogService.openComponent(DialogItemManagementComponent, data).then()
   }
 
 }

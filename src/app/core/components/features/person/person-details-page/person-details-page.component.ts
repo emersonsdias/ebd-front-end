@@ -1,21 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { PersonService } from '../../../../services/person/person.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { AddressDTO, PersonDTO, PersonReportDTO, PhoneNumberDTO } from '../../../../models/api/data-contracts';
-import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { EnumTranslatePipe } from '../../../../../shared/pipes/enum-translate/enum-translate.pipe';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
+import { PersonService } from '../../../../services/person/person.service';
 
 @Component({
   selector: 'app-person-details-page',
-  imports: [CommonModule, EnumTranslatePipe, MatCardModule, MatChipsModule, MatDividerModule, MatButtonModule, MatIconModule, RouterModule, MatIconModule, MatExpansionModule],
+  imports: [
+    CommonModule,
+    EnumTranslatePipe,
+    MatButtonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatIconModule,
+    RouterModule,
+  ],
   templateUrl: './person-details-page.component.html',
   styleUrl: './person-details-page.component.scss'
 })
@@ -79,13 +89,6 @@ export class PersonDetailsPageComponent implements OnInit {
       return ''
     }
     return address.street + (address.number ? ', ' + address.number : '') + (address.complement ? ', ' + address.complement : '')
-  }
-
-  isSvgIcon(icon: string | undefined): boolean {
-    if (!icon) {
-      return false
-    }
-    return icon.includes('svg:')
   }
 
 }

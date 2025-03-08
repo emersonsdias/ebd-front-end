@@ -1,37 +1,56 @@
 import { Component, Inject } from '@angular/core';
-import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-dialog-offer',
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     ReactiveFormsModule,
-    MatSelectModule,
   ],
   templateUrl: './dialog-offer.component.html',
   styleUrl: './dialog-offer.component.scss'
 })
 export class DialogOfferComponent {
 
+  clonedOffer: FormGroup
+
   constructor(
     private _dialogRef: MatDialogRef<DialogOfferComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { form: FormGroup,  attendances: FormArray, visitors: FormArray}
+    private _formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public offerControl: FormGroup
   ) {
+    this.clonedOffer = this.cloneFormGroup(offerControl);
   }
 
-  save(form: FormGroup, formParent: FormGroup) {
-    if (this.data.form.valid) {
-      this._dialogRef.close({form: form, parent: formParent})
+  private cloneFormGroup(original: FormGroup): FormGroup {
+    const cloned = this._formBuilder.group({})
+    Object.keys(original.controls).forEach(key => {
+      const control = original.get(key)
+      const newControl = new FormControl(
+        control?.value,
+        control?.validator || null,
+        control?.asyncValidator || null
+      )
+      cloned.addControl(key, newControl)
+    })
+    return cloned
+  }
+
+
+  save() {
+    if (this.clonedOffer.valid) {
+      this.offerControl.patchValue(this.clonedOffer.getRawValue())
+      this._dialogRef.close(this.offerControl)
     }
   }
+
 
 }

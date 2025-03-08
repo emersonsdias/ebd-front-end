@@ -165,12 +165,12 @@
               <mat-divider></mat-divider>
 
               @for(attendance of classroomAttendance.attendances; track $index) {
-              @let lastMonth = classroomAttendance.attendances?.[$index - 1]?.lesson?.lessonDate | date: 'MMMM';
-              @let currentMonth = (attendance.lesson?.lessonDate | date: 'MMMM');
+              @let lastMonth = classroomAttendance.attendances?.[$index - 1]?.lesson?.date | date: 'MMMM';
+              @let currentMonth = (attendance.lesson?.date | date: 'MMMM');
               @if (currentMonth !== lastMonth) {
               <div class="container text-center">
                 <div class="attendance-mounth">
-                  {{ attendance.lesson?.lessonDate | date: 'MMMM' }}
+                  {{ attendance.lesson?.date | date: 'MMMM' }}
                 </div>
               </div>
               }
@@ -178,24 +178,11 @@
                 <div class="row">
                   <span class="col-md-1 col">
                     <span class="lesson-date">
-                      {{ attendance.lesson?.lessonDate | date: 'dd' }}
+                      {{ attendance.lesson?.date | date: 'dd' }}
                     </span>
                   </span>
                   <span class="col lesson-number">
-                    {{ 'Lição ' + attendance.lesson?.lessonNumber }}
-                    <span class="empty-spacer"></span>
-                    @if(attendance.items && attendance.items.length > 0) {
-                    <mat-chip-row class="attendance-items">
-                      @for(item of attendance.items; track $index) {
-                      @let icon = item.item?.icon;
-                      @if(isSvgIcon(icon)) {
-                      <mat-icon [svgIcon]="icon!">{{item.item?.icon}}</mat-icon>
-                      } @else {
-                      <mat-icon>{{icon}}</mat-icon>
-                      }
-                      }
-                    </mat-chip-row>
-                    }
+                    {{ 'Lição ' + attendance.lesson?.number }}
                   </span>
                   <span class="col attendance-icon">
                     <mat-icon>

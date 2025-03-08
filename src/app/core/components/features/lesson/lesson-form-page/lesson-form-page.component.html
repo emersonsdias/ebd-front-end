@@ -2,22 +2,6 @@
 
   <div class="row">
     <mat-form-field appearance="outline" class="col-md-8 col-12">
-      <mat-label>Número da aula</mat-label>
-      <input matInput placeholder="Insira o número da aula" formControlName="lessonNumber">
-    </mat-form-field>
-  </div>
-
-  <div class="row">
-    <mat-form-field appearance="outline" class="col-md-8 col-12">
-      <mat-label>Data da aula</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="lessonDate">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-
-  <div class="row">
-    <mat-form-field appearance="outline" class="col-md-8 col-12">
       <mat-label>Turma</mat-label>
       <mat-select formControlName="classroomId">
         @for (classroom of classrooms; track $index) {
@@ -28,6 +12,37 @@
       </mat-select>
     </mat-form-field>
   </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-4 col-12">
+      <mat-label>Número da aula</mat-label>
+      <input matInput placeholder="Insira o número da aula" formControlName="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-md-4 col-12">
+      <mat-label>Data da aula</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Tema da aula</mat-label>
+      <input matInput placeholder="Insira o tema da aula" formControlName="topic">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Anotações</mat-label>
+      <textarea matInput placeholder="Insira as anotações da aula" formControlName="notes" cdkTextareaAutosize
+        cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10">
+      ></textarea>
+    </mat-form-field>
+  </div>
+
 
   <div class="row">
     <p>

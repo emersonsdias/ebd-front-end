@@ -1,23 +1,33 @@
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ClassroomDTO, LessonDTO } from '../../../../models/api/data-contracts';
+import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { LessonService } from '../../../../services/lesson/lesson.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { ClassroomDTO, LessonDTO } from '../../../../models/api/data-contracts';
-import { firstValueFrom } from 'rxjs';
-import { ClassroomService } from '../../../../services/classroom/classroom.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { LessonService } from '../../../../services/lesson/lesson.service';
-import { NotificationService } from '../../../../../shared';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { NotificationService } from '../../../../../shared';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
   selector: 'app-lesson-form-page',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatSlideToggleModule, MatIconModule, RouterModule, MatButtonModule],
+  imports: [
+    MatButtonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   templateUrl: './lesson-form-page.component.html',
   styleUrl: './lesson-form-page.component.scss'
 })
@@ -38,14 +48,17 @@ export class LessonFormPageComponent implements OnInit {
   ) {
     this.lesson = this._formBuilder.group({
       id: [null],
-      lessonNumber: [null],
-      lessonDate: [null],
+      number: [null],
+      topic: [null],
+      date: [null],
+      status: [null],
       notes: [null],
-      students: [null],
       classroomId: [null],
       visitors: [null],
       attendances: [null],
       teachings: [null],
+      items: [null],
+      offers: [null],
       active: [null],
       createdAt: [null],
       updatedAt: [null],
@@ -86,7 +99,7 @@ export class LessonFormPageComponent implements OnInit {
     this._lessonService.create(lesson).subscribe({
       next: (res) => {
         this.submitted = true
-        this._notificationService.success(`Aula ${lesson.lessonNumber} criada com sucesso`)
+        this._notificationService.success(`Aula ${lesson.number} criada com sucesso`)
         this._router.navigate(['/', ROUTES_KEYS.lessons])
       },
       error: (err) => {
@@ -99,7 +112,7 @@ export class LessonFormPageComponent implements OnInit {
     this._lessonService.update(lesson).subscribe({
       next: (res) => {
         this.submitted = true
-        this._notificationService.success(`Aula ${lesson.lessonNumber} alterada com sucesso`)
+        this._notificationService.success(`Aula ${lesson.number} alterada com sucesso`)
         this._router.navigate(['/', ROUTES_KEYS.lessons])
       },
       error: (err) => {

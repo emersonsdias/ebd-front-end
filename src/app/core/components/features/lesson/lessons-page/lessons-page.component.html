@@ -40,11 +40,16 @@
           <mat-card-title-group>
             <mat-card-title>
               <span>
-                Lição {{ lesson.lessonNumber }}
+                Lição {{ lesson.number }}
               </span>
+              @if (lesson.topic) {
+                <span>
+                  - {{ lesson.topic }}
+                </span>
+              }
             </mat-card-title>
             <mat-card-subtitle>
-              {{ lesson.lessonDate | date: 'EEEE, dd \'de\' MMMM' }}
+              {{ lesson.date | date: 'EEEE, dd \'de\' MMMM' }}
             </mat-card-subtitle>
             <span class="lesson-perfomance">
               Média: {{ (presentStudents / (presentStudents + absentStudents)) || 0 | percent: '1.1-1'}}

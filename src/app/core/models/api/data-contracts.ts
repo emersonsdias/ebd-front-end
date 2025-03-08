@@ -181,37 +181,7 @@ export interface AttendanceDTO {
   studentId?: string;
   studentName?: string;
   lesson?: SimpleLessonDTO;
-  /** @uniqueItems true */
-  items?: AttendanceItemDTO[];
-  /** @uniqueItems true */
-  offers?: AttendanceOfferDTO[];
   active?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface AttendanceItemDTO {
-  /** @format int64 */
-  id?: number;
-  /** @format int32 */
-  quantity?: number;
-  /** @format int64 */
-  attendanceId?: number;
-  item?: ItemDTO;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface AttendanceOfferDTO {
-  /** @format int64 */
-  id?: number;
-  /** @format int64 */
-  attendanceId?: number;
-  offer?: OfferDTO;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -234,9 +204,10 @@ export interface LessonDTO {
   /** @format int64 */
   id?: number;
   /** @format int32 */
-  lessonNumber?: number;
+  number?: number;
+  topic?: string;
   /** @format date */
-  lessonDate?: string;
+  date?: string;
   status?: LessonStatus;
   notes?: string;
   /** @format int64 */
@@ -246,7 +217,37 @@ export interface LessonDTO {
   attendances?: AttendanceDTO[];
   /** @uniqueItems true */
   teachings?: TeachingDTO[];
+  /** @uniqueItems true */
+  items?: LessonItemDTO[];
+  /** @uniqueItems true */
+  offers?: LessonOfferDTO[];
   active?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export interface LessonItemDTO {
+  /** @format int64 */
+  id?: number;
+  /** @format int32 */
+  quantity?: number;
+  /** @format int64 */
+  lessonId?: number;
+  item?: ItemDTO;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export interface LessonOfferDTO {
+  /** @format int64 */
+  id?: number;
+  /** @format int64 */
+  lessonId?: number;
+  offer?: OfferDTO;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -274,9 +275,10 @@ export interface SimpleLessonDTO {
   /** @format int64 */
   id?: number;
   /** @format int32 */
-  lessonNumber?: number;
+  number?: number;
+  topic?: string;
   /** @format date */
-  lessonDate?: string;
+  date?: string;
   status?: LessonStatus;
   notes?: string;
   /** @format int64 */
@@ -307,36 +309,6 @@ export interface VisitorDTO {
   name?: string;
   /** @format int64 */
   lessonId?: number;
-  /** @uniqueItems true */
-  items?: VisitorItemDTO[];
-  /** @uniqueItems true */
-  offers?: VisitorOfferDTO[];
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface VisitorItemDTO {
-  /** @format int64 */
-  id?: number;
-  /** @format int32 */
-  quantity?: number;
-  /** @format int64 */
-  visitorId?: number;
-  item?: ItemDTO;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface VisitorOfferDTO {
-  /** @format int64 */
-  id?: number;
-  /** @format int64 */
-  visitorId?: number;
-  offer?: OfferDTO;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -378,9 +350,11 @@ export interface ClassroomDTO {
 export interface StudentDTO {
   /** @format uuid */
   id?: string;
-  /** @format uuid */
-  personId?: string;
-  personName?: string;
+  /** @format date */
+  academicPeriodStart?: string;
+  /** @format date */
+  academicPeriodEnd?: string;
+  person?: PersonDTO;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -391,9 +365,11 @@ export interface StudentDTO {
 export interface TeacherDTO {
   /** @format uuid */
   id?: string;
-  /** @format uuid */
-  personId?: string;
-  personName?: string;
+  /** @format date */
+  teachingPeriodStart?: string;
+  /** @format date */
+  teachingPeriodEnd?: string;
+  person?: PersonDTO;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;

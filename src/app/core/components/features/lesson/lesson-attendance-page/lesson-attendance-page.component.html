@@ -6,10 +6,23 @@
         <mat-icon>arrow_back_ios</mat-icon>
       </a>
       <mat-card-title-group>
-        <mat-card-title class="lesson-title">{{ 'Aula ' + lesson.get('lessonNumber')?.value }} - {{
-          lesson.get('lessonDate')?.value | date:
-          'dd/MM'}}</mat-card-title>
-        <mat-card-subtitle>{{ 'Turma ' + classroom?.name }}</mat-card-subtitle>
+        <mat-card-title class="lesson-title">
+          <span>Aula</span>
+          <span>{{ lesson.get('number')?.value }}</span>
+          <span> - </span>
+          <span>{{ lesson.get('date')?.value | date: 'dd/MM/yyyy' }}</span>
+        </mat-card-title>
+        @let topic = lesson.get('topic')?.value;
+        @if (topic) {
+        <mat-card-subtitle>
+          <span>Tema</span>
+          <strong>{{ topic }}</strong>
+        </mat-card-subtitle>
+        }
+        <mat-card-subtitle>
+          <span>Turma</span>
+          <strong> {{ classroom?.name }} </strong>
+        </mat-card-subtitle>
       </mat-card-title-group>
     </mat-card-header>
 
@@ -36,11 +49,11 @@
                     {{ item.name }}
                   </div>
                   <div class="col-auto">
-                    <button mat-icon-button class="v-middle" (click)="managementItems(item)">
+                    <button mat-icon-button class="v-middle" (click)="removeItem(lesson, item)">
                       <mat-icon>keyboard_arrow_down</mat-icon>
                     </button>
-                    <span>{{ countALessonItems(lesson.value, item.id) }}</span>
-                    <button mat-icon-button class="v-middle" (click)="addItem(item)">
+                    <span>{{ countLessonItems(lesson.value, item.id) }}</span>
+                    <button mat-icon-button class="v-middle" (click)="addItem(lesson, item)">
                       <mat-icon>keyboard_arrow_up</mat-icon>
                     </button>
                   </div>
@@ -59,34 +72,35 @@
                 Adicione as ofertas
               </span>
             </mat-card-header>
+            @let offerAmount = (offers.length > 0 ? (offers.controls[0].get('amount')?.value || 0) : 0);
             <mat-card-content>
               <div class="container d-flex flex-column gap-2">
                 <div class="row mini-card offer-amount">
                   <div class="col-auto">
-                    <mat-icon class="v-middle">attach_money</mat-icon>
+                    <mat-icon class="v-middle">payments</mat-icon>
                   </div>
                   <div class="col">
                     Ofertas
                   </div>
                   <div class="col-auto">
-                    <span>{{ (offerSubject | async) | currency: 'R$' }}</span>
+                    <span>
+                      {{ offerAmount | currency: 'R$' }}
+                    </span>
                   </div>
                 </div>
               </div>
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
               <div class="d-flex flex-column full-width">
-                <button mat-flat-button class="btn-primary" (click)="addOffer()">
+                <button mat-flat-button class="btn-primary" (click)="manageOffers()">
                   <mat-icon>
-                    add
+                    attach_money
                   </mat-icon>
+                  @if (offerAmount === 0) {
                   Adicionar
-                </button>
-                <button mat-button class="btn-primary" (click)="managementOffers()">
-                  <mat-icon>
-                    settings
-                  </mat-icon>
+                  } @else {
                   Gerenciar ofertas
+                  }
                 </button>
               </div>
             </mat-card-actions>

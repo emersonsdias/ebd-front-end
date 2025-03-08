@@ -45,13 +45,13 @@
 
     <ng-container matColumnDef="lastLesson">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Última aula </th>
-      <td mat-cell *matCellDef="let element">{{ (findLastLesson(element.lessons)?.lessonDate | date: 'dd/MM/yyyy') ||
+      <td mat-cell *matCellDef="let element">{{ (findLastLesson(element.lessons)?.date | date: 'dd/MM/yyyy') ||
         '...' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="nextLesson">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Próxima aula </th>
-      <td mat-cell *matCellDef="let element">{{ (findNextLesson(element.lessons)?.lessonDate | date: 'dd/MM/yyyy') ||
+      <td mat-cell *matCellDef="let element">{{ (findNextLesson(element.lessons)?.date | date: 'dd/MM/yyyy') ||
         '...' }}</td>
     </ng-container>
 
