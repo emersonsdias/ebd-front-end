@@ -324,8 +324,7 @@ export interface VisitorItemDTO {
   quantity?: number;
   /** @format int64 */
   visitorId?: number;
-  /** @format int64 */
-  itemId?: number;
+  item?: ItemDTO;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
