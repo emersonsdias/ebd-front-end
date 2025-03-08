@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,13 +9,13 @@ import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-dialog-offer',
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
-    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatSelectModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './dialog-offer.component.html',
   styleUrl: './dialog-offer.component.scss'

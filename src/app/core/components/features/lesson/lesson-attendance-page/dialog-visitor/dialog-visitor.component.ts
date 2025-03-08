@@ -1,18 +1,18 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-dialog-visitor',
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     ReactiveFormsModule,
   ],
   templateUrl: './dialog-visitor.component.html',
@@ -41,6 +41,7 @@ export class DialogVisitorComponent {
   save() {
     if (this.clonedVisitor.valid) {
       this.visitor.patchValue(this.clonedVisitor.getRawValue());
-      this._dialogRef.close(this.visitor);    }
+      this._dialogRef.close(this.visitor);
+    }
   }
 }

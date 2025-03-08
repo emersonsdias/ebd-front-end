@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { ClassroomDTO, LessonDTO } from '../../../../models/api/data-contracts';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { RouterModule } from '@angular/router';
+import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { RouterModule } from '@angular/router';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
   selector: 'app-classrooms-page',
-  imports: [CommonModule, MatButtonModule, MatTableModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatTableModule,
+    RouterModule,
+  ],
   templateUrl: './classrooms-page.component.html',
   styleUrl: './classrooms-page.component.scss'
 })
-export class ClassroomsPageComponent implements OnInit{
+export class ClassroomsPageComponent implements OnInit {
 
   ROUTES_KEYS = ROUTES_KEYS
   classrooms = new MatTableDataSource<ClassroomDTO>([])

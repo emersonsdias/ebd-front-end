@@ -1,23 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { AgeRangeService } from '../../../../services/age-range/age-range.service';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AgeRangeDTO, ClassroomDTO } from '../../../../models/api/data-contracts';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { AgeRangeService } from '../../../../services/age-range/age-range.service';
+import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { NotificationService } from '../../../../../shared';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
   selector: 'app-classroom-form-page',
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, MatButtonModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   templateUrl: './classroom-form-page.component.html',
   styleUrl: './classroom-form-page.component.scss'
 })

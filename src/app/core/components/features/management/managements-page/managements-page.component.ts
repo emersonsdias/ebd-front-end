@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO } from '../../../../models/api/data-contracts';
 import { EnumTranslatePipe, NotificationService, Utils } from '../../../../../shared';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +19,6 @@ import { PersonService } from '../../../../services/person/person.service';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { Subscription } from 'rxjs';
-import { EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO } from '../../../../models/api/data-contracts';
 
 
 interface FilterPeople {
@@ -33,7 +33,25 @@ interface FilterPeople {
 
 @Component({
   selector: 'app-managements-page',
-  imports: [CommonModule, EnumTranslatePipe, FormsModule, MatButtonModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSelectModule, MatSortModule, MatTableModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    EnumTranslatePipe,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatSortModule,
+    MatTableModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   templateUrl: './managements-page.component.html',
   styleUrl: './managements-page.component.scss',
   providers: [EnumTranslatePipe]

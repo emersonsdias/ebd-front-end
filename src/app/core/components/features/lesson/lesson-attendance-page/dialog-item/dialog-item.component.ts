@@ -1,24 +1,24 @@
 import { Component, Inject } from '@angular/core';
+import { CustomIconComponent } from "../../../../../../shared";
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { CustomIconComponent } from "../../../../../../shared/components/custom-icon/custom-icon.component";
 
 @Component({
   selector: 'app-dialog-item',
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
+    CustomIconComponent,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
-    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatSelectModule,
-    CustomIconComponent
-],
+    ReactiveFormsModule,
+  ],
   templateUrl: './dialog-item.component.html',
   styleUrl: './dialog-item.component.scss'
 })
@@ -35,7 +35,5 @@ export class DialogItemComponent {
       this._dialogRef.close({ form: form, parent: formParent })
     }
   }
-
-
 
 }
