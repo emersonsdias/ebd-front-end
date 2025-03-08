@@ -1,5 +1,8 @@
-@if (isSvgIcon(icon)) {
-  <mat-icon [svgIcon]="icon!.replace('svg:', '')" class="v-middle"></mat-icon>
-} @else {
-  <mat-icon class="v-middle">{{icon}}</mat-icon>
-}
+<span class="v-middle" style="display: inline-flex;"
+  [ngStyle]="size ? {'heigth.px': size, 'width.px': size} : null">
+  @if (isSvgIcon(icon)) {
+  <mat-icon [svgIcon]="icon!.replace('svg:', '')" class="v-middle" [ngClass]="{'custom-icon': size}"></mat-icon>
+  } @else {
+  <mat-icon [fontIcon]="icon || ''" class="v-middle" [ngStyle]="size ? {size, 'font-size.px': size} : null" [ngClass]="{'custom-icon': size}"></mat-icon>
+  }
+</span>

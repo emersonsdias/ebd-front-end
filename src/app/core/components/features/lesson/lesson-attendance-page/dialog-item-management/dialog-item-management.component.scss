@@ -1,0 +1,14 @@
+.dialog-item-management-container {
+  padding: 20px;
+  min-width: 300px;
+  min-height: 70px;
+  max-height: 80vh;
+}
+
+.card-item {
+  align-items: center;
+  min-width: 350px;
+  min-height: 35px;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 5px;
+}

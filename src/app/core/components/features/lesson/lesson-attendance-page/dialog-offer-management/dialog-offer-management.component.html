@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Gerenciar ofertas</h2>
+<mat-dialog-content class="dialog-offer-management-container">
+  <div class="container d-flex flex-column gap-2">
+
+    @if (!hasOffers()) {
+    <div class="no-offer-data">
+      Sem ofertas para gerenciamento
+    </div>
+    }
+
+    @for (attendance of clonedAttendances.controls || []; track $index) {
+    @for (offer of getOffers(attendance).controls || []; track $index) {
+
+    <div class="card-offer row">
+      <div class="col">
+        {{ attendance.get('studentName')?.value }}
+      </div>
+      <div class="col-auto">
+        {{ offer.get('offer')?.value.amount | currency: 'R$' }}
+      </div>
+      <div class="col-auto">
+        <button mat-icon-button (click)="removeAttendanceOffer(attendance, $index)">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+    }
+
+    @for (visitor of clonedvisitors.controls || []; track $index) {
+    @for (offer of getOffers(visitor).controls || []; track $index) {
+    <div class="card-offer row">
+      <div class="col">
+        {{ visitor.get('name')?.value }}
+      </div>
+      <div class="col-auto">
+        {{ offer.get('offer')?.value.amount | currency: 'R$' }}
+      </div>
+      <div class="col-auto">
+        <button mat-icon-button (click)="removeAttendanceOffer(visitor, $index)">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+    }
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="btn-primary" [mat-dialog-close] cdkFocusInitial>Cancelar</button>
+  <button mat-flat-button class="btn-primary" (click)="save()">Salvar</button>
+</mat-dialog-actions>

@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Adicione uma oferta</h2>
+<form [formGroup]="data.form">
+  <mat-dialog-content class="row">
+    <p>Insira as informações da oferta</p>
+    <mat-form-field appearance="outline">
+      <mat-label>Ofertante</mat-label>
+      <mat-select #donor>
+        <mat-option>Selecione o ofertante</mat-option>
+        <mat-optgroup label="Alunos">
+          @for (attendanceControl of data.attendances.controls; track $index; let last = $last) {
+            @if (attendanceControl.get('present')?.value) {
+              <mat-option [value]="attendanceControl">
+                {{ attendanceControl.get('studentName')?.value }}
+              </mat-option>
+            }
+          }
+        </mat-optgroup>
+        <mat-optgroup label="Visitantes {{(data.visitors.controls || []).length === 0 ? '(sem visitantes)' :'' }}">
+          @for (visitorControl of data.visitors.controls; track $index; let last = $last) {
+          <mat-option [value]="visitorControl">
+            {{ visitorControl.get('name')?.value }}
+          </mat-option>
+          }
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Valor</mat-label>
+      <input matInput formControlName="amount" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button class="btn-primary" [mat-dialog-close] cdkFocusInitial>Cancelar</button>
+    <button mat-flat-button class="btn-primary" (click)="save(data.form, donor.value)">Salvar</button>
+  </mat-dialog-actions>
+</form>

@@ -36,11 +36,11 @@
                     {{ item.name }}
                   </div>
                   <div class="col-auto">
-                    <button mat-icon-button class="v-middle">
+                    <button mat-icon-button class="v-middle" (click)="managementItems(item)">
                       <mat-icon>keyboard_arrow_down</mat-icon>
                     </button>
                     <span>{{ countALessonItems(lesson.value, item.id) }}</span>
-                    <button mat-icon-button class="v-middle">
+                    <button mat-icon-button class="v-middle" (click)="addItem(item)">
                       <mat-icon>keyboard_arrow_up</mat-icon>
                     </button>
                   </div>
@@ -61,7 +61,7 @@
             </mat-card-header>
             <mat-card-content>
               <div class="container d-flex flex-column gap-2">
-                <div class="row mini-card">
+                <div class="row mini-card offer-amount">
                   <div class="col-auto">
                     <mat-icon class="v-middle">attach_money</mat-icon>
                   </div>
@@ -69,24 +69,26 @@
                     Ofertas
                   </div>
                   <div class="col-auto">
-                    <span>{{ sumLessonOffers(lesson.value) | currency: 'R$' }}</span>
+                    <span>{{ (offerSubject | async) | currency: 'R$' }}</span>
                   </div>
                 </div>
               </div>
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
-              <button mat-flat-button class="btn-secondary col">
-                <mat-icon>
-                  remove
-                </mat-icon>
-                Remover
-              </button>
-              <button mat-flat-button class="btn-primary col">
-                <mat-icon>
-                  add
-                </mat-icon>
-                Adicionar
-              </button>
+              <div class="d-flex flex-column full-width">
+                <button mat-flat-button class="btn-primary" (click)="addOffer()">
+                  <mat-icon>
+                    add
+                  </mat-icon>
+                  Adicionar
+                </button>
+                <button mat-button class="btn-primary" (click)="managementOffers()">
+                  <mat-icon>
+                    settings
+                  </mat-icon>
+                  Gerenciar ofertas
+                </button>
+              </div>
             </mat-card-actions>
           </mat-card>
 
@@ -100,39 +102,35 @@
               </span>
             </mat-card-header>
             <mat-card-content>
-              <div class="container d-flex flex-column gap-2">
+              @if (!lesson.get('visitors')?.value || lesson.get('visitors')?.value.length === 0) {
+              <div class="not-data-found-container">
+                Sem visitantes nessa aula
+              </div>
+              }
 
-                @if (!lesson.get('visitors')?.value || lesson.get('visitors')?.value.length === 0) {
-                <div class="row mini-card">
-                  <div class="col-auto">
-                    <mat-icon class="v-middle">groups</mat-icon>
-                  </div>
-                  <div class="col">
-                    Sem visitantes nessa aula
-                  </div>
-                </div>
-                }
-
-                @for (visitor of lesson.get('visitors')?.value; track $index) {
-                <div class="row mini-card">
+              <div formArrayName="visitors" class="container d-flex flex-column gap-2">
+                @for (visitor of visitors.controls; track $index) {
+                <div [formGroupName]="$index" class="row mini-card">
                   <div class="col-auto">
                     <mat-icon class="v-middle">person</mat-icon>
                   </div>
                   <div class="col">
-                    {{ visitor.name }}
+                    {{ visitor.get('name')?.value }}
+                  </div>
+                  <div class="col-auto">
+                    <button mat-icon-button (click)="editVisitor(visitor)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="removeVisitor(visitor)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
                   </div>
                 </div>
                 }
               </div>
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
-              <button mat-flat-button class="btn-secondary col">
-                <mat-icon>
-                  remove
-                </mat-icon>
-                Remover
-              </button>
-              <button mat-flat-button class="btn-primary col">
+              <button mat-flat-button class="btn-primary col" (click)="addVisitor()">
                 <mat-icon>
                   person_add
                 </mat-icon>
@@ -154,7 +152,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Anotações</mat-label>
                 <textarea matInput placeholder="Insira as anotações da aula" formControlName="notes"
-                  [maxlength]="maxNotesLength" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10">
+                  [maxlength]="maxNotesLength" cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10">
                 ></textarea>
                 <mat-hint align="end">{{ lesson.get('notes')?.value?.length || 0 }}/{{ maxNotesLength }}</mat-hint>
               </mat-form-field>
@@ -207,7 +205,7 @@
         </div>
       </div>
       <div class="row">
-        <button mat-flat-button class="btn-primary">
+        <button mat-flat-button type="submit" class="btn-primary" (click)="save(lesson)">
           <mat-icon>
             save
           </mat-icon>
@@ -215,7 +213,7 @@
         </button>
       </div>
       <div class="row">
-        <a mat-button class="btn-primary" [routerLink]="['/', ROUTES_KEYS.lessons]">
+        <a mat-button type="button" class="btn-primary" [routerLink]="['/', ROUTES_KEYS.lessons]">
           <mat-icon>
             cancel
           </mat-icon>

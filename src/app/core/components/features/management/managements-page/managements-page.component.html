@@ -22,12 +22,12 @@
     <div>
       <form [formGroup]="filter" class="container">
         <div class="row">
-          <mat-form-field class="col-md-8 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-8 col-12">
             <mat-label>Termo de busca:</mat-label>
             <input formControlName="searchTerm" matInput placeholder="Digite um nome ou e-mail">
           </mat-form-field>
 
-          <mat-form-field class="col-md-4 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-4 col-12">
             <mat-label>Status</mat-label>
             <mat-select formControlName="status" multiple>
               <mat-option [value]="true">Ativo</mat-option>
@@ -36,7 +36,7 @@
           </mat-form-field>
         </div>
         <div class="row">
-          <mat-form-field class="col-md-6 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-6 col-12">
             <mat-label>Gênero</mat-label>
             <mat-select formControlName="gender" multiple>
               @for (gender of genderList; track $index) {
@@ -45,7 +45,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field class="col-md-6 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-6 col-12">
             <mat-label>Estado civil</mat-label>
             <mat-select formControlName="maritalStatus" multiple>
               @for (maritalStatus of maritalStatusList; track $index) {
@@ -56,7 +56,7 @@
         </div>
 
         <div class="row">
-          <mat-form-field class="col-md-6 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-6 col-12">
             <mat-label>Escolaridade</mat-label>
             <mat-select formControlName="educationLevel" multiple>
               @for (educationLevel of educationLevelList; track $index) {
@@ -67,7 +67,7 @@
         </div>
         <div class="row">
 
-          <mat-form-field class="col-md-4 col-12" appearance="outline">
+          <mat-form-field appearance="outline" class="col-md-4 col-12">
             <mat-label>Aniversário</mat-label>
             <mat-date-range-input [rangePicker]="picker">
               <input matStartDate placeholder="Data inicial" formControlName="startBirthdate">

@@ -13,7 +13,7 @@ export class Utils {
         window.URL.revokeObjectURL(url)
       },
       error: (err) => {
-        console.error('Erro ao baixar o arquivo:', err)
+        console.error('Error to file download:', err)
       }
     })
   }

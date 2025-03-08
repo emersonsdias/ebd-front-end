@@ -13,8 +13,8 @@ export class NotificationService {
     const config: MatSnackBarConfig = {
       data: { title: title, message: message, type: type },
       duration: delay,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: ['notification', type]
     }
     this._snackBar.openFromComponent(CustomSnackBarComponent, config);

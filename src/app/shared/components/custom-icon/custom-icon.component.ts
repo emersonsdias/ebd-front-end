@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class CustomIconComponent {
 
   @Input({ required: true }) icon: string | undefined
+  @Input() size: number | undefined
 
   isSvgIcon(icon: string | undefined): boolean {
     if (!icon) {

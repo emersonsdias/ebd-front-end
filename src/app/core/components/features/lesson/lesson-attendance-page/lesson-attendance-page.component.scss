@@ -101,7 +101,21 @@
   }
 }
 
+.offer-amount {
+  font-size: medium;
+  font-weight: 500;
+}
 
 .custom-card-actions {
   padding-inline: 15px;
+}
+
+.not-data-found-container {
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: dashed 1px var(--color-light-gray);
+  color: var(--color-medium-gray);
+  border-radius: 8px;
 }

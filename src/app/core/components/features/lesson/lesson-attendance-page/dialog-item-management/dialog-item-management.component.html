@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>
+  Gerenciar ofertas de <strong>{{ data.item.name }}</strong>
+  <app-custom-icon [icon]="data.item.icon" [size]="30"></app-custom-icon>
+</h2>
+<mat-dialog-content class="dialog-item-management-container">
+  <div class="container d-flex flex-column gap-2">
+
+
+    @if (!hasItems()) {
+    <div class="no-offer-data">
+      Sem nenhum item <strong>{{ data.item.name }}</strong> para gerenciamento
+    </div>
+    }
+
+    @for (attendance of clonedAttendances.controls || []; track $index) {
+    @for (item of getItems(attendance).controls || []; track $index) {
+    @if (item.value.item.id === data.item.id) {
+    <div class="card-item row">
+      <div class="col">
+        {{ attendance.get('studentName')?.value }}
+      </div>
+      <div class="col-auto">
+        {{ item.get('quantity')?.value }}
+      </div>
+      <div class="col-auto">
+        <button mat-icon-button (click)="removeItem(attendance, $index)">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+    }
+    }
+
+    @for (visitor of clonedvisitors.controls || []; track $index) {
+    @for (item of getItems(visitor).controls || []; track $index) {
+    @if (item.value.item.id === data.item.id) {
+    <div class="card-item row">
+      <div class="col">
+        {{ visitor.get('name')?.value }}
+      </div>
+      <div class="col-auto">
+        {{ item.get('quantity')?.value }}
+      </div>
+      <div class="col-auto">
+        <button mat-icon-button>
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+    }
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="btn-primary" [mat-dialog-close] cdkFocusInitial>Cancelar</button>
+  <button mat-flat-button class="btn-primary" (click)="save()">Salvar</button>
+</mat-dialog-actions>

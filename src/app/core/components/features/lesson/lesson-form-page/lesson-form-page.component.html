@@ -19,7 +19,7 @@
   <div class="row">
     <mat-form-field appearance="outline" class="col-md-8 col-12">
       <mat-label>Turma</mat-label>
-      <mat-select formControlName="classroomId" [compareWith]="compareObjectId">
+      <mat-select formControlName="classroomId">
         @for (classroom of classrooms; track $index) {
         <mat-option [value]="classroom.id">
           {{ classroom.name }}

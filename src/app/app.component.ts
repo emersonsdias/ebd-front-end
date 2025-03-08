@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
     if (this._storageService.getRefreshToken()) {
       try {
         await firstValueFrom(this._authService.refreshToken())
-      } catch (_) {
-        console.error('Refresh roken failed')
+      } catch (e) {
+        console.error('Refresh token failed', e)
       }
     }
   }
