@@ -155,11 +155,18 @@ export interface PersonDTO {
   maritalStatus?: MaritalStatus;
   address?: AddressDTO;
   phoneNumbers?: PhoneNumberDTO[];
+  /** @uniqueItems true */
+  types?: PersonType[];
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
   updatedAt?: string;
+}
+
+export enum PersonType {
+  STUDENT = "STUDENT",
+  TEACHER = "TEACHER",
 }
 
 export interface PhoneNumberDTO {

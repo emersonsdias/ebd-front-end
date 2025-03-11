@@ -1,5 +1,5 @@
 @if ((isLoading$ | async) || false) {
-<div class="loader-container">
+<div class="loader-container" [attr.inert]="(isLoading$ | async) ? '' : null">
   <div class="loader">
     <div class="spin"></div>
     <span class="material-icons mat-18">family_restroom</span>

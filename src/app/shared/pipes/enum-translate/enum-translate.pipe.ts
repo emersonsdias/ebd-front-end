@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EducationLevel, Gender, MaritalStatus } from '../../../core';
+import { EducationLevel, Gender, MaritalStatus, PersonType } from '../../../core';
 
 @Pipe({
   name: 'enumTranslate'
 })
 export class EnumTranslatePipe implements PipeTransform {
 
-  transform(value: Gender | EducationLevel | MaritalStatus | undefined, ...args: unknown[]): string {
+  transform(value: Gender | EducationLevel | MaritalStatus | PersonType | undefined, ...args: unknown[]): string {
 
     if (!value) {
       return ''
@@ -40,7 +40,6 @@ export class EnumTranslatePipe implements PipeTransform {
       }
     }
 
-
     if (Object.values(MaritalStatus).includes(value as MaritalStatus)) {
       switch (value) {
         case MaritalStatus.SINGLE:
@@ -51,6 +50,15 @@ export class EnumTranslatePipe implements PipeTransform {
           return 'Divorciado(a)'
         case MaritalStatus.WIDOWED:
           return 'Viúvo(a)'
+      }
+    }
+
+    if (Object.values(PersonType).includes(value as PersonType)) {
+      switch (value) {
+        case PersonType.STUDENT:
+          return 'Estudante'
+        case PersonType.TEACHER:
+          return 'Professor'
       }
     }
 

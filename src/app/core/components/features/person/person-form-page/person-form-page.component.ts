@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
+import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PersonType, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
@@ -45,6 +45,7 @@ export class PersonFormPageComponent implements OnInit {
   educationLevelList = Object.keys(EducationLevel).map(key => EducationLevel[key as keyof typeof EducationLevel])
   genderList = Object.keys(Gender).map(key => Gender[key as keyof typeof Gender])
   maritalStatusList = Object.keys(MaritalStatus).map(key => MaritalStatus[key as keyof typeof MaritalStatus])
+  personTypeList = Object.keys(PersonType).map(key => PersonType[key as keyof typeof PersonType])
   person: FormGroup
   stateControl = new FormControl<StateDTO | null>(null)
   states: StateDTO[] = []
@@ -68,6 +69,7 @@ export class PersonFormPageComponent implements OnInit {
       maritalStatus: [null],
       address: this._buildAddress(),
       phoneNumbers: this._formBuilder.array([]),
+      types: this._formBuilder.control([]),
       active: [null],
       createdAt: [null],
       updatedAt: [null],
