@@ -30,6 +30,116 @@
     </p>
   </div>
 
+
+  <p>
+    <button mat-stroked-button type="button" class="btn-primary" (click)="collapse.toggle()">
+      Visualizar professores e alunos
+      <mat-icon>
+        @if (isCollapsed) {
+        arrow_drop_down
+        } @else {
+        arrow_drop_up
+        }
+      </mat-icon>
+    </button>
+  </p>
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="container col">
+          <p>Selecione um ano para gerenciar professores e alunos</p>
+          <mat-form-field appearance="outline" class="col-md-3 col-12">
+            <mat-label>Ano Letivo</mat-label>
+            <input matInput [matDatepicker]="yearPicker" [formControl]="yearControl" placeholder="Selecione o ano"
+              readonly hidden>
+            <input matInput [value]="yearControl.value | date : 'yyyy'" placeholder="Selecione o ano" readonly>
+            <mat-datepicker-toggle matIconSuffix [for]="yearPicker"></mat-datepicker-toggle>
+            <mat-datepicker #yearPicker startView="multi-year" (yearSelected)="chosenYearHandler($event, yearPicker)">
+            </mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Professores</mat-panel-title>
+              </mat-expansion-panel-header>
+              <button mat-flat-button class="btn-secondary" (click)="addTeacher()">Adicionar Professor</button>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Aniversário</th>
+                    <th scope="col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (teacher of filterTeachersByYear(teachers).controls; track $index) {
+                  <tr [ngClass]="{'delete-student': !teacher.value.active}">
+                    <td class="v-middle">{{ teacher?.value?.person?.name }}</td>
+                    <td class="v-middle">{{ teacher?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
+                    <td class="v-middle">
+                      <button mat-icon-button (click)="toggleTeacherStatus(teacher)">
+                        <mat-icon>
+                          @if (teacher.value.active) {
+                            delete
+                          } @else {
+                            settings_backup_restore
+                          }
+                        </mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Alunos</mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <button mat-flat-button class="btn-secondary" (click)="addStudent()">Adicionar Estudante</button>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Aniversário</th>
+                    <th scope="col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (student of filterStudentsByYear(students).controls; track $index) {
+                  <tr [ngClass]="{'delete-student': !student.value.active}">
+                    <td class="v-middle">{{ student?.value?.person?.name }}</td>
+                    <td class="v-middle">{{ student?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
+                    <td class="v-middle">
+                      <button mat-icon-button (click)="toggleStudentStatus(student)">
+                        <mat-icon>
+                          @if (student.value.active) {
+                            delete
+                          } @else {
+                            settings_backup_restore
+                          }
+                        </mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
   <button mat-flat-button type="submit" class="btn-primary" (click)="save(classroom)">
     <mat-icon>save</mat-icon>
     <span>

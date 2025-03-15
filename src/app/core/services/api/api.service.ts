@@ -4,8 +4,8 @@ import { Observable, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 export interface HttpRequestOptions {
-  params?: Map<string, string>
-  headers?: Map<string, string>
+  params?: Map<string, any>
+  headers?: Map<string, any>
 }
 
 @Injectable({

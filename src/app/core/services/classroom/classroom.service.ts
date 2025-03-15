@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { ClassroomDTO } from '../../models/api/data-contracts';
+import { ClassroomDTO, PersonType } from '../../models/api/data-contracts';
 import { Observable } from 'rxjs';
 
 @Injectable({

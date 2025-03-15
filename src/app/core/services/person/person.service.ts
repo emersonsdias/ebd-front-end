@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { Observable } from 'rxjs';
-import { PersonDTO, PersonReportDTO } from '../../models/api/data-contracts';
+import { PersonDTO, PersonReportDTO, PersonType } from '../../models/api/data-contracts';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +38,11 @@ export class PersonService {
     const url = `${this._path}/${personId}/report/pdf`;
     return this._apiService.httpGetBlob(`${this._path}/${personId}/report/pdf`)
   }
+
+  findByType(personTypes: PersonType[]): Observable<PersonDTO[]> {
+    return this._apiService.httpGet(`${this._path}/by-type`, {params: new Map([['personTypes', personTypes]])})
+  }
+
+
 
 }
