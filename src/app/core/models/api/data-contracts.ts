@@ -78,6 +78,7 @@ export interface AddressDTO {
   neighborhood?: string;
   zipCode?: string;
   city?: CityDTO;
+  active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -174,6 +175,7 @@ export interface PhoneNumberDTO {
   id?: string;
   areaCode?: string;
   phoneNumber?: string;
+  active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -219,15 +221,14 @@ export interface LessonDTO {
   notes?: string;
   /** @format int64 */
   classroomId?: number;
-  visitors?: VisitorDTO[];
   /** @uniqueItems true */
   attendances?: AttendanceDTO[];
   /** @uniqueItems true */
   teachings?: TeachingDTO[];
   /** @uniqueItems true */
   items?: LessonItemDTO[];
-  /** @uniqueItems true */
-  offers?: LessonOfferDTO[];
+  offers?: OfferDTO[];
+  visitors?: VisitorDTO[];
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -243,18 +244,7 @@ export interface LessonItemDTO {
   /** @format int64 */
   lessonId?: number;
   item?: ItemDTO;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface LessonOfferDTO {
-  /** @format int64 */
-  id?: number;
-  /** @format int64 */
-  lessonId?: number;
-  offer?: OfferDTO;
+  active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -316,6 +306,7 @@ export interface VisitorDTO {
   name?: string;
   /** @format int64 */
   lessonId?: number;
+  active?: boolean;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -362,6 +353,8 @@ export interface StudentDTO {
   /** @format date */
   academicPeriodEnd?: string;
   person?: PersonDTO;
+  /** @format int64 */
+  classroomId?: number;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -377,6 +370,8 @@ export interface TeacherDTO {
   /** @format date */
   teachingPeriodEnd?: string;
   person?: PersonDTO;
+  /** @format int64 */
+  classroomId?: number;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
