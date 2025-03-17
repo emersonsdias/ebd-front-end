@@ -110,6 +110,10 @@ export class StorageService {
     this._setUserPreferences(userPreferences);
   }
 
+  getUserId(): string | null {
+    return this.getLocalUser().userId || null
+  }
+
   getUserNickname(): string | null {
     return this.getLocalUser().nickname || null
   }

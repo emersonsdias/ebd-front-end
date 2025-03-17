@@ -1,1 +1,68 @@
-<p>account-information works!</p>
+<div>
+  <p>Dados do usuário</p>
+</div>
+
+<form [formGroup]="userForm" class="col">
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput placeholder="exemplo@email.com.br" formControlName="email">
+      @if (user?.email !== userForm.get('email')?.value) {
+        <mat-hint>Ao trocar o e-mail, será necessário fazer login novamente</mat-hint>
+      }
+    </mat-form-field>
+  </div>
+  <br>
+  <div class="row">
+    <mat-slide-toggle formControlName="changePassword">Desejo alterar minha senha</mat-slide-toggle>
+  </div>
+  <br>
+  @if (userForm.get('changePassword')?.value) {
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nova senha</mat-label>
+      <input name="new-password" [type]="hidePassword ? 'password' : 'text'" matInput
+        placeholder="Digite sua a nova senha" formControlName="password" />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Confirme sua senha</mat-label>
+      <input name="new-password-confirmation" [type]="hidePassword ? 'password' : 'text'" matInput
+        placeholder="Digite sua a nova senha novamente" formControlName="passwordConfirmation" />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-hint>Ao trocar a senha, será necessário fazer login novamente</mat-hint>
+    </mat-form-field>
+  </div>
+  }
+</form>
+<br>
+<div>
+  @if (userForm.enabled) {
+  <button mat-flat-button class="btn-primary" (click)="save(userForm)">
+    Salvar
+  </button>
+  <button mat-flat-button class="btn-secondary" (click)="cancel()">
+    Cancelar
+  </button>
+  } @else {
+  <button mat-flat-button class="btn-primary" (click)="this.userForm.enable()">
+    Editar
+  </button>
+  }
+</div>
