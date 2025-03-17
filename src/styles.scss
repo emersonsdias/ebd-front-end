@@ -140,6 +140,19 @@ body {
     ));
 }
 
+.notification.info {
+  mat-icon {
+    color: var(--color-primary-text) !important;
+  }
+
+  .error {
+    background-color: var(--color-dark-gray);
+  }
+
+  @include mat.snack-bar-overrides((container-color: var(--color-dark-gray),
+    ));
+}
+
 .btn-primary {
   @include mat.button-overrides((
       text-label-text-color: var(--color-primary),

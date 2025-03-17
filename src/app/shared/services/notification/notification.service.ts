@@ -9,7 +9,7 @@ export class NotificationService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  private show(message: string, type: 'success' | 'warning' | 'error' | 'info', delay: number | undefined = undefined, classname: string = '', title: string = '') {
+  private show(message: string, type: 'success' | 'warning' | 'error' | 'info', delay: number | undefined = undefined, title: string = '') {
     const config: MatSnackBarConfig = {
       data: { title: title, message: message, type: type },
       duration: delay,
@@ -21,18 +21,18 @@ export class NotificationService {
   }
 
   success(message: string, title: string = '', autohide: boolean = true): void {
-    this.show(message, 'success', autohide ? 10000 : undefined, 'bg-success text-light', title);
+    this.show(message, 'success', autohide ? 10000 : undefined, title);
   }
 
   error(message: string, title: string = '', autohide: boolean = true): void {
-    this.show(message, 'error', autohide ? 10000 : undefined, 'bg-danger text-light', title);
+    this.show(message, 'error', autohide ? 10000 : undefined, title);
   }
 
   warning(message: string, title: string = '', autohide: boolean = true): void {
-    this.show(message, 'warning', autohide ? 10000 : undefined, 'bg-warning', title);
+    this.show(message, 'warning', autohide ? 10000 : undefined, title);
   }
 
   info(message: string, title: string = '', autohide: boolean = true): void {
-    this.show(message, 'info', autohide ? 10000 : undefined, 'bg-light', title);
+    this.show(message, 'info', autohide ? 10000 : undefined, title);
   }
 }

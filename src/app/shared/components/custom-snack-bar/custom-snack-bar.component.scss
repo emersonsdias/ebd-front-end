@@ -15,5 +15,12 @@
 }
 
 .notification-title {
-  font-weight: 500;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.notification-message-container {
+  padding: 15px;
+  border: solid 1px;
+  border-radius: 5px;
 }
