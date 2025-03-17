@@ -1,5 +1,4 @@
 export const ROUTES_KEYS = {
-
   classroomId: 'classroomId',
   classrooms: 'turmas',
   edit: 'editar',
@@ -16,7 +15,17 @@ export const ROUTES_KEYS = {
   people: 'pessoas',
   personId: 'personId',
   register: 'registrar',
-  settings: 'configuracoes',
+  settings: {
+    accountInformation: 'dados-da-conta',
+    activityLog: 'registro-de-atividades',
+    adminAccess: 'acesso-administrativo',
+    attendanceScores: 'chamadas-e-pontuacoes',
+    departments: 'departamentos',
+    headquartersManagement: 'gerenciamento-da-sede',
+    inactiveRecords: 'cadastros-inativos',
+    index: 'configuracoes',
+    schoolInformation: 'dados-da-escola',
+    teacherAccess: 'acesso-professor',
+  },
   signUp: 'usuarios/cadastrar',
-
 }

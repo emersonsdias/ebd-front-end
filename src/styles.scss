@@ -24,6 +24,7 @@ body {
   --color-off-white-gray: #FAF9F6;
   --color-light-gray: #D3D3D3;
   --color-medium-gray: #A0A0A0;
+  --color-dark-gray: #505050;
   --color-dark: #263238;
   --color-success: green;
   --color-error: rgb(153, 4, 4);
@@ -277,4 +278,10 @@ body {
 .individual-lesson-card:hover {
   @include mat.card-overrides((outlined-outline-color: var(--color-primary),
     ));
+}
+
+.divider-light {
+  @include mat.divider-overrides((
+    color: var(--color-light-gray),
+  ));
 }

@@ -6,40 +6,40 @@
     </div>
     <mat-nav-list class="menu-list" (click)="closeDrawerIfOver()">
       @if (authService.isAuthenticated() | async) {
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.home]" routerLinkActive="current-route">
-          <mat-icon matListIcon>home</mat-icon>
-          <span>Início</span>
-        </a>
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.lessons]" routerLinkActive="current-route" >
-          <mat-icon matListIcon>school</mat-icon>
-          <span>Aulas</span>
-        </a>
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.classrooms]" routerLinkActive="current-route">
-          <mat-icon matListIcon>groups</mat-icon>
-          <span>Turmas</span>
-        </a>
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.management]" routerLinkActive="current-route">
-          <mat-icon matListIcon>app_registration</mat-icon>
-          <span>Cadastros</span>
-        </a>
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.finance]" routerLinkActive="current-route">
-          <mat-icon matListIcon>account_balance</mat-icon>
-          <span>Financeiro</span>
-        </a>
-        <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.settings]" routerLinkActive="current-route">
-          <mat-icon matListIcon>settings</mat-icon>
-          <span>Configurações</span>
-        </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.home]" routerLinkActive="current-route">
+        <mat-icon matListIcon>home</mat-icon>
+        <span>Início</span>
+      </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.lessons]" routerLinkActive="current-route">
+        <mat-icon matListIcon>school</mat-icon>
+        <span>Aulas</span>
+      </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.classrooms]" routerLinkActive="current-route">
+        <mat-icon matListIcon>groups</mat-icon>
+        <span>Turmas</span>
+      </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.management]" routerLinkActive="current-route">
+        <mat-icon matListIcon>app_registration</mat-icon>
+        <span>Cadastros</span>
+      </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.finance]" routerLinkActive="current-route">
+        <mat-icon matListIcon>account_balance</mat-icon>
+        <span>Financeiro</span>
+      </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.settings.index]" routerLinkActive="current-route">
+        <mat-icon matListIcon>settings</mat-icon>
+        <span>Configurações</span>
+      </a>
       }
       <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.help]" routerLinkActive="current-route">
         <mat-icon matListIcon>help</mat-icon>
         <span>Ajuda e suporte</span>
       </a>
       @if (authService.isAuthenticated() | async) {
-        <a mat-list-item (click)="logout()">
-          <mat-icon matListIcon>logout</mat-icon>
-          <span>Sair da conta</span>
-        </a>
+      <a mat-list-item (click)="logout()">
+        <mat-icon matListIcon>logout</mat-icon>
+        <span>Sair da conta</span>
+      </a>
       }
     </mat-nav-list>
   </mat-drawer>

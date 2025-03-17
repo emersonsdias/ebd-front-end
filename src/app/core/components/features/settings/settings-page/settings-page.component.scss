@@ -1,0 +1,35 @@
+.user-sttings {
+  background-color: var(--color-off-white-cream);
+}
+
+.settings-options {
+  a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  a:hover {
+    background-color: var(--color-secondary);
+    span {
+      font-weight: bold;
+    }
+  }
+
+  mat-icon {
+    vertical-align: middle;
+    color: var(--color-dark-gray);
+  }
+
+  span {
+    margin-left: 15px;
+    vertical-align: middle;
+    color: var(--color-dark-gray);
+  }
+}
+
+.current-route {
+  mat-icon, span {
+    font-weight: bold;
+  }
+}

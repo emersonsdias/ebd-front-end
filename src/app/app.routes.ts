@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, FinancePageComponent, ForgotPasswordPageComponent, HelpPageComponent, HomePageComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SettingsPageComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -76,7 +76,20 @@ export const routes: Routes = [
           }
         ]
       },
-      { path: ROUTES_KEYS.settings, component: SettingsPageComponent, title: 'Configurações' },
+      {
+        path: ROUTES_KEYS.settings.index, component: SettingsPageComponent, title: 'Configurações', children: [
+          { path: '', component: AccountInformationComponent, title: 'Configurações - Dados da conta' },
+          { path: ROUTES_KEYS.settings.accountInformation, component: AccountInformationComponent, title: 'Configurações - Dados da conta' },
+          { path: ROUTES_KEYS.settings.activityLog, component: ActivityLogComponent, title: 'Configurações - Registro de atividades' },
+          { path: ROUTES_KEYS.settings.adminAccess, component: AdminAccessComponent, title: 'Configurações - Acesso administrativo' },
+          { path: ROUTES_KEYS.settings.attendanceScores, component: AttendanceScoresComponent, title: 'Configurações - Chamadas e pontuações' },
+          { path: ROUTES_KEYS.settings.departments, component: DepartmentsComponent, title: 'Configurações - Departamentos' },
+          { path: ROUTES_KEYS.settings.headquartersManagement, component: HeadquartersManagementComponent, title: 'Configurações - Gerenciamento da sede' },
+          { path: ROUTES_KEYS.settings.inactiveRecords, component: InactiveRecordsComponent, title: 'Configurações - Cadastros inativos' },
+          { path: ROUTES_KEYS.settings.schoolInformation, component: SchoolInformationComponent, title: 'Configurações - Dados da escola' },
+          { path: ROUTES_KEYS.settings.teacherAccess, component: TeacherAccessComponent, title: 'Configurações - Acesso professor' },
+        ]
+      },
     ]
   },
 
