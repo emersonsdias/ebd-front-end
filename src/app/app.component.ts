@@ -35,6 +35,8 @@ export class AppComponent implements OnInit {
   }
 
   toggleSidenav() {
-    this.sideNavComponent.toggleMenu()
+    setTimeout(() => {
+      this.sideNavComponent.toggleMenu()
+    }, 0)
   }
 }

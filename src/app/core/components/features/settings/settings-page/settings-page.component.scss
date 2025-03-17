@@ -3,17 +3,16 @@
 }
 
 .settings-options {
-  a {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  a:not(.disabled-link) {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
   }
 
-  a:hover {
+  a:not(.disabled-link):hover {
     background-color: var(--color-secondary);
-    span {
-      font-weight: bold;
-    }
+    transform: scale(1.05);
   }
 
   mat-icon {

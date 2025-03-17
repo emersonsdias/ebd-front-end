@@ -18,7 +18,7 @@
         }
         @for (item of groupItems; track $index) {
         <ng-container>
-          <button mat-menu-item [routerLink]="item.route" routerLinkActive="current-route">
+          <button mat-menu-item [routerLink]="item.route" routerLinkActive="current-route" [disabled]="item.disable | async">
             <mat-icon>{{ item.icon }}</mat-icon>
             <span>{{ item.label }}</span>
           </button>
@@ -35,9 +35,10 @@
             <mat-list class="settings-options">
               @for (item of groupItems; track $index; let first = $first) {
               @if (!first) {
-              <mat-divider></mat-divider>
+              <mat-divider class="divider-light"></mat-divider>
               }
-              <a mat-list-item [routerLink]="item.route" routerLinkActive="current-route">
+              <a mat-list-item [routerLink]="(item.disable | async) ? null : item.route" routerLinkActive="current-route"
+                [disabled]="item.disable | async"  [class.disabled-link]="item.disable | async">
                 <mat-icon matListIcon>{{ item.icon }}</mat-icon>
                 <span>{{ item.label }}</span>
               </a>
