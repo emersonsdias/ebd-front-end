@@ -141,7 +141,6 @@ export class ClassroomFormPageComponent implements OnInit {
           this.classroom.setControl('students', this._formBuilder.array(classroomResponse.students || []));
         },
         error: () => {
-          this._notificationService.warning(`Não foi encontrado turma com ID '${classroomId}', redirecionado usuário`)
           this._router.navigate(['/', ROUTES_KEYS.classrooms])
         }
       })

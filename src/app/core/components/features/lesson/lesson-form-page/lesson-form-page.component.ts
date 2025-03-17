@@ -75,7 +75,6 @@ export class LessonFormPageComponent implements OnInit {
           this.lesson.patchValue(lessonResponse)
         },
         error: () => {
-          this._notificationService.warning(`Não foi encontrado aula com ID '${lessonId}', redirecionado usuário`)
           this._router.navigate(['/', ROUTES_KEYS.lessons])
         }
       })

@@ -50,7 +50,6 @@ export class PersonDetailsPageComponent implements OnInit {
     this._personService.findPersonReportById(personId).subscribe({
       next: async reportResponse => this.report = reportResponse,
       error: () => {
-        this._notificationService.warning(`Não foi encontrado pessoa com ID '${personId}', redirecionado usuário`)
         this._router.navigate([ROUTES_KEYS.management])
       }
     })

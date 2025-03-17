@@ -94,7 +94,6 @@ export class PersonFormPageComponent implements OnInit {
           phoneNumbers.forEach(pn => this.phoneNumbers.push(this._buildPhoneNumber(pn)))
         },
         error: () => {
-          this._notificationService.warning(`Não foi encontrado pessoa com ID '${personId}', redirecionado usuário`)
           this._router.navigate(['../'])
         }
       })
