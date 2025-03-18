@@ -1,1 +1,39 @@
-<p>inactive-records works!</p>
+<p>Cadastros inativos</p>
+
+<mat-accordion>
+  @for(person of inactivePeople; track $index) {
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{person.name}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>
+      Id:
+      <span>{{ person?.id }}</span>
+    </div>
+    <div>
+      Gênero:
+      <span>{{ person?.gender | enumTranslate }}</span>
+    </div>
+    <div>
+      Data de nascimento:
+      <span>{{ person?.birthdate | date: 'dd/MM/yyyy' }}</span>
+    </div>
+    <div>
+      Escolaridade:
+      <span>{{ person?.educationLevel | enumTranslate }}</span>
+    </div>
+    <div>
+      Estado civil:
+      <span>{{ person?.maritalStatus | enumTranslate }}</span>
+    </div>
+    <div>
+      Criado em:
+      <span>{{ person?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+    <div>
+      Ultima atualização:
+      <span>{{ person?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+  </mat-expansion-panel>
+  }
+</mat-accordion>

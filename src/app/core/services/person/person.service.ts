@@ -43,6 +43,10 @@ export class PersonService {
     return this._apiService.httpGet(`${this._path}/by-type`, {params: new Map([['personTypes', personTypes]])})
   }
 
+  findInactive(): Observable<PersonDTO[]> {
+    return this._apiService.httpGet(`${this._path}/inactive`)
+  }
+
 
 
 }
