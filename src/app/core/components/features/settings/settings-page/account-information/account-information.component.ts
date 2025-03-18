@@ -10,7 +10,6 @@ import { AuthService } from '../../../../../services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DialogService, ROUTES_KEYS } from '../../../../../../shared';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-information',
@@ -38,7 +37,6 @@ export class AccountInformationComponent implements OnInit {
     private _storageService: StorageService,
     private _authService: AuthService,
     private _dialogService: DialogService,
-    private _router: Router,
   ) {
     this.userForm = this._buildUserForm()
   }

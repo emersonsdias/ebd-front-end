@@ -1,6 +1,4 @@
-<div>
-  <p>Dados do usuário</p>
-</div>
+<p>Dados do usuário</p>
 
 <form [formGroup]="userForm" class="col">
   <div class="row">
@@ -15,7 +13,7 @@
       <mat-label>E-mail</mat-label>
       <input matInput placeholder="exemplo@email.com.br" formControlName="email">
       @if (user?.email !== userForm.get('email')?.value) {
-        <mat-hint>Ao trocar o e-mail, será necessário fazer login novamente</mat-hint>
+      <mat-hint>Ao trocar o e-mail, será necessário fazer login novamente</mat-hint>
       }
     </mat-form-field>
   </div>

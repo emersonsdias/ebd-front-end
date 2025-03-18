@@ -1,1 +1,99 @@
-<p>school-information works!</p>
+<p>Dados da escola</p>
+
+<form [formGroup]="schoolProfileForm" class="col">
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Subtítulo</mat-label>
+      <input matInput placeholder="Insira o subtítulo" formControlName="subtitle">
+    </mat-form-field>
+  </div>
+
+  <mat-divider class="divider-light"></mat-divider>
+  <br>
+  <p>Endereço</p>
+
+  <ng-container formGroupName="address">
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-md-9 col-12">
+        <mat-label>Logradouro</mat-label>
+        <input matInput placeholder="Insira o logradouro" formControlName="street">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-md-3 col-12">
+        <mat-label>Número</mat-label>
+        <input matInput placeholder="Insira o número" formControlName="number">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="col">
+        <mat-label>Complemento</mat-label>
+        <input matInput placeholder="Insira o complemento" formControlName="complement">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col">
+        <mat-label>Bairro</mat-label>
+        <input matInput placeholder="Insira o bairro" formControlName="neighborhood">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="col">
+        <mat-label>CEP</mat-label>
+        <input matInput placeholder="Insira o cep" formControlName="zipCode" #zipCode>
+        <button mat-icon-button matSuffix (click)="findZipCode(zipCode.value)" [disabled]="schoolProfileForm.disabled">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col">
+        <mat-label>UF</mat-label>
+        <mat-select (selectionChange)="changeState($event.value?.id)" [compareWith]="compareObjectId"
+          formControlName="state">
+          <mat-option>UF</mat-option>
+          @for (state of states; track $index) {
+          <mat-option [value]="state">{{ state.abbreviation }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Cidade</mat-label>
+        <mat-select [compareWith]="compareObjectId" formControlName="city">
+          <mat-option>Selecione uma cidade</mat-option>
+          @for (city of cities; track $index) {
+          <mat-option [value]="city">{{ city.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+
+</form>
+<br>
+<div>
+  @if (schoolProfileForm.enabled) {
+  <button mat-flat-button class="btn-primary" (click)="save(schoolProfileForm)">
+    Salvar
+  </button>
+  <button mat-flat-button class="btn-secondary" (click)="cancel()">
+    Cancelar
+  </button>
+  } @else {
+  <button mat-flat-button class="btn-primary" (click)="this.schoolProfileForm.enable()">
+    Editar
+  </button>
+  }
+</div>

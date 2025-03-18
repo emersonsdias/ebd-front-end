@@ -2,7 +2,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PersonType, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils } from '../../../../../shared';
+import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils, ViaCepService } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocationService } from '../../../../services/location/location.service';
@@ -58,6 +58,7 @@ export class PersonFormPageComponent implements OnInit {
     private _router: Router,
     private _notificationService: NotificationService,
     private _locationService: LocationService,
+    private _viaCepService: ViaCepService,
   ) {
     this.person = this._formBuilder.group({
       id: [null],
@@ -138,10 +139,12 @@ export class PersonFormPageComponent implements OnInit {
     })
   }
 
-  changeState(stateId: number): void {
-    this._locationService.findCitiesByStateId(stateId).subscribe({
-      next: res => this.cities = res
-    })
+  async changeState(stateId: number | undefined): Promise<void> {
+    if (!stateId) {
+      this.cities = []
+      return
+    }
+    this.cities = await firstValueFrom(this._locationService.findCitiesByStateId(stateId))
   }
 
   compareObjectId(obj1: any, obj2: any) {
@@ -193,6 +196,16 @@ export class PersonFormPageComponent implements OnInit {
       return
     }
     Utils.downloadPdf(`Relatòrio ${person.name || person.id}`, this._personService.findPersonPdf(person.id))
+  }
+
+  async findZipCode(zipCode: string) {
+    if (zipCode.length !== 8) {
+      return
+    }
+    const address = await this._viaCepService.findZipCode(zipCode)
+    this.changeState(address.city?.state?.id)
+    this.person.get('address')?.patchValue(address)
+    this.stateControl.setValue(address?.city?.state || null)
   }
 
 }

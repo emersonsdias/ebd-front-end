@@ -160,7 +160,10 @@
       <div class="row">
         <mat-form-field appearance="outline" class="col-md-3 col-12">
           <mat-label>CEP</mat-label>
-          <input matInput placeholder="Insira o cep" formControlName="zipCode">
+          <input matInput placeholder="Insira o cep" formControlName="zipCode" #zipCode>
+          <button mat-icon-button matSuffix (click)="findZipCode(zipCode.value)">
+            <mat-icon>search</mat-icon>
+          </button>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="col-md-3 col-12">
