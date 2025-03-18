@@ -38,4 +38,11 @@ export class LoaderService {
       this._isLoading.next(this._requests.length > 0);
     }, 0);
   }
+
+  clearRequests() {
+    this._requests = []
+    setTimeout(() => {
+      this._isLoading.next(this._requests.length > 0);
+    }, 0);
+  }
 }

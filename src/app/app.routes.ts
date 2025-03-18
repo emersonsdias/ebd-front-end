@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -91,6 +91,7 @@ export const routes: Routes = [
           { path: ROUTES_KEYS.settings.departments, component: DepartmentsComponent, title: 'Configurações - Departamentos' },
           { path: ROUTES_KEYS.settings.headquartersManagement, component: HeadquartersManagementComponent, title: 'Configurações - Gerenciamento da sede' },
           { path: ROUTES_KEYS.settings.inactiveRecords, component: InactiveRecordsComponent, title: 'Configurações - Cadastros inativos' },
+          { path: ROUTES_KEYS.settings.itemsManagement, component: ItemsManagementComponent, title: 'Configurações - Gerenciamento de itens' },
           { path: ROUTES_KEYS.settings.schoolInformation, component: SchoolInformationComponent, title: 'Configurações - Dados da escola' },
           { path: ROUTES_KEYS.settings.teacherAccess, component: TeacherAccessComponent, title: 'Configurações - Acesso professor' },
         ]

@@ -1,0 +1,26 @@
+<p>Gerenciamento de itens</p>
+
+<div class="d-flex flex-column container gap-2">
+  <div>
+    <button mat-flat-button>
+      <mat-icon>
+        add
+      </mat-icon>
+      Adicionar item
+    </button>
+  </div>
+  <mat-divider class="divider-light"></mat-divider>
+  <div class="item-status">Ativos</div>
+  @for (item of items; track $index) {
+  <div class="item-card" [ngClass]="{'item-inactive': !item.active}">
+    <span class="v-middle">
+      {{ item.name }}
+    </span>
+    <app-custom-icon [icon]="item.icon" class="v-middle"></app-custom-icon>
+  </div>
+  @if (item.active === true && items[$index + 1] && !items[$index + 1].active) {
+  <mat-divider class="divider-light"></mat-divider>
+  <div class="item-status">Inativos</div>
+  }
+  }
+</div>

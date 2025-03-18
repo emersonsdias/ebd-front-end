@@ -24,6 +24,7 @@ export const ROUTES_KEYS = {
     headquartersManagement: 'gerenciamento-da-sede',
     inactiveRecords: 'cadastros-inativos',
     index: 'configuracoes',
+    itemsManagement: 'cadastro-de-items',
     schoolInformation: 'dados-da-escola',
     teacherAccess: 'acesso-professor',
   },

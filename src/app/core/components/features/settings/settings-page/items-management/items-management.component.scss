@@ -1,0 +1,24 @@
+.item-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  padding-inline: 15px;
+  border: solid 1px var(--color-medium-gray);
+  border-radius: 10px;
+
+  span {
+    font-weight: bold;
+  }
+}
+
+.item-inactive {
+  border: solid 1px var(--color-light-gray);
+  color: var(--color-medium-gray);
+}
+
+
+.item-status {
+  display: flex;
+  justify-content: center;
+  color: var(--color-dark-gray);
+}

@@ -18,4 +18,8 @@ export class LoaderComponent {
     this.isLoading$ = this._loadingService.isLoading()
   }
 
+  closeLoader() {
+    this._loadingService.clearRequests()
+  }
+
 }
