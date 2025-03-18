@@ -1,0 +1,14 @@
+.user-card {
+  padding: 5px;
+  padding-inline: 15px;
+  border: solid 1px var(--color-medium-gray);
+  border-radius: 10px;
+
+  span {
+    font-weight: bold;
+  }
+
+  .user-email {
+    color: var(--color-medium-gray)
+  }
+}

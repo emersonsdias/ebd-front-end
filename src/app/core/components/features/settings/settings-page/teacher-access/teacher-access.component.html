@@ -1,1 +1,14 @@
-<p>teacher-access works!</p>
+<p>Acesso Professores</p>
+
+<div class="d-flex flex-column gap-2">
+  @for (user of teacherUsers; track $index) {
+  <div class="user-card d-flex justify-content-between">
+    <span class="col-auto">
+      {{ user.name }}
+    </span>
+    <span class="col-auto user-email">
+      {{ user.email }}
+    </span>
+  </div>
+  }
+</div>
