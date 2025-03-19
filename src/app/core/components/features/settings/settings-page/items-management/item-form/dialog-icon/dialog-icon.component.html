@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Escolha um ícone</h2>
+<mat-dialog-content>
+
+  <div class="icons-container container gap-2">
+    @for(icon of icons; track $index) {
+    <div class="icon-card col-auto" (click)="currentIcon = icon" [ngClass]="{
+      'current-icon': icon === currentIcon,
+      'previus-icon': icon === previousIcon
+      }">
+      <app-custom-icon [icon]="icon"></app-custom-icon>
+    </div>
+    }
+    <button mat-button class="btn-secondary" (click)="findIcons()">
+      <mat-icon>add</mat-icon>
+      Mais ícones
+    </button>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="btn-primary" [mat-dialog-close] cdkFocusInitial>Cancelar</button>
+  <button mat-flat-button class="btn-primary" (click)="save()">Salvar</button>
+</mat-dialog-actions>

@@ -1,0 +1,54 @@
+@if (item?.id) {
+<p>Editar item</p>
+} @else {
+<p>Novo item</p>
+}
+<form [formGroup]="itemForm">
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col" hidden>
+      <mat-label>Icon</mat-label>
+      <input matInput placeholder="Insira o ícone" formControlName="icon">
+    </mat-form-field>
+
+    <div class="col-auto">
+      <div class="item-icon">
+        @if(!itemForm.get('icon')?.value) {
+        <div class="without-icon">
+          Nenhum ícone selecionado!
+        </div>
+        } @else {
+        <app-custom-icon [icon]="itemForm.get('icon')?.value" [size]="200"></app-custom-icon>
+        }
+        <button mat-stroked-button class="btn-primary v-middle" (click)="selectIcon()">
+          Selecionar ícone
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <mat-slide-toggle formControlName="active">
+      {{ itemForm.get('active')?.value ? 'Ativo' : 'Inativo' }}
+    </mat-slide-toggle>
+  </div>
+
+  <br>
+
+  <button mat-flat-button class="btn-primary" (click)="save(itemForm)">
+    Salvar
+  </button>
+  <button mat-flat-button type="reset" class="btn-secondary"
+    [routerLink]="['/', ROUTES_KEYS.settings.index, ROUTES_KEYS.settings.itemsManagement]">
+    Cancelar
+  </button>
+</form>

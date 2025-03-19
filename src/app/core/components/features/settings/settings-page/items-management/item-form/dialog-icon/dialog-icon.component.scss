@@ -1,0 +1,36 @@
+.icons-container {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2;
+}
+
+.icon-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border: solid 1px var(--color-medium-gray);
+  border-radius: 10px;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.current-icon {
+  border: double 3px var(--color-primary);
+  background-color: var(--color-off-white-cream);
+  transform: scale(1.08);
+}
+
+.previus-icon {
+  background-color: var(--color-off-white-cream);
+  transform: scale(1.05);
+}

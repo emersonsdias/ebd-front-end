@@ -19,6 +19,7 @@ export * from './components/features/settings/settings-page/attendance-scores/at
 export * from './components/features/settings/settings-page/departments/departments.component'
 export * from './components/features/settings/settings-page/headquarters-management/headquarters-management.component'
 export * from './components/features/settings/settings-page/inactive-records/inactive-records.component'
+export * from './components/features/settings/settings-page/items-management/item-form/item-form.component'
 export * from './components/features/settings/settings-page/items-management/items-management.component'
 export * from './components/features/settings/settings-page/school-information/school-information.component'
 export * from './components/features/settings/settings-page/settings-page.component'

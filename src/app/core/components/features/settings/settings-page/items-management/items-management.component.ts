@@ -7,6 +7,8 @@ import { CustomIconComponent } from "../../../../../../shared/components/custom-
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { ROUTES_KEYS } from '../../../../../../shared/config/routes-keys.config';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-items-management',
@@ -15,7 +17,8 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     CustomIconComponent,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    RouterModule,
 ],
   templateUrl: './items-management.component.html',
   styleUrl: './items-management.component.scss'
@@ -23,6 +26,7 @@ import { CommonModule } from '@angular/common';
 export class ItemsManagementComponent implements OnInit {
 
   items: ItemDTO[] = []
+  ROUTES_KEYS = ROUTES_KEYS
 
   constructor(
     private _itemService: ItemService,

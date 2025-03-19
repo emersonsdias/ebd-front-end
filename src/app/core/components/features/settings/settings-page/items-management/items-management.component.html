@@ -2,7 +2,7 @@
 
 <div class="d-flex flex-column container gap-2">
   <div>
-    <button mat-flat-button>
+    <button mat-flat-button [routerLink]="[ROUTES_KEYS.register]">
       <mat-icon>
         add
       </mat-icon>
@@ -12,12 +12,12 @@
   <mat-divider class="divider-light"></mat-divider>
   <div class="item-status">Ativos</div>
   @for (item of items; track $index) {
-  <div class="item-card" [ngClass]="{'item-inactive': !item.active}">
+  <a class="item-card" [ngClass]="{'item-inactive': !item.active}" [routerLink]="[item.id, ROUTES_KEYS.edit]">
     <span class="v-middle">
       {{ item.name }}
     </span>
     <app-custom-icon [icon]="item.icon" class="v-middle"></app-custom-icon>
-  </div>
+  </a>
   @if (item.active === true && items[$index + 1] && !items[$index + 1].active) {
   <mat-divider class="divider-light"></mat-divider>
   <div class="item-status">Inativos</div>
