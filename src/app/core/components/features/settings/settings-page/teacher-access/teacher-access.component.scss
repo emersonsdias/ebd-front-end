@@ -1,4 +1,5 @@
 .user-card {
+  cursor: pointer;
   padding: 5px;
   padding-inline: 15px;
   border: solid 1px var(--color-medium-gray);
@@ -11,4 +12,18 @@
   .user-email {
     color: var(--color-medium-gray)
   }
+
+  transition: transform 0.3s ease,
+  box-shadow 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.inactive-user {
+  border: solid 1px var(--color-light-gray);
+  color: var(--color-medium-gray);
 }

@@ -1,0 +1,55 @@
+@if (user?.id) {
+<p>Editar usuário</p>
+} @else {
+<p>Novo usuário</p>
+}
+
+<form [formGroup]="userForm" class="col">
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="exemplo@email.com.br" formControlName="email">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Senha</mat-label>
+      <input matInput placeholder="Insira a senha" formControlName="password">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <span>Perfil do usuário</span>
+    <mat-selection-list formControlName="roles">
+      @for (userRole of userRoles; track $index) {
+      <mat-list-option togglePosition="before" [value]="userRole">{{ userRole | enumTranslate }}</mat-list-option>
+      }
+    </mat-selection-list>
+  </div>
+
+  <div class="row">
+    <p>
+      <mat-slide-toggle formControlName="active" #active>
+        {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
+      </mat-slide-toggle>
+    </p>
+  </div>
+
+  <br>
+
+  <button mat-flat-button class="btn-primary" (click)="save(userForm)">
+    Salvar
+  </button>
+  <button mat-flat-button type="reset" class="btn-secondary"
+    [routerLink]="[nextRoute]">
+    Cancelar
+  </button>
+</form>

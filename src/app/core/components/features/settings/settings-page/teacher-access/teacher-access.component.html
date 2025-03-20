@@ -1,14 +1,35 @@
 <p>Acesso Professores</p>
 
 <div class="d-flex flex-column gap-2">
-  @for (user of teacherUsers; track $index) {
-  <div class="user-card d-flex justify-content-between">
-    <span class="col-auto">
-      {{ user.name }}
-    </span>
-    <span class="col-auto user-email">
-      {{ user.email }}
-    </span>
+
+  <div>
+    <button mat-flat-button [routerLink]="[ROUTES_KEYS.register]">
+      <mat-icon>
+        add
+      </mat-icon>
+      Adicionar professor
+    </button>
   </div>
+
+  @for (classroom of classrooms; track $index) {
+    <div>
+      {{ classroom.name }}
+    </div>
   }
-</div>
+
+  @for (user of users; track $index) {
+    @if (user.active === false && users[$index - 1] && users[$index - 1].active) {
+    <mat-divider class="divider-light"></mat-divider>
+    <div class="user-status">Inativos</div>
+    }
+    <div class="user-card d-flex justify-content-between" [ngClass]="{'inactive-user': !user.active}"
+      [routerLink]="[user.id, ROUTES_KEYS.edit]">
+      <span class="col-auto">
+        {{ user.name }}
+      </span>
+      <span class="col-auto user-email">
+        {{ user.email }}
+      </span>
+    </div>
+    }
+  </div>

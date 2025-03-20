@@ -30,4 +30,5 @@ export const ROUTES_KEYS = {
     teacherAccess: 'acesso-professor',
   },
   signUp: 'usuarios/cadastrar',
+  userId: 'userId',
 }

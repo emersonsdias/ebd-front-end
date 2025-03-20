@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EducationLevel, Gender, MaritalStatus, PersonType } from '../../../core';
+import { EducationLevel, Gender, MaritalStatus, PersonType, UserRole } from '../../../core';
 
 @Pipe({
   name: 'enumTranslate'
 })
 export class EnumTranslatePipe implements PipeTransform {
 
-  transform(value: Gender | EducationLevel | MaritalStatus | PersonType | undefined, ...args: unknown[]): string {
+  transform(value: Gender | EducationLevel | MaritalStatus | PersonType | UserRole | undefined, ...args: unknown[]): string {
 
     if (!value) {
       return ''
@@ -58,6 +58,15 @@ export class EnumTranslatePipe implements PipeTransform {
         case PersonType.STUDENT:
           return 'Estudante'
         case PersonType.TEACHER:
+          return 'Professor'
+      }
+    }
+
+    if (Object.values(UserRole).includes(value as UserRole)) {
+      switch (value) {
+        case UserRole.ADMIN:
+          return 'Administrador'
+        case UserRole.TEACHER:
           return 'Professor'
       }
     }

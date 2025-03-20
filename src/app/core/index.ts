@@ -24,6 +24,7 @@ export * from './components/features/settings/settings-page/items-management/ite
 export * from './components/features/settings/settings-page/school-information/school-information.component'
 export * from './components/features/settings/settings-page/settings-page.component'
 export * from './components/features/settings/settings-page/teacher-access/teacher-access.component'
+export * from './components/features/user/user-register-form/user-register-form.component'
 export * from './components/features/user/user-register-page/user-register-page.component'
 export * from './components/template/footer/footer.component'
 export * from './components/template/header/header.component'
