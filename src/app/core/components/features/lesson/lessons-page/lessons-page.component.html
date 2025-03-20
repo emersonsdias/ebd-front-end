@@ -37,27 +37,37 @@
       <mat-card appearance="outlined" class="individual-lesson-card"
         [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
         <mat-card-header>
-          <mat-card-title-group>
+          <mat-card-title-group class="d-flex flex-column">
+            <mat-card-subtitle class="lesson-date">
+              {{ lesson.date | date: 'EEEE, dd \'de\' MMMM, yyyy' }}
+            </mat-card-subtitle>
             <mat-card-title>
-              <span>
-                Lição {{ lesson.number }}
-              </span>
-              @if (lesson.topic) {
+              <div>
+                <span>
+                  Lição {{ lesson.number }}
+                </span>
+                @if (lesson.topic) {
                 <span>
                   - {{ lesson.topic }}
                 </span>
-              }
+                }
+              </div>
             </mat-card-title>
-            <mat-card-subtitle>
-              {{ lesson.date | date: 'EEEE, dd \'de\' MMMM' }}
-            </mat-card-subtitle>
-            <span class="lesson-perfomance">
-              Média: {{ (presentStudents / (presentStudents + absentStudents)) || 0 | percent: '1.1-1'}}
-            </span>
+            <mat-card-title class="classroom-name">
+              {{ lesson.classroomName }}
+            </mat-card-title>
           </mat-card-title-group>
         </mat-card-header>
+
         <mat-divider></mat-divider>
         <mat-card-content class="container text-center">
+          <mat-card-subtitle class="d-flex flex-column">
+            @let perfomance = (presentStudents / (presentStudents + absentStudents)) || 0;
+            <span class="lesson-perfomance">
+              Aproveitamento: {{ perfomance || 0 | percent: '1.1-1'}}
+            </span>
+            <mat-progress-bar mode="determinate" [value]="perfomance * 100" class="progress-bar-primary"></mat-progress-bar>
+          </mat-card-subtitle>
           <div class="row justify-content-around">
             <span class="col">
               Presentes: {{ presentStudents }}
@@ -81,8 +91,6 @@
         }
       </mat-card>
       }
-
     </mat-card-content>
   </mat-card>
-
 </div>

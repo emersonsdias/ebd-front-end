@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 @Component({
   selector: 'app-lessons-page',
@@ -26,6 +28,7 @@ import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
     MatIconModule,
     MatInputModule,
     RouterModule,
+    MatProgressBarModule,
   ],
   templateUrl: './lessons-page.component.html',
   styleUrl: './lessons-page.component.scss'

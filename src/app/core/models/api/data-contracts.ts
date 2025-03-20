@@ -221,6 +221,7 @@ export interface LessonDTO {
   notes?: string;
   /** @format int64 */
   classroomId?: number;
+  classroomName?: string;
   /** @uniqueItems true */
   attendances?: AttendanceDTO[];
   /** @uniqueItems true */
@@ -280,6 +281,7 @@ export interface SimpleLessonDTO {
   notes?: string;
   /** @format int64 */
   classroomId?: number;
+  classroomName?: string;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;

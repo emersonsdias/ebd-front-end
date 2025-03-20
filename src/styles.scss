@@ -298,3 +298,9 @@ body {
     color: var(--color-light-gray),
   ));
 }
+
+.progress-bar-primary {
+  @include mat.progress-bar-overrides((
+    active-indicator-color: var(--color-primary),
+  ));
+}

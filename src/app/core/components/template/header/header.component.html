@@ -4,7 +4,7 @@
   </button>
   <span class="empty-spacer"></span>
   @if (authService.isAuthenticated() | async) {
-  <button mat-flat-button class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.home]">
+  <button mat-flat-button class="btn-secondary" [routerLink]="['/', ROUTES_KEYS.settings.index, ROUTES_KEYS.settings.accountInformation]">
     <mat-icon>account_circle</mat-icon>
     <span>{{ userNickname }}</span>
   </button>
