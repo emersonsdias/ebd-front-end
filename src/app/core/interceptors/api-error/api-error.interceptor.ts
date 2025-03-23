@@ -12,11 +12,11 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     const defaultAction = (error: any) => {
       if (error.message) {
-        notificationService.error(error.message, error.error);
+        notificationService.error(error.message, `${response.status} - ${error.error}`);
       } else {
         notificationService.error(
           'Houve um problema e a requisição não pode ser atendida pelo servidor',
-          'Erro interno de servidor'
+          `${response.status} - Erro interno de servidor`
         )
       }
     }
@@ -25,7 +25,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       if (!response.url?.endsWith('/auth/refresh-token')) {
         notificationService.error(
           'Usuário não autenticado ou sem permissão de acesso ao recurso',
-          'Usuário não autorizado'
+          `${response.status} - Usuário não autorizado`
         )
       }
     }
