@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserDTO, UserRole } from '../../../../models/api/data-contracts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { EnumTranslatePipe, NotificationService, ROUTES_KEYS } from '../../../../../shared';
+import { DialogService, EnumTranslatePipe, NotificationService, ROUTES_KEYS } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../../../services/user/user.service';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogRandomPasswordComponent } from './dialog-random-password/dialog-random-password.component';
 
 @Component({
-  selector: 'app-user-register-form',
+  selector: 'app-user-form',
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -23,18 +25,19 @@ import { MatListModule } from '@angular/material/list';
     RouterModule,
     MatListModule,
     EnumTranslatePipe,
+    MatIconModule,
   ],
-  templateUrl: './user-register-form.component.html',
-  styleUrl: './user-register-form.component.scss'
+  templateUrl: './user-form.component.html',
+  styleUrl: './user-form.component.scss'
 })
-export class UserRegisterFormComponent implements OnInit {
+export class UserFormComponent implements OnInit {
 
   user: UserDTO | undefined
   userForm: FormGroup
   submitted: boolean = false
   ROUTES_KEYS = ROUTES_KEYS
   userRoles: UserRole[] = Object.keys(UserRole).map(key => UserRole[key as keyof typeof UserRole])
-
+  hidePassword: boolean = true
   nextRoute: string = `/${ROUTES_KEYS.settings.index}`
 
   constructor(
@@ -43,10 +46,11 @@ export class UserRegisterFormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _userService: UserService,
     private _notificationService: NotificationService,
+    private _dialogService: DialogService,
   ) {
     this.userForm = this._buildUserForm()
-    const isAdminRoute = this._route.snapshot.pathFromRoot.some(route  => route.url.some(segment => segment.path.includes(ROUTES_KEYS.settings.adminAccess)))
-    const isTeacherRoute = this._route.snapshot.pathFromRoot.some(route  => route.url.some(segment => segment.path.includes(ROUTES_KEYS.settings.teacherAccess)))
+    const isAdminRoute = this._route.snapshot.pathFromRoot.some(route => route.url.some(segment => segment.path.includes(ROUTES_KEYS.settings.adminAccess)))
+    const isTeacherRoute = this._route.snapshot.pathFromRoot.some(route => route.url.some(segment => segment.path.includes(ROUTES_KEYS.settings.teacherAccess)))
 
     if (isAdminRoute) {
       this.nextRoute = `/${ROUTES_KEYS.settings.index}/${ROUTES_KEYS.settings.adminAccess}`
@@ -84,7 +88,8 @@ export class UserRegisterFormComponent implements OnInit {
       roles: this._formBuilder.control(user?.roles || []),
       active: [user?.active || null],
       createdAt: [user?.createdAt || null],
-      updatedAt: [user?.updatedAt || null]
+      updatedAt: [user?.updatedAt || null],
+      changePassword: [null],
     })
     return userForm
   }
@@ -128,4 +133,29 @@ export class UserRegisterFormComponent implements OnInit {
     })
   }
 
+  async setRandomPassword() {
+    const randomPassword = this._generateRandomPassword()
+    await this._dialogService.openComponent(DialogRandomPasswordComponent, { randomPassword: randomPassword })
+    this.hidePassword = true
+    this.userForm.get('password')?.setValue(randomPassword)
+  }
+
+  private _generateRandomPassword(length: number = 10) {
+    const letters = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz' // removido 'I' (i maúsculo) e 'l' (L minúsculo para evitar confusão na visualização)
+    const numbers = '0123456789'
+    const specials = '!@#$%&*()_'
+
+    const getRandomChar = (chars: string) => chars[Math.floor(Math.random() * chars.length)]
+
+    let password = getRandomChar(letters) + getRandomChar(numbers) + getRandomChar(specials)
+
+    const allChars = letters + numbers + specials;
+    for (let i = password.length; i < length; i++) {
+      password += getRandomChar(allChars)
+    }
+
+    return password.split('').sort(() => Math.random() - 0.5).join('')
+  }
+
 }
+

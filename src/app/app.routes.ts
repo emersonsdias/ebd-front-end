@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserRegisterFormComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -50,8 +50,8 @@ export const routes: Routes = [
               path: ROUTES_KEYS.settings.adminAccess, children:
                 [
                   { path: '', component: AdminAccessComponent, title: 'Configurações - Acesso administrativo' },
-                  { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: UserRegisterFormComponent, title: 'Configurações - Acesso administrativo' },
-                  { path: `:${ROUTES_KEYS.userId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: UserRegisterFormComponent, title: 'Configurações - Acesso administrativo' }
+                  { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: UserFormComponent, title: 'Configurações - Acesso administrativo' },
+                  { path: `:${ROUTES_KEYS.userId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: UserFormComponent, title: 'Configurações - Acesso administrativo' }
                 ]
             },
             { path: ROUTES_KEYS.settings.attendanceScores, component: AttendanceScoresComponent, title: 'Configurações - Chamadas e pontuações' },
@@ -71,8 +71,8 @@ export const routes: Routes = [
               path: ROUTES_KEYS.settings.teacherAccess, children:
                 [
                   { path: '', component: TeacherAccessComponent, title: 'Configurações - Acesso professor' },
-                  { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: UserRegisterFormComponent, title: 'Configurações - Acesso professor' },
-                  { path: `:${ROUTES_KEYS.userId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: UserRegisterFormComponent, title: 'Configurações - Acesso professor' }
+                  { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: UserFormComponent, title: 'Configurações - Acesso professor' },
+                  { path: `:${ROUTES_KEYS.userId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: UserFormComponent, title: 'Configurações - Acesso professor' }
                 ]
             }
           ]

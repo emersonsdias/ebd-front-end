@@ -19,12 +19,30 @@
     </mat-form-field>
   </div>
 
+  @if (user?.id) {
   <div class="row">
-    <mat-form-field appearance="outline">
-      <mat-label>Senha</mat-label>
-      <input matInput placeholder="Insira a senha" formControlName="password">
-    </mat-form-field>
+    <mat-slide-toggle formControlName="changePassword">Deseja alterar senha?</mat-slide-toggle>
   </div>
+  <br>
+  }
+  @if (userForm.get('changePassword')?.value || !user?.id) {
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md">
+      <mat-label>Nova senha</mat-label>
+      <input name="new-password" [type]="hidePassword ? 'password' : 'text'" matInput
+        placeholder="Digite sua a nova senha" formControlName="password" />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="col-auto">
+      <button mat-fab extended class="btn-secondary" (click)="setRandomPassword()">
+        <mat-icon>lock_reset</mat-icon>
+        Gerar senha aleatória
+      </button>
+    </div>
+  </div>
+  }
 
   <div class="row">
     <span>Perfil do usuário</span>
@@ -48,8 +66,7 @@
   <button mat-flat-button class="btn-primary" (click)="save(userForm)">
     Salvar
   </button>
-  <button mat-flat-button type="reset" class="btn-secondary"
-    [routerLink]="[nextRoute]">
+  <button mat-flat-button type="reset" class="btn-secondary" [routerLink]="[nextRoute]">
     Cancelar
   </button>
 </form>
