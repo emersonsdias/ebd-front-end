@@ -32,7 +32,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     const handle422 = (error: StandardErrorDTO) => {
       const infos = (error.additionalInfo || []).join(' / ');
-      notificationService.error(infos, error.message, false);
+      notificationService.error(infos, `${response.status} - ${error.message}`, false);
     }
 
     const error: StandardErrorDTO = response.error;
