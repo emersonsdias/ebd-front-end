@@ -47,6 +47,8 @@ export class PersonService {
     return this._apiService.httpGet(`${this._path}/inactive`)
   }
 
-
+  findWithoutUser(): Observable<PersonDTO[]> {
+    return this._apiService.httpGet(`${this._path}/without-user`)
+  }
 
 }

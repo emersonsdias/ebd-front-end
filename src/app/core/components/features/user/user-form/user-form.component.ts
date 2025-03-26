@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { UserDTO, UserRole } from '../../../../models/api/data-contracts';
+import { PersonDTO, UserDTO, UserRole } from '../../../../models/api/data-contracts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DialogService, EnumTranslatePipe, NotificationService, ROUTES_KEYS } from '../../../../../shared';
@@ -12,6 +12,8 @@ import { UserService } from '../../../../services/user/user.service';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogRandomPasswordComponent } from './dialog-random-password/dialog-random-password.component';
+import { PersonService } from '../../../../services/person/person.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-user-form',
@@ -26,6 +28,7 @@ import { DialogRandomPasswordComponent } from './dialog-random-password/dialog-r
     MatListModule,
     EnumTranslatePipe,
     MatIconModule,
+    MatSelectModule,
   ],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss'
@@ -39,6 +42,8 @@ export class UserFormComponent implements OnInit {
   userRoles: UserRole[] = Object.keys(UserRole).map(key => UserRole[key as keyof typeof UserRole])
   hidePassword: boolean = true
   nextRoute: string = `/${ROUTES_KEYS.settings.index}`
+  people: PersonDTO[] = []
+  personWithSameEmail: PersonDTO | undefined
 
   constructor(
     private _route: ActivatedRoute,
@@ -47,6 +52,7 @@ export class UserFormComponent implements OnInit {
     private _userService: UserService,
     private _notificationService: NotificationService,
     private _dialogService: DialogService,
+    private _personService: PersonService,
   ) {
     this.userForm = this._buildUserForm()
     const isAdminRoute = this._route.snapshot.pathFromRoot.some(route => route.url.some(segment => segment.path.includes(ROUTES_KEYS.settings.adminAccess)))
@@ -67,6 +73,7 @@ export class UserFormComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.people = (await firstValueFrom(this._personService.findWithoutUser())).sort((a, b) => (a.name || '').localeCompare(b.name || ''))
     const userId = this._route.snapshot.paramMap.get(ROUTES_KEYS.userId)
     if (!userId) {
       return
@@ -86,6 +93,7 @@ export class UserFormComponent implements OnInit {
       email: [user?.email || null],
       password: [user?.password || null],
       roles: this._formBuilder.control(user?.roles || []),
+      person: [user?.person ||  null],
       active: [user?.active || null],
       createdAt: [user?.createdAt || null],
       updatedAt: [user?.updatedAt || null],
@@ -157,5 +165,12 @@ export class UserFormComponent implements OnInit {
     return password.split('').sort(() => Math.random() - 0.5).join('')
   }
 
+  compareObjectId(obj1: any, obj2: any) {
+    return obj1 && obj2 ? (obj1.id === obj2.id) : obj1 === obj2
+  }
+
+  findPersonByEmail(email: string) {
+    this.personWithSameEmail = this.people.find(person => person.email?.toLowerCase() === email.toLowerCase())
+  }
 }
 

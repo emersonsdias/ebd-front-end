@@ -49,26 +49,6 @@ export interface StandardErrorDTO {
   additionalInfo?: string[];
 }
 
-export interface UserDTO {
-  /** @format uuid */
-  id?: string;
-  name?: string;
-  email?: string;
-  password?: string;
-  /** @uniqueItems true */
-  roles?: UserRole[];
-  active?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export enum UserRole {
-  ADMIN = "ADMIN",
-  TEACHER = "TEACHER",
-}
-
 export interface AddressDTO {
   /** @format uuid */
   id?: string;
@@ -90,31 +70,6 @@ export interface CityDTO {
   id?: number;
   name?: string;
   state?: StateDTO;
-  active?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface SchoolProfileDTO {
-  /** @format int64 */
-  id?: number;
-  name?: string;
-  subtitle?: string;
-  address?: AddressDTO;
-  active?: boolean;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-}
-
-export interface StateDTO {
-  /** @format int64 */
-  id?: number;
-  name?: string;
-  abbreviation?: string;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -175,6 +130,52 @@ export interface PhoneNumberDTO {
   id?: string;
   areaCode?: string;
   phoneNumber?: string;
+  active?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export interface StateDTO {
+  /** @format int64 */
+  id?: number;
+  name?: string;
+  abbreviation?: string;
+  active?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export interface UserDTO {
+  /** @format uuid */
+  id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+  /** @uniqueItems true */
+  roles?: UserRole[];
+  person?: PersonDTO;
+  active?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  TEACHER = "TEACHER",
+}
+
+export interface SchoolProfileDTO {
+  /** @format int64 */
+  id?: number;
+  name?: string;
+  subtitle?: string;
+  address?: AddressDTO;
   active?: boolean;
   /** @format date-time */
   createdAt?: string;

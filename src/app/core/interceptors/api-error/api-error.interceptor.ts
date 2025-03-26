@@ -12,11 +12,11 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     const defaultAction = (error: any) => {
       if (error.message) {
-        notificationService.error(error.message, `${response.status} - ${error.error}`);
+        notificationService.error(error.message, error.error)
       } else {
         notificationService.error(
           'Houve um problema e a requisição não pode ser atendida pelo servidor',
-          `${response.status} - Erro interno de servidor`
+          'Erro interno de servidor'
         )
       }
     }
@@ -25,14 +25,14 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       if (!response.url?.endsWith('/auth/refresh-token')) {
         notificationService.error(
           'Usuário não autenticado ou sem permissão de acesso ao recurso',
-          `${response.status} - Usuário não autorizado`
+          'Usuário não autorizado'
         )
       }
     }
 
     const handle422 = (error: StandardErrorDTO) => {
-      const infos = (error.additionalInfo || []).join(' / ');
-      notificationService.error(infos, `${response.status} - ${error.message}`, false);
+      const infos = (error.additionalInfo || []).join(' / ')
+      notificationService.error(infos, 'error.message', false)
     }
 
     const error: StandardErrorDTO = response.error;
@@ -50,7 +50,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       case 409:
       case 500:
       default:
-        defaultAction(error);
+        defaultAction(error)
     }
 
     return throwError(() => response.message)

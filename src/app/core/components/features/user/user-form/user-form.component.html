@@ -5,6 +5,7 @@
 }
 
 <form [formGroup]="userForm" class="col">
+
   <div class="row">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
@@ -15,7 +16,8 @@
   <div class="row">
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput placeholder="exemplo@email.com.br" formControlName="email">
+      <input matInput placeholder="exemplo@email.com.br" formControlName="email" #email
+        (change)="findPersonByEmail(email.value)">
     </mat-form-field>
   </div>
 
@@ -59,6 +61,45 @@
         {{ active.checked ? 'Cadastro ativo' : 'Cadastro inativo' }}
       </mat-slide-toggle>
     </p>
+  </div>
+
+  <div class="row">
+    <span>Associar usuário a uma pessoa cadastrada</span>
+    <mat-form-field appearance="outline">
+      <mat-label>Cadastro</mat-label>
+      <mat-select formControlName="person" [compareWith]="compareObjectId">
+        <mat-select-trigger>
+          {{ userForm.get('person')?.value.name }}
+        </mat-select-trigger>
+        <mat-option></mat-option>
+        @if (user?.person) {
+        <mat-optgroup label="Pessoa associada ao usuário">
+          <mat-option [value]="user?.person">
+            {{ user?.person?.name }}
+            <span class="person-email">{{ user?.person?.email }}</span>
+          </mat-option>
+        </mat-optgroup>
+        }
+        @if (personWithSameEmail) {
+        <mat-optgroup label="Pessoa com mesmo e-mail de cadastro">
+          <mat-option [value]="personWithSameEmail">
+            {{ personWithSameEmail.name }}
+            <span class="person-email">{{ personWithSameEmail.email }}</span>
+          </mat-option>
+        </mat-optgroup>
+        }
+        <mat-optgroup label="Pessoas sem usuário associado">
+          @for (person of people; track $index) {
+          @if (!personWithSameEmail || personWithSameEmail.email !== person.email) {
+          <mat-option [value]="person">
+            {{ person.name }}
+            <span class="person-email">{{ person.email }}</span>
+          </mat-option>
+          }
+          }
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <br>
