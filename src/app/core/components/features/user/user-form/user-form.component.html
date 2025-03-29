@@ -69,7 +69,7 @@
       <mat-label>Cadastro</mat-label>
       <mat-select formControlName="person" [compareWith]="compareObjectId">
         <mat-select-trigger>
-          {{ userForm.get('person')?.value.name }}
+          {{ userForm.get('person')?.value?.name }}
         </mat-select-trigger>
         <mat-option></mat-option>
         @if (user?.person) {
