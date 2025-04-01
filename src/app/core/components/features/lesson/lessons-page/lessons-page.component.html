@@ -3,20 +3,26 @@
   <mat-card appearance="outlined" class="lessons-card">
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title> Últimas aulas </mat-card-title>
+        <mat-card-title>
+          <mat-form-field appearance="outline">
+            <mat-label>Filtrar aulas</mat-label>
+            <input matInput placeholder="Turma ou tema" #lessonFilter (input)="filterLessons(lessonFilter.value)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </mat-card-title>
         <div>
           <mat-form-field appearance="outline" style="display: none;">
             <mat-label>Escolha um período</mat-label>
-            <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-              <input matStartDate placeholder="Data inicial" #startDate>
-              <input matEndDate placeholder="Data final" #endDate>
+            <mat-date-range-input [rangePicker]="picker">
+              <input name="startDate" matStartDate placeholder="Data inicial" [(ngModel)]="startDate">
+              <input name="endDate" matEndDate placeholder="Data final" [(ngModel)]="endDate">
             </mat-date-range-input>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker touchUi #picker>
               <mat-datepicker-actions>
                 <button mat-button matDatepickerCancel class="btn-secondary">Cancelar</button>
                 <button mat-flat-button class="btn-primary" matDatepickerApply
-                  (click)="findLessonsByPeriod(startDate.value, endDate.value)">Buscar aulas por período</button>
+                  (click)="findLessonsByPeriod(startDate, endDate)">Buscar aulas por período</button>
               </mat-datepicker-actions>
             </mat-date-range-picker>
           </mat-form-field>
@@ -29,67 +35,50 @@
         </div>
       </mat-card-title-group>
     </mat-card-header>
+
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title> Aulas futuras </mat-card-title>
+      </mat-card-title-group>
+    </mat-card-header>
     <mat-card-content class="lessons-card-content">
-
-      @for(lesson of lessons; track $index) {
-      @let presentStudents = countPresentStudents(lesson.attendances);
-      @let absentStudents = countAbsentStudents(lesson.attendances);
-      <mat-card appearance="outlined" class="individual-lesson-card"
-        [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
-        <mat-card-header>
-          <mat-card-title-group class="d-flex flex-column">
-            <mat-card-subtitle class="lesson-date">
-              {{ lesson.date | date: 'EEEE, dd \'de\' MMMM, yyyy' }}
-            </mat-card-subtitle>
-            <mat-card-title>
-              <div>
-                <span>
-                  Lição {{ lesson.number }}
-                </span>
-                @if (lesson.topic) {
-                <span>
-                  - {{ lesson.topic }}
-                </span>
-                }
-              </div>
-            </mat-card-title>
-            <mat-card-title class="classroom-name">
-              {{ lesson.classroomName }}
-            </mat-card-title>
-          </mat-card-title-group>
-        </mat-card-header>
-
-        <mat-divider></mat-divider>
-        <mat-card-content class="container text-center">
-          <mat-card-subtitle class="d-flex flex-column">
-            @let perfomance = (presentStudents / (presentStudents + absentStudents)) || 0;
-            <span class="lesson-perfomance">
-              Aproveitamento: {{ perfomance || 0 | percent: '1.1-1'}}
-            </span>
-            <mat-progress-bar mode="determinate" [value]="perfomance * 100" class="progress-bar-primary"></mat-progress-bar>
-          </mat-card-subtitle>
-          <div class="row justify-content-around">
-            <span class="col">
-              Presentes: {{ presentStudents }}
-            </span>
-            <span class="col">
-              Ausentes: {{ absentStudents }}
-            </span>
-          </div>
-        </mat-card-content>
-        @if (isAdmin | async) {
-        <mat-card-footer class="container">
-          <div class="row">
-            <button mat-button class="btn-primary" [routerLink]="[lesson.id]">
-              <mat-icon>edit</mat-icon>
-              <span>
-                Editar
-              </span>
-            </button>
-          </div>
-        </mat-card-footer>
+      @if (upcomingLessons.length === 0) {
+      <div class="no-data-found">
+        Sem aulas futuras para o período
+        de {{ startDate | date : 'dd/MM/yyyy' }}
+        a {{ endDate | date: 'dd/MM/yyyy' }}
+        @if (lessonFilter.value) {
+        com o termo de busca '{{ lessonFilter.value }}'
         }
-      </mat-card>
+      </div>
+      }
+      @for(lesson of upcomingLessons; track $index) {
+      <app-lesson-card [lesson]="lesson"></app-lesson-card>
+      }
+    </mat-card-content>
+
+    <br>
+    <mat-divider class="divider-light"></mat-divider>
+
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title> Aulas passadas </mat-card-title>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content class="lessons-card-content">
+      @if (pastLessons.length === 0) {
+      <div class="no-data-found">
+        Sem aulas passadas para o período
+        de {{ startDate | date : 'dd/MM/yyyy' }}
+        a {{ endDate | date: 'dd/MM/yyyy' }}
+        @if (lessonFilter.value) {
+        com o termo de busca '{{ lessonFilter.value }}'
+        }
+      </div>
+      }
+
+      @for(lesson of pastLessons; track $index) {
+      <app-lesson-card [lesson]="lesson"></app-lesson-card>
       }
     </mat-card-content>
   </mat-card>
