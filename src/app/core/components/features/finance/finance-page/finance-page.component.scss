@@ -1,0 +1,18 @@
+.finance-card {
+  background-color: var(--color-off-white-cream);
+
+  .finance-sub-card {
+    align-items: center;
+    flex-direction: column;
+    div {
+      font-weight: bold;
+    }
+
+    span {
+      font-size: small;
+      font-weight: 500;
+      color: var(--color-medium-gray);
+      text-align: center;
+    }
+  }
+}
