@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { filter } from 'rxjs/operators';
 import { DialogOfferComponent } from './dialog-offer/dialog-offer.component';
 
 @Component({
