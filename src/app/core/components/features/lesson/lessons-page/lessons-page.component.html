@@ -1,5 +1,4 @@
 <div class="table-responsive">
-
   <mat-card appearance="outlined" class="lessons-card">
     <mat-card-header>
       <mat-card-title-group>
@@ -36,6 +35,14 @@
       </mat-card-title-group>
     </mat-card-header>
 
+    @if (lessons.length === 0) {
+    <mat-card-content>
+      <div class="no-data-found">
+        Sem aulas encontradas
+      </div>
+    </mat-card-content>
+    }
+    @if (lessons.length > 0) {
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title> Aulas futuras </mat-card-title>
@@ -44,9 +51,12 @@
     <mat-card-content class="lessons-card-content">
       @if (upcomingLessons.length === 0) {
       <div class="no-data-found">
-        Sem aulas futuras para o período
+        Sem aulas futuras
+        @if (startDate) {
+        para o período
         de {{ startDate | date : 'dd/MM/yyyy' }}
         a {{ endDate | date: 'dd/MM/yyyy' }}
+        }
         @if (lessonFilter.value) {
         com o termo de busca '{{ lessonFilter.value }}'
         }
@@ -68,9 +78,12 @@
     <mat-card-content class="lessons-card-content">
       @if (pastLessons.length === 0) {
       <div class="no-data-found">
-        Sem aulas passadas para o período
+        Sem aulas passadas
+        @if (startDate) {
+        para o período
         de {{ startDate | date : 'dd/MM/yyyy' }}
         a {{ endDate | date: 'dd/MM/yyyy' }}
+        }
         @if (lessonFilter.value) {
         com o termo de busca '{{ lessonFilter.value }}'
         }
@@ -81,5 +94,6 @@
       <app-lesson-card [lesson]="lesson"></app-lesson-card>
       }
     </mat-card-content>
+    }
   </mat-card>
 </div>
