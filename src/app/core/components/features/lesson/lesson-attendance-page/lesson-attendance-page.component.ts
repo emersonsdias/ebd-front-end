@@ -55,71 +55,116 @@ export class LessonAttendancePageComponent implements OnInit {
     private _notificationService: NotificationService,
     private _dialogService: DialogService,
   ) {
-    this.lesson = this._formBuilder.group({
-      id: [null],
-      number: [null],
-      topic: [null],
-      date: [null],
-      status: [null],
-      notes: [null, [Validators.maxLength(this.maxNotesLength)]],
-      classroomId: [null],
-      visitors: this._formBuilder.array([]),
-      attendances: this._formBuilder.array([]),
-      teachings: this._formBuilder.array([]),
-      items: this._formBuilder.array([]),
-      offers: this._formBuilder.array([this._buildOffer()]),
-      active: [null],
-      createdAt: [null],
-      updatedAt: [null]
-    })
+    this.lesson = this._buildLesson()
   }
 
   async ngOnInit(): Promise<void> {
     const lessonId = Number(this._route.snapshot.paramMap.get(ROUTES_KEYS.lessonId))
-
-    this.items = await firstValueFrom(this._itemService.findAll())
-
-    let lesson: LessonDTO
-
     try {
-      lesson = await firstValueFrom(this._lessonService.findById(lessonId))
+      if (!lessonId) {
+        this._router.navigate(['/', ROUTES_KEYS.lessons])
+        this._notificationService.error('Não foi possível localizar o id da aula')
+        return
+      }
+
+      const [items, lesson] = await Promise.all([
+        firstValueFrom(this._itemService.findAll()),
+        firstValueFrom(this._lessonService.findById(lessonId))
+      ])
+      this.items = items
       this.lesson.patchValue(lesson)
       if (!lesson?.classroomId) {
         console.error('It is not possible to call a class without an associated group');
         this._router.navigate(['/', ROUTES_KEYS.lessons]);
         return;
       }
-    } catch (e) {
-      console.error(`Error fetching lesson with id '${lessonId}.'`, e)
-      this._router.navigate(['/', ROUTES_KEYS.lessons]);
-      return
-    }
-
-    try {
       this.classroom = await firstValueFrom(this._classroomService.findById(lesson.classroomId))
       if (!this.classroom) {
         console.error('It is not possible to call a class without an associated group');
         this._router.navigate(['/', ROUTES_KEYS.lessons]);
         return;
       }
+      const attendances: AttendanceDTO[] = lesson.attendances || []
+
+      if (attendances.length === 0 || !this._isPastLesson(lesson)) {
+        const students = this.classroom?.students || []
+        const filterStudents = (student: StudentDTO) => !attendances.some(attendance => attendance.studentId === student.id)
+        attendances.push(...students.filter(filterStudents).map(this._studentToAttendance()))
+      }
+
+      this.attendances.clear()
+      attendances
+        .sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''))
+        .map(attendance => this._buildAttendance(attendance))
+        .forEach(attendanceForm => this.attendances.push(attendanceForm))
     } catch (e) {
-      this._notificationService.error(`Falha ao buscar a turma com id '${lesson.classroomId}'`)
-      this._router.navigate(['/', ROUTES_KEYS.lessons])
+      console.error(`Error fetching lesson with id '${lessonId}.'`, e)
+      this._router.navigate(['/', ROUTES_KEYS.lessons]);
+      return
     }
+  }
 
-    const attendances: AttendanceDTO[] = lesson.attendances || []
+  private _buildLesson(lesson: LessonDTO | undefined = undefined) {
+    return this._formBuilder.group({
+      id: [lesson?.id || null],
+      number: [lesson?.id || null],
+      topic: [lesson?.id || null],
+      date: [lesson?.id || null],
+      status: [lesson?.id || null],
+      notes: [lesson?.id || null, [Validators.maxLength(this.maxNotesLength)]],
+      classroomId: [lesson?.id || null],
+      visitors: this._formBuilder.array(lesson?.visitors || []),
+      attendances: this._formBuilder.array(lesson?.attendances || []),
+      teachings: this._formBuilder.array(lesson?.teachings || []),
+      items: this._formBuilder.array(lesson?.items || []),
+      offers: this._formBuilder.array(lesson?.offers || []),
+      active: [null],
+      createdAt: [null],
+      updatedAt: [null]
+    })
+  }
 
-    if (attendances.length === 0 || !this._isPastLesson(lesson)) {
-      const students = this.classroom?.students || []
-      const filterStudents = (student: StudentDTO) => !attendances.some(attendance => attendance.studentId === student.id)
-      attendances.push(...students.filter(filterStudents).map(this._studentToAttendance()))
-    }
+  private _buildAttendance(attendance: AttendanceDTO | undefined = undefined): FormGroup {
+    return this._formBuilder.group({
+      id: [attendance?.id || null],
+      present: [attendance?.present || null],
+      studentId: [attendance?.studentId || null],
+      studentName: [attendance?.studentName || null],
+      lesson: [attendance?.lesson || null],
+      active: [attendance?.active || null],
+      createdAt: [attendance?.createdAt || null],
+      updatedAt: [attendance?.updatedAt || null]
+    })
+  }
 
-    this.attendances.clear()
-    attendances
-      .sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''))
-      .map(attendance => this._buildAttendanceForm(attendance))
-      .forEach(attendanceForm => this.attendances.push(attendanceForm))
+  private _buildVisitor(visitor: VisitorDTO | undefined = undefined): FormGroup {
+    return this._formBuilder.group({
+      id: [visitor?.id || null],
+      name: [visitor?.name || null, [Validators.required]],
+      lessonId: [visitor?.lessonId || null],
+      createdAt: [visitor?.createdAt || null],
+      updatedAt: [visitor?.updatedAt || null]
+    })
+  }
+
+  private _buildOffer(offer: OfferDTO | undefined = undefined): FormGroup {
+    return this._formBuilder.group({
+      id: [offer?.id || null],
+      amount: [offer?.amount || null, [Validators.required, Validators.min(0.00)]],
+      active: [offer?.active || null],
+      createdAt: [offer?.createdAt || null],
+      updatedAt: [offer?.updatedAt || null]
+    })
+  }
+
+  private _buildLessonItem(item: ItemDTO, quantity: number | null = null): FormGroup {
+    return this._formBuilder.group({
+      id: [null],
+      quantity: [quantity],
+      item: [item],
+      createdAt: [null],
+      updatedAt: [null]
+    })
   }
 
   get offers(): FormArray {
@@ -148,54 +193,12 @@ export class LessonAttendancePageComponent implements OnInit {
     return student => ({
       id: undefined,
       present: undefined,
-      person: student.person,
+      studentId: student.id,
+      studentName: student.person?.name,
       lesson: this.lesson.value,
       active: true,
       createdAt: undefined,
       updatedAt: undefined
-    })
-  }
-
-  private _buildAttendanceForm(attendance: AttendanceDTO): FormGroup {
-    return this._formBuilder.group({
-      id: [null],
-      present: [attendance.present],
-      studentId: [attendance.studentId],
-      studentName: [attendance.studentName],
-      lesson: [attendance.lesson],
-      active: [null],
-      createdAt: [null],
-      updatedAt: [null]
-    })
-  }
-
-  private _buildVisitor(visitor: VisitorDTO | undefined) {
-    return this._formBuilder.group({
-      id: [visitor?.id || null],
-      name: [visitor?.name || null, [Validators.required]],
-      lessonId: [visitor?.lessonId || null],
-      createdAt: [visitor?.createdAt || null],
-      updatedAt: [visitor?.updatedAt || null]
-    })
-  }
-
-  private _buildOffer(offer: OfferDTO | undefined = undefined) {
-    return this._formBuilder.group({
-      id: [offer?.id || null],
-      amount: [offer?.amount || null, [Validators.required, Validators.min(0.00)]],
-      active: [offer?.active || null],
-      createdAt: [offer?.createdAt || null],
-      updatedAt: [offer?.updatedAt || null]
-    })
-  }
-
-  private _buildLessonItem(item: ItemDTO, quantity: number | null = null) {
-    return this._formBuilder.group({
-      id: [null],
-      quantity: [quantity],
-      item: [item],
-      createdAt: [null],
-      updatedAt: [null]
     })
   }
 

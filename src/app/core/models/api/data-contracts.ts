@@ -336,9 +336,7 @@ export interface ClassroomDTO {
   id?: number;
   name?: string;
   ageRange?: AgeRangeDTO;
-  /** @uniqueItems true */
   teachers?: TeacherDTO[];
-  /** @uniqueItems true */
   students?: StudentDTO[];
   lessons?: SimpleLessonDTO[];
   active?: boolean;

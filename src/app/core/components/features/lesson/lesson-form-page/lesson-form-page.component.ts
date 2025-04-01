@@ -46,23 +46,7 @@ export class LessonFormPageComponent implements OnInit {
     private _router: Router,
     private _notificationService: NotificationService,
   ) {
-    this.lesson = this._formBuilder.group({
-      id: [null],
-      number: [null],
-      topic: [null],
-      date: [null],
-      status: [null],
-      notes: [null],
-      classroomId: [null],
-      visitors: [null],
-      attendances: [null],
-      teachings: [null],
-      items: [null],
-      offers: [null],
-      active: [null],
-      createdAt: [null],
-      updatedAt: [null],
-    })
+    this.lesson = this._buildLesson()
   }
 
   async ngOnInit(): Promise<void> {
@@ -79,6 +63,26 @@ export class LessonFormPageComponent implements OnInit {
         }
       })
     }
+  }
+
+  private _buildLesson(lesson: LessonDTO | undefined = undefined): FormGroup {
+    return this._formBuilder.group({
+      id: [lesson?.id || null],
+      number: [lesson?.number || null],
+      topic: [lesson?.topic || null],
+      date: [lesson?.date || null],
+      status: [lesson?.status || null],
+      notes: [lesson?.notes || null],
+      classroomId: [lesson?.classroomId || null],
+      visitors: [lesson?.visitors || null],
+      attendances: [lesson?.attendances || null],
+      teachings: [lesson?.teachings || null],
+      items: [lesson?.items || null],
+      offers: [lesson?.offers || null],
+      active: [lesson?.active || null],
+      createdAt: [lesson?.createdAt || null],
+      updatedAt: [lesson?.updatedAt || null],
+    })
   }
 
   save(form: FormGroup) {
