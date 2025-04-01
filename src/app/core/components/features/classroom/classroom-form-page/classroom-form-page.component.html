@@ -1,4 +1,4 @@
-<form [formGroup]="classroom" class="container">
+<form [formGroup]="classroomForm" class="container">
 
   <div class="row">
     <mat-form-field appearance="outline" class="col-md-8 col-12">
@@ -46,7 +46,6 @@
   <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
     <div class="card">
       <div class="card-body">
-
         <div class="container col">
           <p>Selecione um ano para gerenciar professores e alunos</p>
           <mat-form-field appearance="outline" class="col-md-3 col-12">
@@ -59,88 +58,98 @@
             </mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="row">
-          <mat-accordion multi>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>Professores</mat-panel-title>
-              </mat-expansion-panel-header>
-              <button mat-flat-button class="btn-secondary" (click)="addTeacher()">Adicionar Professor</button>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Aniversário</th>
-                    <th scope="col">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (teacher of filterTeachersByYear(teachers).controls; track $index) {
-                  <tr [ngClass]="{'delete-student': !teacher.value.active}">
-                    <td class="v-middle">{{ teacher?.value?.person?.name }}</td>
-                    <td class="v-middle">{{ teacher?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
-                    <td class="v-middle">
-                      <button mat-icon-button (click)="toggleTeacherStatus(teacher)">
-                        <mat-icon>
-                          @if (teacher.value.active) {
-                            delete
-                          } @else {
-                            settings_backup_restore
-                          }
-                        </mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                  }
-                </tbody>
-              </table>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>Alunos</mat-panel-title>
-                <mat-panel-description>
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <button mat-flat-button class="btn-secondary" (click)="addStudent()">Adicionar Estudante</button>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Aniversário</th>
-                    <th scope="col">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (student of filterStudentsByYear(students).controls; track $index) {
-                  <tr [ngClass]="{'delete-student': !student.value.active}">
-                    <td class="v-middle">{{ student?.value?.person?.name }}</td>
-                    <td class="v-middle">{{ student?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
-                    <td class="v-middle">
-                      <button mat-icon-button (click)="toggleStudentStatus(student)">
-                        <mat-icon>
-                          @if (student.value.active) {
-                            delete
-                          } @else {
-                            settings_backup_restore
-                          }
-                        </mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                  }
-                </tbody>
-              </table>
 
-            </mat-expansion-panel>
-          </mat-accordion>
+        <div ngbAccordion>
+          <div ngbAccordionItem [collapsed]="true">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>Professores</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <button mat-flat-button class="btn-secondary" (click)="addTeacher()">Adicionar Professor</button>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Aniversário</th>
+                        <th scope="col">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (teacher of filterTeachersByYear(teachers).controls; track $index) {
+                      <tr [ngClass]="{'delete-student': !teacher.value.active}">
+                        <td class="v-middle">{{ teacher?.value?.person?.name }}</td>
+                        <td class="v-middle">{{ teacher?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="v-middle">
+                          <button mat-icon-button (click)="toggleTeacherStatus(teacher)">
+                            <mat-icon>
+                              @if (teacher.value.active) {
+                              delete
+                              } @else {
+                              settings_backup_restore
+                              }
+                            </mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+
+          <div ngbAccordionItem [collapsed]="true">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>Alunos</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <button mat-flat-button class="btn-secondary" (click)="addStudent()">Adicionar Estudante</button>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Aniversário</th>
+                        <th scope="col">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (student of filterStudentsByYear(students).controls; track $index) {
+                      <tr [ngClass]="{'delete-student': !student.value.active}">
+                        <td class="v-middle">{{ student?.value?.person?.name }}</td>
+                        <td class="v-middle">{{ student?.value?.person?.birthdate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="v-middle">
+                          <button mat-icon-button (click)="toggleStudentStatus(student)">
+                            <mat-icon>
+                              @if (student.value.active) {
+                              delete
+                              } @else {
+                              settings_backup_restore
+                              }
+                            </mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 
   <br>
 
-  <button mat-flat-button type="submit" class="btn-primary" (click)="save(classroom)">
+  <button mat-flat-button type="submit" class="btn-primary" (click)="save(classroomForm)">
     <mat-icon>save</mat-icon>
     <span>
       Salvar

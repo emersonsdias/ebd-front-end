@@ -18,7 +18,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DialogService, NotificationService } from '../../../../../shared';
 import { PersonService } from '../../../../services/person/person.service';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { DialogPersonComponent } from './dialog-person/dialog-person.component';
 
 @Component({
@@ -39,6 +39,7 @@ import { DialogPersonComponent } from './dialog-person/dialog-person.component';
     ReactiveFormsModule,
     RouterModule,
     NgbCollapseModule,
+    NgbAccordionModule,
   ],
   templateUrl: './classroom-form-page.component.html',
   styleUrl: './classroom-form-page.component.scss'
@@ -46,7 +47,7 @@ import { DialogPersonComponent } from './dialog-person/dialog-person.component';
 export class ClassroomFormPageComponent implements OnInit {
 
   ROUTES_KEYS = ROUTES_KEYS
-  classroom: FormGroup
+  classroomForm: FormGroup
   ageRangeList: AgeRangeDTO[] = []
   teacherList: PersonDTO[] = []
   studentList: PersonDTO[] = []
@@ -66,59 +67,8 @@ export class ClassroomFormPageComponent implements OnInit {
     private _personService: PersonService,
     private _dialogService: DialogService,
   ) {
-    this.classroom = this._formBuilder.group({
-      id: [null],
-      name: [null],
-      ageRange: [null],
-      teachers: this._formBuilder.array([]),
-      students: this._formBuilder.array([]),
-      lessons: [null],
-      active: [null],
-      createdAt: [null],
-      updatedAt: [null],
-    })
+    this.classroomForm = this._buildClassroom()
   }
-
-  private _buildTeacher(person: PersonDTO): FormGroup {
-    const year = this.yearControl.value.getFullYear()
-    const startDate = new Date(year, 0, 1)
-    const endDate = new Date(year, 11, 31)
-    return this._formBuilder.group({
-      id: [null],
-      teachingPeriodStart: [startDate],
-      teachingPeriodEnd: [endDate],
-      person: [person],
-      classroomId: [this.classroom.value.id],
-      active: [true],
-      createdAt: [null],
-      updatedAt: [null]
-    })
-  }
-
-  private _buildStudent(person: PersonDTO): FormGroup {
-    const year = this.yearControl.value.getFullYear()
-    const startDate = new Date(year, 0, 1)
-    const endDate = new Date(year, 11, 31)
-    return this._formBuilder.group({
-      id: [null],
-      academicPeriodStart: [startDate],
-      academicPeriodEnd: [endDate],
-      person: [person],
-      classroomId: [this.classroom.value.id],
-      active: [true],
-      createdAt: [null],
-      updatedAt: [null]
-    })
-  }
-
-  get teachers(): FormArray {
-    return this.classroom.get('teachers') as FormArray || this._formBuilder.array([])
-  }
-
-  get students(): FormArray {
-    return this.classroom.get('students') as FormArray || this._formBuilder.array([]);
-  }
-
 
   async ngOnInit(): Promise<void> {
     const [ageRangeList, teachers, students] = await Promise.all([
@@ -136,9 +86,7 @@ export class ClassroomFormPageComponent implements OnInit {
     if (classroomId) {
       this._classroomService.findById(classroomId).subscribe({
         next: async classroomResponse => {
-          this.classroom.patchValue(classroomResponse)
-          this.classroom.setControl('teachers', this._formBuilder.array(classroomResponse.teachers || []));
-          this.classroom.setControl('students', this._formBuilder.array(classroomResponse.students || []));
+          this.classroomForm = this._buildClassroom(classroomResponse)
         },
         error: () => {
           this._router.navigate(['/', ROUTES_KEYS.classrooms])
@@ -147,12 +95,67 @@ export class ClassroomFormPageComponent implements OnInit {
     }
   }
 
+
+  private _buildClassroom(classroom: ClassroomDTO | undefined = undefined): FormGroup {
+    return this._formBuilder.group({
+      id: [classroom?.id || null],
+      name: [classroom?.name || null],
+      ageRange: [classroom?.ageRange || null],
+      teachers: this._formBuilder.array(classroom?.teachers || []),
+      students: this._formBuilder.array(classroom?.students || []),
+      lessons: [classroom?.lessons || null],
+      active: [classroom?.active || null],
+      createdAt: [classroom?.createdAt || null],
+      updatedAt: [classroom?.updatedAt || null],
+    })
+  }
+
+  private _buildTeacher(person: PersonDTO): FormGroup {
+    const year = this.yearControl.value.getFullYear()
+    const startDate = new Date(year, 0, 1)
+    const endDate = new Date(year, 11, 31)
+    return this._formBuilder.group({
+      id: [null],
+      teachingPeriodStart: [startDate],
+      teachingPeriodEnd: [endDate],
+      person: [person],
+      classroomId: [this.classroomForm.value.id],
+      active: [true],
+      createdAt: [null],
+      updatedAt: [null]
+    })
+  }
+
+  private _buildStudent(person: PersonDTO): FormGroup {
+    const year = this.yearControl.value.getFullYear()
+    const startDate = new Date(year, 0, 1)
+    const endDate = new Date(year, 11, 31)
+    return this._formBuilder.group({
+      id: [null],
+      academicPeriodStart: [startDate],
+      academicPeriodEnd: [endDate],
+      person: [person],
+      classroomId: [this.classroomForm.value.id],
+      active: [true],
+      createdAt: [null],
+      updatedAt: [null]
+    })
+  }
+
+  get teachers(): FormArray {
+    return this.classroomForm.get('teachers') as FormArray || this._formBuilder.array([])
+  }
+
+  get students(): FormArray {
+    return this.classroomForm.get('students') as FormArray || this._formBuilder.array([]);
+  }
+
   save(form: FormGroup) {
     if (form.invalid) {
       console.error('Invalid form')
       return
     }
-    const classroom: ClassroomDTO = this.classroom.value
+    const classroom: ClassroomDTO = this.classroomForm.value
 
 
     console.log(classroom)
@@ -199,41 +202,41 @@ export class ClassroomFormPageComponent implements OnInit {
   }
 
   findTeacherIndex(control: FormControl): number {
-    const formArray = this.classroom.get('teachers') as FormArray;
+    const formArray = this.classroomForm.get('teachers') as FormArray;
     return formArray.controls.findIndex(teacher => teacher === control);
   }
 
   findStudentIndex(control: FormControl): number {
-    const formArray = this.classroom.get('students') as FormArray;
+    const formArray = this.classroomForm.get('students') as FormArray;
     return formArray.controls.findIndex(student => student === control);
   }
 
   toggleTeacherStatus(teacherForm: FormControl | AbstractControl): void {
     const index = this.findTeacherIndex(teacherForm as FormControl)
-    const teacher = (this.classroom.get('teachers') as FormArray).at(index) as FormControl
+    const teacher = (this.classroomForm.get('teachers') as FormArray).at(index) as FormControl
 
     const updatedTeacher = new FormControl({
       ...teacher.value,
       active: !teacher.value.active,
     });
 
-    const formControl = (this.classroom.get('teachers') as FormArray)
+    const formControl = (this.classroomForm.get('teachers') as FormArray)
     formControl.setControl(index, updatedTeacher)
-    this.classroom.markAsDirty()
+    this.classroomForm.markAsDirty()
   }
 
   toggleStudentStatus(studentForm: FormControl | AbstractControl): void {
     const index = this.findStudentIndex(studentForm as FormControl)
-    const student = (this.classroom.get('students') as FormArray).at(index) as FormControl
+    const student = (this.classroomForm.get('students') as FormArray).at(index) as FormControl
 
     const updatedStudent = new FormControl({
       ...student.value,
       active: !student.value.active,
     });
 
-    const formControl = (this.classroom.get('students') as FormArray)
+    const formControl = (this.classroomForm.get('students') as FormArray)
     formControl.setControl(index, updatedStudent)
-    this.classroom.markAsDirty()
+    this.classroomForm.markAsDirty()
   }
 
   filterStudentsByYear(students: FormArray): FormArray {
@@ -261,13 +264,13 @@ export class ClassroomFormPageComponent implements OnInit {
   }
 
   async addTeacher(): Promise<void> {
-    const data = {people: this.teacherList, type: 'teacher' }
+    const data = { people: this.teacherList, type: 'teacher' }
     const responseData = await this._dialogService.openComponent(DialogPersonComponent, data)
     this.teachers.push(this._buildTeacher(responseData.person))
   }
 
   async addStudent(): Promise<void> {
-    const data = {people: this.studentList, type: 'student' }
+    const data = { people: this.studentList, type: 'student' }
     const responseData = await this._dialogService.openComponent(DialogPersonComponent, data)
     this.students.push(this._buildStudent(responseData.person))
   }
