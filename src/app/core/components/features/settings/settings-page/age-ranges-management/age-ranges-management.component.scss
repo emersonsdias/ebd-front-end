@@ -1,0 +1,38 @@
+.age-range-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  padding-inline: 15px;
+  border: solid 1px var(--color-medium-gray);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+
+  .age-range-name {
+    font-weight: bold;
+  }
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.age-range-inactive {
+  border: solid 1px var(--color-light-gray);
+  color: var(--color-medium-gray);
+}
+
+.age-range-status {
+  display: flex;
+  justify-content: center;
+  color: var(--color-dark-gray);
+}
+
+
+.age-range-data {
+  color: var(--color-medium-gray);
+}

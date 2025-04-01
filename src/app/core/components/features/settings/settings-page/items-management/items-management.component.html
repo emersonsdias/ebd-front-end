@@ -9,8 +9,6 @@
       Adicionar item
     </button>
   </div>
-  <mat-divider class="divider-light"></mat-divider>
-  <div class="item-status">Ativos</div>
   @for (item of items; track $index) {
   <a class="item-card" [ngClass]="{'item-inactive': !item.active}" [routerLink]="[item.id, ROUTES_KEYS.edit]">
     <span class="v-middle">

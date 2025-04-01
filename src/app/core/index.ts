@@ -15,6 +15,8 @@ export * from './components/features/person/person-form-page/person-form-page.co
 export * from './components/features/settings/settings-page/account-information/account-information.component'
 export * from './components/features/settings/settings-page/activity-log/activity-log.component'
 export * from './components/features/settings/settings-page/admin-access/admin-access.component'
+export * from './components/features/settings/settings-page/age-ranges-management/age-range-form/age-range-form.component'
+export * from './components/features/settings/settings-page/age-ranges-management/age-ranges-management.component'
 export * from './components/features/settings/settings-page/attendance-scores/attendance-scores.component'
 export * from './components/features/settings/settings-page/departments/departments.component'
 export * from './components/features/settings/settings-page/headquarters-management/headquarters-management.component'

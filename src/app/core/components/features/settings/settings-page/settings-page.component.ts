@@ -52,9 +52,10 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       { route: ROUTES_KEYS.settings.attendanceScores, icon: 'star', label: 'Chamadas e pontuações' },
       { route: ROUTES_KEYS.settings.inactiveRecords, icon: 'people', label: 'Cadastros inativos' },
       { route: ROUTES_KEYS.settings.activityLog, icon: 'lists', label: 'Registro de atividades' },
-      { route: ROUTES_KEYS.settings.departments, icon: 'account_balance', label: 'Departamentos' },
-      { route: ROUTES_KEYS.settings.headquartersManagement, icon: 'business', label: 'Gerenciamento da sede' },
+      // { route: ROUTES_KEYS.settings.departments, icon: 'account_balance', label: 'Departamentos' },
+      // { route: ROUTES_KEYS.settings.headquartersManagement, icon: 'business', label: 'Gerenciamento da sede' },
       { route: ROUTES_KEYS.settings.itemsManagement, icon: 'category', label: 'Gerenciamento de items' },
+      { route: ROUTES_KEYS.settings.ageRangeManagement, icon: 'family_restroom', label: 'Gerenciamento de faixas etárias' },
     ],
     [
       { route: ROUTES_KEYS.settings.adminAccess, icon: 'admin_panel_settings', label: 'Acesso administrativo', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },

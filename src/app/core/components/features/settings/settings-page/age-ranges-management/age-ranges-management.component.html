@@ -1,0 +1,27 @@
+<p>Gerenciamento de faixas etárias</p>
+
+<div class="d-flex flex-column container gap-2">
+  <div>
+    <button mat-flat-button [routerLink]="[ROUTES_KEYS.register]">
+      <mat-icon>
+        add
+      </mat-icon>
+      Adicionar faixa etária
+    </button>
+  </div>
+  @for (ageRange of ageRanges; track $index) {
+  <a class="age-range-card" [ngClass]="{'age-range-inactive': !ageRange.active}"
+    [routerLink]="[ageRange.id, ROUTES_KEYS.edit]">
+    <span class="v-middle age-range-name">
+      {{ ageRange.name }}
+    </span>
+    <span class="col-auto age-range-data">
+      de {{ ageRange.minAge || 0 }} a {{ ageRange.maxAge || '--'}} anos
+    </span>
+  </a>
+  @if (ageRange.active === true && ageRanges[$index + 1] && !ageRanges[$index + 1].active) {
+  <mat-divider class="divider-light"></mat-divider>
+  <div class="item-status">Inativos</div>
+  }
+  }
+</div>

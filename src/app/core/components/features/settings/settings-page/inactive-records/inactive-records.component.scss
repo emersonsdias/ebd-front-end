@@ -1,3 +1,13 @@
 span {
   font-weight: bold;
 }
+
+.no-inactive-records {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: dashed 1px var(--color-light-gray);
+  color: var(--color-medium-gray);
+  min-height: 200px;
+  border-radius: 5px;
+}

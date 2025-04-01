@@ -1,39 +1,69 @@
 <p>Cadastros inativos</p>
 
-<mat-accordion>
+@if (inactivePeople.length === 0) {
+<div class="no-inactive-records">
+  Não foi encontrado nenhum cadastro inativo
+</div>
+}
+
+<div ngbAccordion>
   @for(person of inactivePeople; track $index) {
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{person.name}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <div>
-      Id:
-      <span>{{ person?.id }}</span>
+  <div ngbAccordionItem [collapsed]="true">
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton> {{ person.name }}
+      </button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>
+          <div>
+            Id:
+            <span>{{ person?.id }}</span>
+          </div>
+          <div>
+            Gênero:
+            <span>{{ person?.gender | enumTranslate }}</span>
+          </div>
+          <div>
+            Data de nascimento:
+            <span>{{ person?.birthdate | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div>
+            Escolaridade:
+            <span>{{ person?.educationLevel | enumTranslate }}</span>
+          </div>
+          <div>
+            Estado civil:
+            <span>{{ person?.maritalStatus | enumTranslate }}</span>
+          </div>
+          <div>
+            Criado em:
+            <span>{{ person?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div>
+            Ultima atualização:
+            <span>{{ person?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div>
+            <button mat-button class="btn-primary"
+              [routerLink]="['/', ROUTES_KEYS.management, ROUTES_KEYS.people, person.id]">
+              <mat-icon>
+                analytics
+              </mat-icon>
+              Visualizar dados
+            </button>
+            <button mat-button class="btn-primary"
+              [routerLink]="['/', ROUTES_KEYS.management, ROUTES_KEYS.people, person.id, ROUTES_KEYS.edit]">
+              <mat-icon>
+                edit
+              </mat-icon>
+              Editar usuário
+            </button>
+          </div>
+
+        </ng-template>
+      </div>
     </div>
-    <div>
-      Gênero:
-      <span>{{ person?.gender | enumTranslate }}</span>
-    </div>
-    <div>
-      Data de nascimento:
-      <span>{{ person?.birthdate | date: 'dd/MM/yyyy' }}</span>
-    </div>
-    <div>
-      Escolaridade:
-      <span>{{ person?.educationLevel | enumTranslate }}</span>
-    </div>
-    <div>
-      Estado civil:
-      <span>{{ person?.maritalStatus | enumTranslate }}</span>
-    </div>
-    <div>
-      Criado em:
-      <span>{{ person?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-    </div>
-    <div>
-      Ultima atualização:
-      <span>{{ person?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-    </div>
-  </mat-expansion-panel>
+  </div>
   }
-</mat-accordion>
+</div>

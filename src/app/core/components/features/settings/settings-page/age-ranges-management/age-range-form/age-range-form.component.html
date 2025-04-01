@@ -1,0 +1,45 @@
+@if (ageRange?.id) {
+<p>Editar faixa etária</p>
+} @else {
+<p>Nova faixa etária</p>
+}
+<form [formGroup]="ageRangeForm">
+
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Insira o nome" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-6 col-12">
+      <mat-label>Idade mínima</mat-label>
+      <input matInput placeholder="Idade mínima" formControlName="minAge">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-md-6 col-12">
+      <mat-label>Idade máxima</mat-label>
+      <input matInput placeholder="Idade máxima" formControlName="maxAge">
+    </mat-form-field>
+  </div>
+
+
+  <div class="row">
+    <mat-slide-toggle formControlName="active">
+      {{ ageRangeForm.get('active')?.value ? 'Ativo' : 'Inativo' }}
+    </mat-slide-toggle>
+  </div>
+
+  <br>
+
+  <button mat-flat-button class="btn-primary" (click)="save(ageRangeForm)">
+    Salvar
+  </button>
+  <button mat-flat-button type="reset" class="btn-secondary"
+    [routerLink]="['/', ROUTES_KEYS.settings.index, ROUTES_KEYS.settings.ageRangeManagement]">
+    Cancelar
+  </button>
+
+
+</form>

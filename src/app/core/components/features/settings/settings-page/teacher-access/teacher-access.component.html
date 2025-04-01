@@ -11,8 +11,8 @@
     </button>
   </div>
 
-
   <div ngbAccordion>
+
     @for (classroom of classrooms; track $index) {
     <div ngbAccordionItem [collapsed]="true">
       <h2 ngbAccordionHeader>
@@ -48,7 +48,6 @@
     </div>
     }
 
-
     <div ngbAccordionItem [collapsed]="true">
       <h2 ngbAccordionHeader>
         <button ngbAccordionButton> Usuários não associados a uma turma ou pessoa / Inativos
@@ -80,54 +79,5 @@
       </div>
     </div>
 
-
-
-
-
-
   </div>
-
-
-  <!-- @for (classroom of classrooms; track $index) {
-  <div>
-    {{ classroom.name }}
-  </div>
-  @for (teacher of classroom.teachers; track $index) {
-  @let user = getUserByPersonId(teacher?.person?.id);
-  @if (user) {
-  @if (user.active === false && users[$index - 1] && users[$index - 1].active) {
-  <mat-divider class="divider-light"></mat-divider>
-  <div class="user-status">Inativos</div>
-  }
-  <div class="user-card d-flex justify-content-between" [ngClass]="{'inactive-user': !user.active}"
-    [routerLink]="[user.id, ROUTES_KEYS.edit]">
-    <span class="col-auto">
-      {{ user.name }}
-    </span>
-    <span class="col-auto user-email">
-      {{ user.email }}
-    </span>
-  </div>
-  }
-  }
-  }
-
-  <div>
-    Usuários não associados a uma turma ou pessoa
-  </div>
-  @for (user of usersWithoutClassroom; track $index) {
-  @if (user.active === false && usersWithoutClassroom[$index - 1] && usersWithoutClassroom[$index - 1].active) {
-  <mat-divider class="divider-light"></mat-divider>
-  <div class="user-status">Inativos</div>
-  }
-  <div class="user-card d-flex justify-content-between" [ngClass]="{'inactive-user': !user?.active}"
-    [routerLink]="[user.id, ROUTES_KEYS.edit]">
-    <span class="col-auto">
-      {{ user.name }}
-    </span>
-    <span class="col-auto user-email">
-      {{ user.email }}
-    </span>
-  </div>
-  } -->
 </div>

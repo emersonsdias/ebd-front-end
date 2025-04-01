@@ -1,4 +1,5 @@
 export const ROUTES_KEYS = {
+  ageRangeId: 'ageRangeId',
   classroomId: 'classroomId',
   classrooms: 'turmas',
   edit: 'editar',
@@ -20,6 +21,7 @@ export const ROUTES_KEYS = {
     accountInformation: 'dados-da-conta',
     activityLog: 'registro-de-atividades',
     adminAccess: 'acesso-administrativo',
+    ageRangeManagement: 'gerenciamento-faixas-etarias',
     attendanceScores: 'chamadas-e-pontuacoes',
     departments: 'departamentos',
     headquartersManagement: 'gerenciamento-da-sede',

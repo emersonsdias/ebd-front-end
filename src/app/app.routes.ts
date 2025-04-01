@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AgeRangeFormComponent, AgeRangesManagementComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -64,6 +64,14 @@ export const routes: Routes = [
                   { path: '', component: ItemsManagementComponent, title: 'Configurações - Gerenciamento de itens' },
                   { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: ItemFormComponent, title: 'Configurações - Novo item' },
                   { path: `:${ROUTES_KEYS.itemId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: ItemFormComponent, title: 'Configurações - Editar item' },
+                ]
+            },
+            {
+              path: ROUTES_KEYS.settings.ageRangeManagement, children:
+                [
+                  { path: '', component: AgeRangesManagementComponent, title: 'Configurações - Gerenciamento de faixas etárias' },
+                  { path: ROUTES_KEYS.register, canDeactivate: [unsavedChangesGuard], component: AgeRangeFormComponent, title: 'Configurações - Nova faixa etária' },
+                  { path: `:${ROUTES_KEYS.ageRangeId}/${ROUTES_KEYS.edit}`, canDeactivate: [unsavedChangesGuard], component: AgeRangeFormComponent, title: 'Configurações - Editar faixa etária' },
                 ]
             },
             { path: ROUTES_KEYS.settings.schoolInformation, component: SchoolInformationComponent, title: 'Configurações - Dados da escola' },

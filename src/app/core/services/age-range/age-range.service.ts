@@ -8,14 +8,25 @@ import { Observable } from 'rxjs';
 })
 export class AgeRangeService {
 
-    private _path = '/age-ranges'
+  private _path = '/age-ranges'
 
-    constructor(
-      private _apiService: ApiService
-    ) { }
+  constructor(
+    private _apiService: ApiService
+  ) { }
 
-    findAll(): Observable<AgeRangeDTO[]> {
-      return this._apiService.httpGet(this._path)
-    }
+  create(ageRange: AgeRangeDTO): Observable<AgeRangeDTO> {
+    return this._apiService.httpPost(this._path, ageRange)
+  }
 
+  update(ageRange: AgeRangeDTO): Observable<AgeRangeDTO> {
+    return this._apiService.httpPut(`${this._path}/${ageRange.id}`, ageRange)
+  }
+
+  findById(ageRangeId: number): Observable<AgeRangeDTO> {
+    return this._apiService.httpGet(`${this._path}/${ageRangeId}`)
+  }
+
+  findAll(): Observable<AgeRangeDTO[]> {
+    return this._apiService.httpGet(this._path)
+  }
 }
