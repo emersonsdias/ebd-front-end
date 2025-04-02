@@ -16,3 +16,62 @@
     }
   }
 }
+
+.selected-month {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
+  min-width: 200px;
+}
+
+.offers-info {
+
+  .col {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: var(--color-light-gray);
+
+    .label {
+      font-size: smaller;
+      color: var(--color-dark-gray);
+      font-weight: bold;
+    }
+
+    .value {
+      font-size: small;
+      font-weight: bold;
+    }
+  }
+
+}
+
+.offer-options {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  a:not(.disabled-link) {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    word-wrap: break-word;
+  }
+
+  a:not(.disabled-link):hover {
+    transform: scale(1.05);
+  }
+
+  span {
+    font-size: small;
+    vertical-align: middle;
+    color: var(--color-dark-gray);
+  }
+
+  .classroom-name {
+    font-weight: bold;
+  }
+}
+
+

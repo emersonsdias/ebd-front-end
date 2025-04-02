@@ -1,7 +1,18 @@
 <mat-card appearance="outlined" class="finance-card">
   <mat-card-content class="d-flex flex-column gap-3">
+
+    <div class="d-flex justify-content-center align-items-center">
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <span class="selected-month">{{ selectedMonth | date: 'MMMM-yyyy'}}</span>
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+
     <div class="row gap-3">
-      <div class="col-sm d-flex flex-column gap-3">
+      <div class="col-sm d-flex flex-column gap-3 h-100">
         <mat-card appearance="outlined">
           <mat-card-header class="finance-sub-card">
             <div>
@@ -9,11 +20,59 @@
             </div>
           </mat-card-header>
           <mat-card-content>
+            <canvas baseChart [data]="barChartData" [options]="barChartOptions" type="bar"> </canvas>
           </mat-card-content>
+          <mat-card-content class="d-flex gap-3 offers-info">
+            <div class="col">
+              <span class="label">Entradas</span>
+              <span class="value">{{ totalOfferAmount | currency: 'R$' }}</span>
+            </div>
+            <div class="col">
+              <span class="label">Média diária</span>
+              <span class="value">{{ dailyOffersAverage | currency: 'R$' }}</span>
+            </div>
+            <div class="col">
+              <span class="label">Média por aula</span>
+              <span class="value">{{ lessonOffersAverage | currency: 'R$' }}</span>
+            </div>
+          </mat-card-content>
+          <br>
+          <mat-divider class="divider-light"></mat-divider>
+          <mat-card-header class="finance-sub-card">
+            <div>
+              Ofertas por turma
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas baseChart [data]="barChartDataByClassroom" [options]="barChartOptionsByClassroom" type="bar">
+            </canvas>
+          </mat-card-content>
+          @let topClassrooms = getTopClassrooms();
+          @if (topClassrooms && topClassrooms.length >= 3) {
+          <mat-card-header class="finance-sub-card">
+            <div>
+              Top turmas
+            </div>
+          </mat-card-header>
+          <mat-card-content class="d-flex gap-3 offers-info">
+            <div class="col">
+              <span class="label">{{ topClassrooms[0].classroom }}</span>
+              <span class="value">{{ topClassrooms[0].amount | currency: 'R$' }}</span>
+            </div>
+            <div class="col">
+              <span class="label">{{ topClassrooms[1].classroom }}</span>
+              <span class="value">{{ topClassrooms[1].amount | currency: 'R$' }}</span>
+            </div>
+            <div class="col">
+              <span class="label">{{ topClassrooms[2].classroom }}</span>
+              <span class="value">{{ topClassrooms[2].amount | currency: 'R$' }}</span>
+            </div>
+          </mat-card-content>
+          }
         </mat-card>
       </div>
 
-      <div class="col-sm d-flex flex-column gap-3">
+      <div class="col-sm d-flex flex-column gap-3 h-100">
         <mat-card appearance="outlined">
           <mat-card-header class="finance-sub-card">
             <div>
@@ -23,6 +82,38 @@
               O histórico é exibido de acordo com o intervalo selecionado
             </span>
           </mat-card-header>
+          <mat-card-content>
+            <div ngbAccordion>
+              @for (entry of reversedDailyOfferData; track $index) {
+              <div ngbAccordionItem [collapsed]="true">
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>{{ entry[0] | date: 'EEEE, dd' }}
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                        <mat-list class="offer-options d-flex flex-column col">
+                          @for (offer of entry[1]; track $index) {
+                          <a mat-list-item [routerLink]="['/', ROUTES_KEYS.lessons, offer.lesson?.id, ROUTES_KEYS.lessonAttendance]">
+                            <div class="d-flex justify-content-between flex-wrap">
+                              <span class="classroom-name">
+                                {{ offer.lesson?.classroomName }}
+                              </span>
+                              <span>{{ offer.amount | currency:'R$' }}</span>
+                            </div>
+                          </a>
+                          <mat-divider class="divider-light"></mat-divider>
+                          }
+                        </mat-list>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+
+          </mat-card-content>
         </mat-card>
       </div>
     </div>

@@ -157,8 +157,6 @@ export class ClassroomFormPageComponent implements OnInit {
     }
     const classroom: ClassroomDTO = this.classroomForm.value
 
-
-    console.log(classroom)
     if (classroom.id) {
       this.update(classroom)
     } else {

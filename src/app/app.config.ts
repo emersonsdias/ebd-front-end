@@ -9,6 +9,7 @@ import { apiAuthInterceptor, apiErrorInterceptor } from './core';
 import { loaderInterceptor } from './shared';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import localePt from '@angular/common/locales/pt';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 registerLocaleData(localePt, 'pt');
 
 export const appConfig: ApplicationConfig = {
@@ -19,10 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([
       apiAuthInterceptor,
       apiErrorInterceptor,
-      loaderInterceptor
+      loaderInterceptor,
     ])),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    provideLuxonDateAdapter()
+    provideLuxonDateAdapter(),
+    provideCharts(withDefaultRegisterables()),
   ]
 };

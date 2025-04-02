@@ -424,6 +424,18 @@ export interface SimpleClassroomDTO {
   updatedAt?: string;
 }
 
+export interface OfferDTOWithLesson {
+  /** @format int64 */
+  id?: number;
+  amount?: number;
+  lesson?: LessonDTO;
+  active?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
 export interface CitySimpleDTO {
   /** @format int64 */
   id?: number;
