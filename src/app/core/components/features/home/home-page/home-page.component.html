@@ -1,1 +1,48 @@
-<p>home-page works!</p>
+<div class="container">
+
+  <div class="row">
+    <mat-card appearance="outlined" class="col-12 col-md-6">
+      <mat-card-header class="d-flex flex-column">
+        <div class="card-title">
+          Aniversariantes
+        </div>
+        <div class="birthday-people-period-selector">
+          <button mat-icon-button class="v-middle" (click)="previousPeriod()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span>
+            {{ startDate | date : 'dd/MM'}} a {{ endDate | date: 'dd/MM' }}
+          </span>
+          <button mat-icon-button class="v-middle" (click)="nextPeriod()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="birthday-people-container d-flex flex-column gap-2" [ngClass]="{'no-data-found': birthdayPeople.length === 0}">
+          @if (birthdayPeople.length === 0) {
+          Sem aniversariantes para o período
+          }
+          @for (person of birthdayPeople; track $index) {
+          <a class="birthday-person-card" [routerLink]="['/', ROUTES_KEYS.management, ROUTES_KEYS.people, person.id]">
+            <span>{{ person.birthdate | date: 'dd/MM' }}</span>
+            <span>
+              {{ person.name }} ({{ calculateAge(person.birthdate) }})
+            </span>
+          </a>
+          }
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <mat-button-toggle-group class="d-flex" style="width: 100%;" [(ngModel)]="periodType"
+          (change)="changePeriodType(periodType)">
+          <mat-button-toggle value="week" style="flex: 1;">Semanal</mat-button-toggle>
+          <mat-button-toggle value="month" style="flex: 1;">Mensal</mat-button-toggle>
+        </mat-button-toggle-group>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+
+
+</div>

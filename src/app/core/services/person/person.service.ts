@@ -51,4 +51,16 @@ export class PersonService {
     return this._apiService.httpGet(`${this._path}/without-user`)
   }
 
+  findByBirthdatePeriod(startDate: Date, endDate: Date): Observable<PersonDTO[]> {
+    const params = new Map
+    params.set('startDate', this._formatDate(startDate))
+    params.set('endDate', this._formatDate(endDate))
+    return this._apiService.httpGet(`${this._path}/birthdate`, { params })
+  }
+
+  private _formatDate(date: Date): string {
+    const parsedDate = date instanceof Date ? date : new Date(date);
+    return `${parsedDate.getUTCFullYear()}-${String(parsedDate.getUTCMonth() + 1).padStart(2, '0')}-${String(parsedDate.getUTCDate()).padStart(2, '0')}`;
+  }
+
 }

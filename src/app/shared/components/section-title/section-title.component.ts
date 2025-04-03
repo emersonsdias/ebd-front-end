@@ -4,6 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ROUTES_KEYS } from '../../config/routes-keys.config';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
+import { StorageService } from '../../../core';
 
 @Component({
   selector: 'app-section-title',
@@ -16,7 +17,11 @@ export class SectionTitleComponent {
   @Input() sectionTitle: string | undefined
   ROUTES_KEYS = ROUTES_KEYS
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private storageService: StorageService,
+  ) {}
 
   ngOnInit() {
     this.sectionTitle = this.route.snapshot?.routeConfig?.data?.['title']
@@ -31,7 +36,11 @@ export class SectionTitleComponent {
       }),
       filter(route => route.outlet === 'primary')
     ).subscribe(route => {
-      this.sectionTitle = route.snapshot.routeConfig?.title?.toString()
+      if (route.snapshot.routeConfig?.path === ROUTES_KEYS.home) {
+        this.sectionTitle = `Olá ${this.storageService.getUserNickname()}!`
+      } else {
+        this.sectionTitle = route.snapshot.routeConfig?.title?.toString()
+      }
     });
   }
 

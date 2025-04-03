@@ -1,0 +1,42 @@
+.card-title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.birthday-people-period-selector {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.birthday-people-container {
+
+
+}
+
+.birthday-person-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-medium-gray);
+  gap: 20px;
+  padding: 5px;
+  padding-inline: 15px;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 10px;
+
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease,
+  box-shadow 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}

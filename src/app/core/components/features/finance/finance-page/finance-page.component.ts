@@ -57,7 +57,7 @@ export class FinancePageComponent implements OnInit {
     labels: ['Turmas'],
     datasets: []
   }
-  barChartOptionsByClassroom: ChartConfiguration<'bar'>['options'] = { responsive: true, indexAxis: 'x', scales: { x: { beginAtZero: true, }, } }
+  barChartOptionsByClassroom: ChartConfiguration<'bar'>['options'] = { responsive: true, indexAxis: 'x', scales: { x: { beginAtZero: true, },  } }
 
   constructor(
     private _offerService: OfferService,
