@@ -1,0 +1,199 @@
+<div class="container">
+
+  <div class="row gap-3">
+
+    <div>
+      Filtrar por:
+
+      <div>
+        turma
+      </div>
+      <div>
+        aula
+      </div>
+      <div>
+        lição
+      </div>
+    </div>
+
+
+    <div class="row gap-3">
+
+      <div class="col-md">
+        <mat-card appearance="outlined">
+          <mat-card-content class="d-flex justify-content-between">
+            <span>Presentes</span>
+            <strong>{{ presentStudents }}</strong>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-md">
+        <mat-card appearance="outlined" class="col-md">
+          <mat-card-content class="d-flex justify-content-between">
+            <span>Visitantes</span>
+            <strong>{{ numberOfVisitors }}</strong>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-md">
+        <mat-card appearance="outlined" class="col-md">
+          <mat-card-content class="d-flex justify-content-between gap-3">
+            <div class="col">
+              <span>Aproveitamento</span>
+              <mat-progress-bar mode="determinate" [value]="performance"></mat-progress-bar>
+            </div>
+            <strong class="col-auto">{{ performance || 0 | percent: '1.1-1' }}</strong>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 col-12">
+        <mat-card appearance="outlined">
+          <mat-card-header class="d-flex flex-column">
+            <div class="card-title">
+              Resumo geral
+            </div>
+          </mat-card-header>
+          <mat-card-content class="col justify-content-between">
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Matriculados</span>
+                  <strong>{{ enrolledStudents }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Presentes</span>
+                  <strong>{{ presentStudents }}</strong>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Ausentes</span>
+                  <strong>{{ absentStudents }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Visitantes</span>
+                  <strong>{{ numberOfVisitors }}</strong>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Total</span>
+                  <strong>{{ presentStudents + numberOfVisitors }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Presença</span>
+                  <strong>{{ performance || 0 | percent: '1.1-1' }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              @for (item of items; track $index) {
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>{{ item.name }}</span>
+                  <strong>{{ numberOfVisitors }}</strong>
+                </div>
+              </div>
+              }
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Ofertas</span>
+                  <strong>{{ offers | currency: 'R$' }}</strong>
+                </div>
+              </div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-md-5 col-12">
+        <mat-card appearance="outlined">
+          <mat-card-header class="d-flex flex-column">
+            <div class="card-title">
+              Top turmas
+            </div>
+          </mat-card-header>
+          <mat-card-content class="col justify-content-between">
+            <div class="row">
+              @for (classroom of classroomByPerformance.slice(0, 3); track $index) {
+              <div class="col">
+                <div class="ranking">
+                  <span class="classroom-title">
+                    {{ classroom.classroom.name }}
+                  </span>
+                  <div class="spinner-container">
+                    <mat-progress-spinner class="classroom-ranking" mode="determinate"
+                      [value]="classroom.performance * 100" [diameter]="60">
+                    </mat-progress-spinner>
+                    <div class="spinner-text">{{ classroom.performance | percent: '1.1-1' }}</div>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </mat-card-content>
+          <mat-card-content>
+            <p class="ranking-subtitle">Ranking completo</p>
+          </mat-card-content>
+          <mat-card-content>
+            <div class="d-flex flex-column gap-3">
+
+              @for (classroom of classroomByPerformance; track $index) {
+                <div class="row">
+                  <div class="classroom-ranking">
+                    <span>{{classroom.classroom.name}}</span>
+                    <strong>{{ classroom.performance | percent: '1.1-1' }}</strong>
+                  </div>
+                  <div>
+                    <mat-progress-bar mode="determinate" [value]="classroom.performance * 100"></mat-progress-bar>
+                  </div>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-md-2 col-12">
+        <mat-card appearance="outlined">
+          <mat-card-header class="d-flex flex-column">
+            <div class="card-title">
+              Resumo
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <div style="height: 200px;">
+              <canvas baseChart [data]="barChartData" [options]="barChartOptions" type="bar"> </canvas>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</div>

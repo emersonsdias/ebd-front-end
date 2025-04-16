@@ -2,6 +2,7 @@ export const ROUTES_KEYS = {
   ageRangeId: 'ageRangeId',
   classroomId: 'classroomId',
   classrooms: 'turmas',
+  dashboard: 'desempenho',
   edit: 'editar',
   finance: 'financeiro',
   forgotPassword: 'esqueci-minha-senha',

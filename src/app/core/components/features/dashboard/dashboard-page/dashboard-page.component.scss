@@ -1,0 +1,70 @@
+.card-title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+
+.mini-card-data {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 15px;
+  padding-inline: 15px;
+  font-size: small;
+  vertical-align: middle;
+  margin-block: 3px;
+
+  span, strong {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.ranking {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+
+  border: 1px solid var(--color-light-gray);
+  border-radius: 10px;
+
+  .classroom-title {
+    font-size: small;
+    font-weight: bold;
+  }
+}
+
+.spinner-container {
+  position: relative;
+  display: inline-block;
+}
+
+.spinner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: small;
+  font-weight: bold;
+  color: var(--color-medium-gray);
+}
+
+.ranking-subtitle {
+  padding-top: 15px;
+  font-size: small;
+  font-weight: bold;
+  color: var(--color-medium-gray);
+}
+
+.classroom-ranking {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: small;
+  font-weight: bold;
+}

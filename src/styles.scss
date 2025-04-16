@@ -317,3 +317,9 @@ body {
   min-height: 200px;
   border-radius: 5px;
 }
+
+.classroom-ranking {
+  @include mat.progress-spinner-overrides((
+    size: 80px
+  ));
+}

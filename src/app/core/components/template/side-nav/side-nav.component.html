@@ -18,6 +18,10 @@
         <mat-icon matListIcon>groups</mat-icon>
         <span>Turmas</span>
       </a>
+      <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.dashboard]" routerLinkActive="current-route">
+        <mat-icon matListIcon>analytics</mat-icon>
+        <span>Dashboard</span>
+      </a>
       <a mat-list-item [routerLink]="['/' + ROUTES_KEYS.management]" routerLinkActive="current-route">
         <mat-icon matListIcon>app_registration</mat-icon>
         <span>Cadastros</span>

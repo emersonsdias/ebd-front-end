@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AgeRangeFormComponent, AgeRangesManagementComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AgeRangeFormComponent, AgeRangesManagementComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DashboardPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -22,6 +22,7 @@ export const routes: Routes = [
               { path: `:${ROUTES_KEYS.classroomId}`, canDeactivate: [unsavedChangesGuard], component: ClassroomFormPageComponent, title: 'Editar turma' }
             ]
         },
+        { path: ROUTES_KEYS.dashboard, canActivate: [adminGuard], component: DashboardPageComponent, title: 'Dashboard' },
         { path: ROUTES_KEYS.finance, canActivate: [adminGuard], component: FinancePageComponent, title: 'Financeiro' },
         {
           path: ROUTES_KEYS.lessons, children:

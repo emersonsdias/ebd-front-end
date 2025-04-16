@@ -95,8 +95,10 @@ export class HomePageComponent implements OnInit {
     this._updatebirthDayPeople()
   }
 
-  changePeriodType(periodType: 'week' | 'month') {
-    const [startDate, endDate] = this.getDateRange(this.startDate, periodType)
+  changePeriodType() {
+    this.periodType = this.periodType === 'week' ? 'month' : 'week'
+
+    const [startDate, endDate] = this.getDateRange(this.startDate, this.periodType)
     this.startDate = startDate
     this.endDate = endDate
     this._updatebirthDayPeople()
