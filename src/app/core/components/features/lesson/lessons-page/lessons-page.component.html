@@ -52,14 +52,17 @@
       @if (upcomingLessons.length === 0) {
       <div class="no-data-found">
         Sem aulas futuras
+        @if (lessonFilter.value) {
+        com o termo de busca '{{ lessonFilter.value }}'
+        }
         @if (startDate) {
         para o período
         de {{ startDate | date : 'dd/MM/yyyy' }}
         a {{ endDate | date: 'dd/MM/yyyy' }}
+        } @else {
+        , selecione um período maior para buscar mais aulas no servidor
         }
-        @if (lessonFilter.value) {
-        com o termo de busca '{{ lessonFilter.value }}'
-        }
+
       </div>
       }
       @for(lesson of upcomingLessons; track $index) {
@@ -79,13 +82,15 @@
       @if (pastLessons.length === 0) {
       <div class="no-data-found">
         Sem aulas passadas
+        @if (lessonFilter.value) {
+        com o termo de busca '{{ lessonFilter.value }}'
+        }
         @if (startDate) {
         para o período
         de {{ startDate | date : 'dd/MM/yyyy' }}
         a {{ endDate | date: 'dd/MM/yyyy' }}
-        }
-        @if (lessonFilter.value) {
-        com o termo de busca '{{ lessonFilter.value }}'
+        } @else {
+        , selecione um período maior para buscar mais aulas no servidor
         }
       </div>
       }

@@ -1,24 +1,149 @@
 <div class="container">
-
   <div class="row gap-3">
+    <mat-accordion class="filter-accordion">
+      <mat-expansion-panel #expansionPanel>
+        <mat-expansion-panel-header class="filter-expansion-header">
+          <div>
+            <mat-panel-title class="filter-panel-title">
+              @if (isFilterEmpty()) {
+              <mat-icon>filter_alt_off</mat-icon>
+              } @else {
+              <mat-icon>filter_alt</mat-icon>
+              }
+              <span>Filtros</span>
+            </mat-panel-title>
+            <mat-panel-description class="filter-data">
+            </mat-panel-description>
+          </div>
+        </mat-expansion-panel-header>
+        <div>
+          <form [formGroup]="filter" class="container">
 
-    <div>
-      Filtrar por:
+            <div class="row">
+              <mat-form-field appearance="outline" class="col-md-5 col-12">
+                <mat-label>Período</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Data inicial" formControlName="startDate">
+                  <input matEndDate placeholder="Data final" formControlName="endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <div class="date-buttons">
+                  <button type="button" class="btn btn-outline-dark" (click)="currentSemester()">
+                    Semestre atual
+                  </button>
+                  <button type="button" class="btn btn-outline-dark" (click)="currentBimester()">
+                    Bimestre atual
+                  </button>
+                  <button type="button" class="btn btn-outline-dark" (click)="currentQuarter()">
+                    Trimestre atual
+                  </button>
+                </div>
+              </mat-form-field>
+            </div>
 
-      <div>
-        turma
-      </div>
-      <div>
-        aula
-      </div>
-      <div>
-        lição
-      </div>
+            <div class="row">
+              <mat-form-field appearance="outline">
+                <mat-label>Escolhas as lições</mat-label>
+                <mat-select formControlName="lessons" multiple>
+                  <mat-select-trigger>
+                    Lição {{filter.get('lessons')?.value?.[0] || ''}}
+                    @if ((filter.get('lessons')?.value?.length || 0) > 1) {
+                    <span>
+                      (+{{(filter.get('lessons')?.value?.length || 0) - 1}} {{filter.get('lessons')?.value?.length
+                      === 2 ? 'outro' : 'outros'}})
+                    </span>
+                    }
+                  </mat-select-trigger>
+                  @for (lessonNumber of lessonsNumbers; track $index) {
+                  <mat-option [value]="lessonNumber">{{'Lição ' + lessonNumber}}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline">
+                <mat-label>Escolhas as turmas</mat-label>
+                <mat-select formControlName="classrooms" multiple>
+                  <mat-select-trigger>
+                    {{ filter.get('classrooms')?.value?.[0]?.name || '' }}
+                    @if ((filter.get('classrooms')?.value?.length || 0) > 1) {
+                    <span>
+                      (+{{(filter.get('classrooms')?.value?.length || 0) - 1}} {{filter.get('classrooms')?.value?.length
+                      === 2 ? 'outro' : 'outros'}})
+                    </span>
+                    }
+                  </mat-select-trigger>
+                  @for (classroom of classrooms; track $index) {
+                  <mat-option [value]="classroom">
+                    {{classroom.name}}
+                  </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </form>
+        </div>
+        <button mat-flat-button class="btn-secondary" (click)="filterData(); expansionPanel.close()">
+          <mat-icon>search</mat-icon>
+          <span>
+            Pesquisar
+          </span>
+        </button>
+        <button mat-button class="btn-secondary" (click)="clearFilter()">
+          <mat-icon>filter_alt_off</mat-icon>
+          <span>
+            Limpar filtros
+          </span>
+        </button>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-chip-listbox class="filter-chip">
+      @if (isFilterEmpty()) {
+      <mat-chip disabled>Nenhum filtro selecionados</mat-chip>
+      } @else {
+      <mat-chip disabled>Filtros selecionados</mat-chip>
+      }
+      @if (!isFilterEmpty() && (activeFilter?.get('lessons')?.value ?? []).length === 0) {
+      <mat-chip class="lessons">
+        Todas as lições
+      </mat-chip>
+      }
+      @for (lessonNumber of activeFilter?.get('lessons')?.value; track $index) {
+      <mat-chip class="lessons">
+        Lição {{ lessonNumber }}
+      </mat-chip>
+      }
+
+      @if (!isFilterEmpty() && (activeFilter?.get('classrooms')?.value ?? []).length === 0) {
+      <mat-chip class="classrooms">
+        Todas as turmas
+      </mat-chip>
+      }
+      @for (classroom of activeFilter?.get('classrooms')?.value; track $index) {
+      <mat-chip class="classrooms">
+        {{ classroom.name }}
+      </mat-chip>
+      }
+
+      @if (activeFilter?.get('startDate')?.value && activeFilter?.get('endDate')?.value) {
+      <mat-chip class="period">
+        período {{ activeFilter?.get('startDate')?.value | date: 'dd-MMM-yy' }} a
+        {{ activeFilter?.get('endDate')?.value | date: 'dd-MMM-yy' }}
+      </mat-chip>
+      }
+    </mat-chip-listbox>
+
+
+    @if (filteredLessons.length === 0) {
+    <div class="no-data-found">
+      Não foram encontrados dados para o filtro selecionado
     </div>
-
-
+    } @else {
     <div class="row gap-3">
-
       <div class="col-md">
         <mat-card appearance="outlined">
           <mat-card-content class="d-flex justify-content-between">
@@ -42,7 +167,7 @@
           <mat-card-content class="d-flex justify-content-between gap-3">
             <div class="col">
               <span>Aproveitamento</span>
-              <mat-progress-bar mode="determinate" [value]="performance"></mat-progress-bar>
+              <mat-progress-bar mode="determinate" [value]="performance * 100"></mat-progress-bar>
             </div>
             <strong class="col-auto">{{ performance || 0 | percent: '1.1-1' }}</strong>
           </mat-card-content>
@@ -59,6 +184,24 @@
             </div>
           </mat-card-header>
           <mat-card-content class="col justify-content-between">
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Total de turmas</span>
+                  <strong>{{ totalClassrooms }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mini-card-data">
+                  <span>Total de aulas</span>
+                  <strong>{{ totalLessons }}</strong>
+                </div>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col">
                 <div class="mini-card-data">
@@ -112,7 +255,7 @@
               <div class="col">
                 <div class="mini-card-data">
                   <span>{{ item.name }}</span>
-                  <strong>{{ numberOfVisitors }}</strong>
+                  <strong>{{ getTotalQuantityOfItem(item) }}</strong>
                 </div>
               </div>
               }
@@ -148,9 +291,9 @@
                   </span>
                   <div class="spinner-container">
                     <mat-progress-spinner class="classroom-ranking" mode="determinate"
-                      [value]="classroom.performance * 100" [diameter]="60">
+                      [value]="calculateClassroomPerfomance(classroom) * 100" [diameter]="60">
                     </mat-progress-spinner>
-                    <div class="spinner-text">{{ classroom.performance | percent: '1.1-1' }}</div>
+                    <div class="spinner-text">{{ calculateClassroomPerfomance(classroom) | percent: '1.1-1' }}</div>
                   </div>
                 </div>
               </div>
@@ -164,15 +307,16 @@
             <div class="d-flex flex-column gap-3">
 
               @for (classroom of classroomByPerformance; track $index) {
-                <div class="row">
-                  <div class="classroom-ranking">
-                    <span>{{classroom.classroom.name}}</span>
-                    <strong>{{ classroom.performance | percent: '1.1-1' }}</strong>
-                  </div>
-                  <div>
-                    <mat-progress-bar mode="determinate" [value]="classroom.performance * 100"></mat-progress-bar>
-                  </div>
+              <div class="row">
+                <div class="classroom-ranking">
+                  <span>{{classroom.classroom.name}}</span>
+                  <strong>{{ calculateClassroomPerfomance(classroom) | percent: '1.1-1' }}</strong>
                 </div>
+                <div>
+                  <mat-progress-bar mode="determinate"
+                    [value]="calculateClassroomPerfomance(classroom) * 100"></mat-progress-bar>
+                </div>
+              </div>
               }
             </div>
           </mat-card-content>
@@ -194,6 +338,6 @@
         </mat-card>
       </div>
     </div>
+    }
   </div>
-
 </div>

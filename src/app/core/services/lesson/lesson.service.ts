@@ -33,4 +33,8 @@ export class LessonService {
   findById(lessonId: number): Observable<LessonDTO> {
     return this._apiService.httpGet(`${this._path}/${lessonId}`)
   }
+
+  findByIds(lessonsIds: number[]): Observable<LessonDTO[]> {
+    return this._apiService.httpPost(`${this._path}/batch`, lessonsIds)
+  }
 }

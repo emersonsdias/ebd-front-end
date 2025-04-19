@@ -236,7 +236,7 @@ body {
     ));
 }
 
-.people-filter-chip {
+.filter-chip {
   padding: 10px;
 
   @include mat.chips-overrides((label-text-size: 10px,

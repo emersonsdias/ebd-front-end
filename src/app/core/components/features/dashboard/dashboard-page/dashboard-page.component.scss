@@ -17,7 +17,8 @@
   vertical-align: middle;
   margin-block: 3px;
 
-  span, strong {
+  span,
+  strong {
     display: flex;
     align-items: center;
   }
@@ -67,4 +68,49 @@
 
   font-size: small;
   font-weight: bold;
+}
+
+.filter-expansion-header {
+  padding: 10px;
+  display: flex;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: auto;
+}
+
+.filter-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-data {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.date-buttons {
+  width: 150%;
+  transform: scale(0.7);
+  transform-origin: left;
+}
+
+.filter-chip {
+  .lessons {
+    background-color: #d2e9ae !important;
+  }
+
+  .classrooms {
+    background-color: #c3ecec !important;
+  }
+
+  .period {
+    background-color: #ad9fbd !important;
+  }
+
 }
