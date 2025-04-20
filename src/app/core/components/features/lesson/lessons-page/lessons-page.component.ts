@@ -1,4 +1,4 @@
-import { AttendanceDTO, LessonDTO } from '../../../../models/api/data-contracts';
+import { AttendanceDTO, LessonDTO, LessonStatus } from '../../../../models/api/data-contracts';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -43,8 +43,8 @@ export class LessonsPageComponent implements OnInit {
   startDate: Date | undefined
   endDate: Date | undefined
 
-  upcomingLessons: LessonDTO[] = []
-  pastLessons: LessonDTO[] = []
+  unfinishedLessons: LessonDTO[] = []
+  finishedLessons: LessonDTO[] = []
 
   constructor(
     _authService: AuthService,
@@ -54,16 +54,21 @@ export class LessonsPageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.lessons = (await firstValueFrom(this._lessonService.findByOptions({ maxRecentLessons: 100 }))).sort(this._sortLessons())
-    this.splitLessonsByDate(this.lessons)
+    const today = new Date
+    this.startDate = new Date(today)
+    this.startDate.setDate(today.getDate() - 15)
+    this.endDate = new Date(today)
+    this.endDate.setDate(today.getDate() + 2)
+
+    this.findLessonsByPeriod(this.startDate, this.endDate)
   }
 
-  private _sortLessons() {
+  private _sortLessons(direction: 'asc' | 'desc' = 'asc') {
     return (a: LessonDTO, b: LessonDTO) => {
       if (a.active === b.active) {
         const dateA = new Date(a?.date || '')
         const dateB = new Date(b?.date || '')
-        return dateB.getTime() - dateA.getTime();
+        return direction === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
       }
       return a.active ? -1 : 1
     }
@@ -81,22 +86,18 @@ export class LessonsPageComponent implements OnInit {
     if (!endDate) {
       endDate = startDate
     }
-    this.lessons = (await firstValueFrom(this._lessonService.findByOptions({ startDate: this.formatDate(startDate), endDate: this.formatDate(endDate) }))).sort(this._sortLessons())
+    this.lessons = (await firstValueFrom(this._lessonService.findByOptions({ startDate: this.formatDate(startDate), endDate: this.formatDate(endDate) })))
     this.splitLessonsByDate(this.lessons)
   }
 
   splitLessonsByDate(lessons: LessonDTO[]) {
-    const today = new Date().toISOString().split('T')[0]
+    this.finishedLessons = lessons.filter(lesson => {
+      return lesson.status === LessonStatus.FINALIZED
+    }).sort(this._sortLessons('desc'))
 
-    this.pastLessons = lessons.filter(lesson => {
-      const lessonDate = lesson.date || ''
-      return lessonDate < today
-    })
-
-    this.upcomingLessons = lessons.filter(lesson => {
-      const lessonDate = lesson.date || ''
-      return lessonDate >= today
-    })
+    this.unfinishedLessons = lessons.filter(lesson => {
+      return lesson.status !== LessonStatus.FINALIZED
+    }).sort(this._sortLessons('asc'))
   }
 
   filterLessons(filter: string) {

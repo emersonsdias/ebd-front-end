@@ -17,4 +17,34 @@ export class Utils {
       }
     })
   }
+
+  static isToday(date: Date | string | undefined): boolean {
+    if (!date) {
+      return false
+    }
+    if (typeof date === 'string') {
+      date = new Date(date)
+    }
+    const today = new Date()
+    const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
+    const dateUTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
+
+    return dateUTC.getTime() === todayUTC.getTime()
+  }
+
+  static isPast(date: Date | string | undefined): boolean {
+    if (!date) {
+      return false
+    }
+    if (typeof date === 'string') {
+      date = new Date(date)
+    }
+
+    const today = new Date()
+    const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
+    const dateUTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
+
+    return dateUTC.getTime() < todayUTC.getTime()
+  }
+
 }

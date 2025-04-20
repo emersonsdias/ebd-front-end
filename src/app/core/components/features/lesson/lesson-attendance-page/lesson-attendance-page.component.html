@@ -7,21 +7,18 @@
       </a>
       <mat-card-title-group>
         <mat-card-title class="lesson-title">
-          <span>Aula</span>
-          <span>{{ lesson.get('number')?.value }}</span>
+          <span>{{ 'Aula ' + lesson.get('number')?.value }}</span>
           <span> - </span>
           <span>{{ lesson.get('date')?.value | date: 'dd/MM/yyyy' }}</span>
         </mat-card-title>
         @let topic = lesson.get('topic')?.value;
         @if (topic) {
         <mat-card-subtitle>
-          <span>Tema</span>
-          <strong>{{ topic }}</strong>
+          <span>Tema <strong>{{ topic }}</strong></span>
         </mat-card-subtitle>
         }
         <mat-card-subtitle>
-          <span>Turma</span>
-          <strong> {{ classroom?.name }} </strong>
+          <span>Turma <strong>{{ classroom?.name }}</strong></span>
         </mat-card-subtitle>
       </mat-card-title-group>
     </mat-card-header>
@@ -49,11 +46,13 @@
                     {{ item.name }}
                   </div>
                   <div class="col-auto">
-                    <button mat-icon-button class="v-middle" (click)="removeItem(lesson, item)">
+                    <button mat-icon-button class="v-middle" (click)="removeItem(lesson, item)"
+                      [disabled]="isFormLessonDisabled()">
                       <mat-icon>keyboard_arrow_down</mat-icon>
                     </button>
                     <span>{{ countLessonItems(lesson.value, item.id) }}</span>
-                    <button mat-icon-button class="v-middle" (click)="addItem(lesson, item)">
+                    <button mat-icon-button class="v-middle" (click)="addItem(lesson, item)"
+                      [disabled]="isFormLessonDisabled()">
                       <mat-icon>keyboard_arrow_up</mat-icon>
                     </button>
                   </div>
@@ -92,7 +91,7 @@
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
               <div class="d-flex flex-column full-width">
-                <button mat-flat-button class="btn-primary" (click)="manageOffers()">
+                <button mat-flat-button class="btn-primary" (click)="manageOffers()" [disabled]="isFormLessonDisabled()">
                   <mat-icon>
                     attach_money
                   </mat-icon>
@@ -144,7 +143,7 @@
               </div>
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
-              <button mat-flat-button class="btn-primary col" (click)="addVisitor()">
+              <button mat-flat-button class="btn-primary col" (click)="addVisitor()" [disabled]="isFormLessonDisabled()">
                 <mat-icon>
                   person_add
                 </mat-icon>
@@ -191,12 +190,10 @@
                   @for (attendanceControl of attendances.controls; track $index; let last = $last) {
                   @let isPresent = attendanceControl.get('present')?.value;
                   <div [formGroupName]="$index" class="row student-card"
-                    (click)="attendanceControl.get('present')?.setValue(!(isPresent))"
-                    (auxclick)="attendanceControl.get('present')?.setValue(isPresent == null ? false : !isPresent)"
-                    (contextmenu)="$event.preventDefault()" [ngClass]="{
-              'student-is-present': attendanceControl.get('present')?.value,
-              'student-is-absent': attendanceControl.get('present')?.value !== null && !attendanceControl.get('present')?.value
-              }">
+                    (click)="!isFormLessonDisabled() && attendanceControl.get('present')?.setValue(!(isPresent))"
+                    (auxclick)="!isFormLessonDisabled() && attendanceControl.get('present')?.setValue(isPresent == null ? false : !isPresent)"
+                    (contextmenu)="$event.preventDefault()"
+                    [ngClass]="{'student-is-present': attendanceControl.get('present')?.value,'student-is-absent': attendanceControl.get('present')?.value === false}">
                     <div class="col">
                       {{ attendanceControl.get('studentName')?.value }}
                     </div>
@@ -218,14 +215,24 @@
           </mat-card>
         </div>
       </div>
+      @if (!isFormLessonDisabled()) {
       <div class="row">
-        <button mat-flat-button type="submit" class="btn-primary" (click)="save(lesson)">
+        <button mat-flat-button type="button" class="btn-secondary" (click)="save(lesson)">
+          <mat-icon>
+            save
+          </mat-icon>
+          Salvar mas não enviar relatório
+        </button>
+      </div>
+      <div class="row">
+        <button mat-flat-button type="submit" class="btn-primary" (click)="save(lesson, true)">
           <mat-icon>
             save
           </mat-icon>
           Enviar relatório
         </button>
       </div>
+      }
       <div class="row">
         <a mat-button type="button" class="btn-primary" [routerLink]="['/', ROUTES_KEYS.lessons]">
           <mat-icon>

@@ -254,9 +254,10 @@ export interface LessonItemDTO {
 }
 
 export enum LessonStatus {
-  OPEN = "OPEN",
+  OPEN_SAME_DAY = "OPEN_SAME_DAY",
+  OPEN_ANY_DAY = "OPEN_ANY_DAY",
   CLOSED = "CLOSED",
-  REPORTED = "REPORTED",
+  FINALIZED = "FINALIZED",
 }
 
 export interface OfferDTO {

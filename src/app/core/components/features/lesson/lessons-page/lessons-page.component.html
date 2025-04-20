@@ -45,11 +45,11 @@
     @if (lessons.length > 0) {
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title> Aulas futuras </mat-card-title>
+        <mat-card-title> Aulas não finalizadas </mat-card-title>
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content class="lessons-card-content">
-      @if (upcomingLessons.length === 0) {
+      @if (unfinishedLessons.length === 0) {
       <div class="no-data-found">
         Sem aulas futuras
         @if (lessonFilter.value) {
@@ -65,7 +65,7 @@
 
       </div>
       }
-      @for(lesson of upcomingLessons; track $index) {
+      @for(lesson of unfinishedLessons; track $index) {
       <app-lesson-card [lesson]="lesson"></app-lesson-card>
       }
     </mat-card-content>
@@ -75,13 +75,13 @@
 
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title> Aulas passadas </mat-card-title>
+        <mat-card-title> Aulas concluídas </mat-card-title>
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content class="lessons-card-content">
-      @if (pastLessons.length === 0) {
+      @if (finishedLessons.length === 0) {
       <div class="no-data-found">
-        Sem aulas passadas
+        Sem aulas concluídas
         @if (lessonFilter.value) {
         com o termo de busca '{{ lessonFilter.value }}'
         }
@@ -95,7 +95,7 @@
       </div>
       }
 
-      @for(lesson of pastLessons; track $index) {
+      @for(lesson of finishedLessons; track $index) {
       <app-lesson-card [lesson]="lesson"></app-lesson-card>
       }
     </mat-card-content>

@@ -6,7 +6,9 @@
   <button mat-flat-button (click)="confirm()" class="flex-fill btn-primary">
     {{ data.confirmButton }}
   </button>
+  @if (!data.hideDenyButton) {
   <button mat-raised-button (click)="deny()" class="flex-fill">
     {{ data.denyButton }}
   </button>
+  }
 </div>

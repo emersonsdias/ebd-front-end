@@ -1,6 +1,6 @@
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AttendanceDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, LessonItemDTO } from '../../../../models/api/data-contracts';
+import { AttendanceDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, LessonItemDTO, LessonStatus } from '../../../../models/api/data-contracts';
 import { firstValueFrom } from 'rxjs';
 import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { DialogOfferComponent } from './dialog-offer/dialog-offer.component';
+import { Utils } from '../../../../../shared/utils/utils';
 
 @Component({
   selector: 'app-lesson-attendance-page',
@@ -70,8 +71,14 @@ export class LessonAttendancePageComponent implements OnInit {
         firstValueFrom(this._itemService.findAll()),
         firstValueFrom(this._lessonService.findById(lessonId))
       ])
+
       this.items = items
       this.lesson.patchValue(lesson)
+
+      this.lesson.setControl('visitors', this._formBuilder.array(
+        (lesson.visitors || []).map(visitor => this._buildVisitor(visitor))
+      ))
+
       if (!lesson?.classroomId) {
         console.error('It is not possible to call a class without an associated group');
         this._router.navigate(['/', ROUTES_KEYS.lessons]);
@@ -85,10 +92,17 @@ export class LessonAttendancePageComponent implements OnInit {
       }
       const attendances: AttendanceDTO[] = lesson.attendances || []
 
-      if (attendances.length === 0 || !this._isPastLesson(lesson)) {
-        const students = this.classroom?.students || []
-        const filterStudents = (student: StudentDTO) => !attendances.some(attendance => attendance.studentId === student.id)
-        attendances.push(...students.filter(filterStudents).map(this._studentToAttendance()))
+      const students = this.classroom?.students || []
+      const filterStudents = (student: StudentDTO) => {
+        const hasNoAttendanceRecord: boolean = !attendances.some(attendance => attendance.studentId === student.id)
+        const isEnrolledInPeriod: boolean = this._isLessonWithinAcademicPeriod(student, lesson)
+        return hasNoAttendanceRecord && isEnrolledInPeriod
+      }
+      if (lesson.status !== LessonStatus.FINALIZED) {
+        attendances.push(...students
+          .filter(filterStudents)
+          .map(this._studentToAttendance())
+        )
       }
 
       this.attendances.clear()
@@ -101,6 +115,28 @@ export class LessonAttendancePageComponent implements OnInit {
       this._router.navigate(['/', ROUTES_KEYS.lessons]);
       return
     }
+
+    if (!this._isOpenLesson(this.lesson.value)) {
+      this._closedAttendanceNotification(this.lesson.value)
+      this.lesson.disable()
+    }
+  }
+
+  private async _closedAttendanceNotification(lesson: LessonDTO) {
+    const options = {
+      title: 'Não é possível editar chamada',
+      message: 'Para fazer alteração, solicite para um administrador alterar o status da aula',
+      confirmButton: 'Ok',
+      hideDenyButton: true
+    }
+    if (lesson.status === LessonStatus.FINALIZED) {
+      options.title = 'Não é possível editar chamada já finalizada'
+    } else if (lesson.status === LessonStatus.CLOSED) {
+      options.title = 'Não é possível editar chamada com status \'Fechado\''
+    } else if (lesson.status === LessonStatus.OPEN_SAME_DAY && !Utils.isToday(lesson.date)) {
+      options.title = 'Somente é possível editar essa na sua data de realização'
+    }
+    this._dialogService.openConfirmation(options)
   }
 
   private _buildLesson(lesson: LessonDTO | undefined = undefined) {
@@ -126,7 +162,7 @@ export class LessonAttendancePageComponent implements OnInit {
   private _buildAttendance(attendance: AttendanceDTO | undefined = undefined): FormGroup {
     return this._formBuilder.group({
       id: [attendance?.id || null],
-      present: [attendance?.present || null],
+      present: [attendance?.present ?? null],
       studentId: [attendance?.studentId || null],
       studentName: [attendance?.studentName || null],
       lesson: [attendance?.lesson || null],
@@ -141,6 +177,7 @@ export class LessonAttendancePageComponent implements OnInit {
       id: [visitor?.id || null],
       name: [visitor?.name || null, [Validators.required]],
       lessonId: [visitor?.lessonId || null],
+      active: [visitor?.active ?? true],
       createdAt: [visitor?.createdAt || null],
       updatedAt: [visitor?.updatedAt || null]
     })
@@ -178,14 +215,20 @@ export class LessonAttendancePageComponent implements OnInit {
     return this.lesson.get('visitors') as FormArray
   }
 
-  private _isPastLesson(lesson: LessonDTO): boolean {
-    if (!lesson.date) {
+  private _isOpenLesson(lesson: LessonDTO) {
+    if (LessonStatus.OPEN_ANY_DAY === lesson.status) {
+      return true
+    }
+    if (LessonStatus.CLOSED === lesson.status || LessonStatus.FINALIZED === lesson.status) {
       return false
     }
-    const today = new Date()
-    const lessonDate = new Date(lesson.date)
-    today.setHours(0, 0, 0, 0)
-    return lessonDate < today
+    if (LessonStatus.OPEN_SAME_DAY === lesson.status) {
+      if (!lesson.date) {
+        return false
+      }
+      return Utils.isToday(lesson.date)
+    }
+    return false
   }
 
   private _studentToAttendance(): (student: StudentDTO) => AttendanceDTO {
@@ -272,8 +315,7 @@ export class LessonAttendancePageComponent implements OnInit {
     }
   }
 
-
-  save(form: FormGroup) {
+  async save(form: FormGroup, sendReport: boolean = false) {
     if (form.invalid) {
       Object.keys(form.controls).forEach(field => {
         const control = form.get(field)
@@ -283,6 +325,42 @@ export class LessonAttendancePageComponent implements OnInit {
       })
       return
     }
+    const lesson: LessonDTO = this.lesson.value
+
+    if (sendReport) {
+      const userConfirm = await this._dialogService.openConfirmation({
+        title: 'Confirma envio do relatório?',
+        message: 'Após enviado o relatório não é mais possível editar a chamada'
+      })
+      if (!userConfirm) {
+        return
+      }
+      lesson.status = LessonStatus.FINALIZED
+    }
+
+    this._lessonService.update(lesson).subscribe({
+      next: (_) => {
+        this._notificationService.success('Chamada realizada com sucesso')
+        this._router.navigate(['/', ROUTES_KEYS.lessons])
+      }
+    })
   }
+
+  private _isLessonWithinAcademicPeriod(student: StudentDTO, lesson: LessonDTO): boolean {
+    if (!student.academicPeriodStart || !student.academicPeriodEnd || !lesson.date) {
+      return false;
+    }
+
+    const lessonDate = new Date(lesson.date);
+    const periodStart = new Date(student.academicPeriodStart);
+    const periodEnd = new Date(student.academicPeriodEnd);
+
+    return lessonDate >= periodStart && lessonDate <= periodEnd;
+  }
+
+  isFormLessonDisabled(): boolean {
+    return this.lesson.disabled
+  }
+
 
 }

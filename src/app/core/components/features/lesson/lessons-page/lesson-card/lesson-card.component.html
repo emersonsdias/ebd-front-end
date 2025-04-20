@@ -1,11 +1,18 @@
 @let presentStudents = countPresentStudents(lesson.attendances);
 @let absentStudents = countAbsentStudents(lesson.attendances);
-<mat-card appearance="outlined" class="individual-lesson-card"
-  [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
+<mat-card appearance="outlined" class="individual-lesson-card" [routerLink]="[lesson.id, ROUTES_KEYS.lessonAttendance]">
   <mat-card-header>
     <mat-card-title-group class="d-flex flex-column">
       <mat-card-subtitle class="lesson-date">
-        {{ lesson.date | date: 'EEEE, dd \'de\' MMMM, yyyy' }}
+        <div class="d-flex justify-content-between">
+          <span>
+            {{ lesson.date | date: 'EEEE, dd \'de\' MMMM, yyyy' }}
+          </span>
+          @let icon = getIconByLessonStatus(lesson);
+          <mat-icon [class]="icon.classCss">
+            {{ icon.name }}
+          </mat-icon>
+        </div>
       </mat-card-subtitle>
       <mat-card-title>
         <div>

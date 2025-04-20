@@ -16,7 +16,8 @@ export class DialogConfirmComponent {
       title: string,
       message: string,
       confirmButton: string,
-      denyButton: string
+      denyButton: string,
+      hideDenyButton?: boolean
     }
   ) { }
 

@@ -11,7 +11,7 @@ export class DialogService {
 
   constructor(private _dialog: MatDialog) { }
 
-  openConfirmation(options: { title: string, message: string, confirmButton?: string, denyButton?: string }): Promise<boolean | undefined> {
+  openConfirmation(options: { title: string, message: string, confirmButton?: string, denyButton?: string, hideDenyButton?: boolean }): Promise<boolean | undefined> {
     if (!options.confirmButton) {
       options.confirmButton = 'Confirmar'
     }
@@ -25,7 +25,8 @@ export class DialogService {
           title: options.title,
           message: options.message,
           confirmButton: options.confirmButton,
-          denyButton: options.denyButton
+          denyButton: options.denyButton,
+          hideDenyButton: options.hideDenyButton
         }
       }).afterClosed().pipe(first()).subscribe({
         next: res => resolve(res),

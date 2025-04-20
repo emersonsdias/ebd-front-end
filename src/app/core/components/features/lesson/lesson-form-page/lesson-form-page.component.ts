@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ClassroomDTO, LessonDTO } from '../../../../models/api/data-contracts';
+import { ClassroomDTO, LessonDTO, LessonStatus } from '../../../../models/api/data-contracts';
 import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { NotificationService } from '../../../../../shared';
+import { EnumTranslatePipe, NotificationService } from '../../../../../shared';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 
 @Component({
@@ -27,6 +27,7 @@ import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
     MatSlideToggleModule,
     ReactiveFormsModule,
     RouterModule,
+    EnumTranslatePipe,
   ],
   templateUrl: './lesson-form-page.component.html',
   styleUrl: './lesson-form-page.component.scss'
@@ -37,6 +38,7 @@ export class LessonFormPageComponent implements OnInit {
   lesson: FormGroup
   classrooms: ClassroomDTO[] = []
   submitted: boolean = false
+  lessonStatusList = Object.keys(LessonStatus).map(key => LessonStatus[key as keyof typeof LessonStatus])
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -71,7 +73,7 @@ export class LessonFormPageComponent implements OnInit {
       number: [lesson?.number || null],
       topic: [lesson?.topic || null],
       date: [lesson?.date || null],
-      status: [lesson?.status || null],
+      status: [lesson?.status || LessonStatus.OPEN_SAME_DAY],
       notes: [lesson?.notes || null],
       classroomId: [lesson?.classroomId || null],
       visitors: [lesson?.visitors || null],
@@ -79,7 +81,7 @@ export class LessonFormPageComponent implements OnInit {
       teachings: [lesson?.teachings || null],
       items: [lesson?.items || null],
       offers: [lesson?.offers || null],
-      active: [lesson?.active || null],
+      active: [lesson?.active ?? true],
       createdAt: [lesson?.createdAt || null],
       updatedAt: [lesson?.updatedAt || null],
     })
@@ -100,7 +102,7 @@ export class LessonFormPageComponent implements OnInit {
 
   create(lesson: LessonDTO) {
     this._lessonService.create(lesson).subscribe({
-      next: (res) => {
+      next: (_) => {
         this.submitted = true
         this._notificationService.success(`Aula ${lesson.number} criada com sucesso`)
         this._router.navigate(['/', ROUTES_KEYS.lessons])

@@ -43,6 +43,19 @@
     </mat-form-field>
   </div>
 
+  <div class="row">
+    <mat-form-field appearance="outline" class="col-md-8 col-12">
+      <mat-label>Status aula</mat-label>
+      <mat-select formControlName="status">
+        @for (lessonStatus of lessonStatusList; track $index) {
+        <mat-option [value]="lessonStatus">
+          {{ lessonStatus | enumTranslate }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
 
   <div class="row">
     <p>
