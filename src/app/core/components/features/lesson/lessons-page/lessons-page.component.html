@@ -51,7 +51,7 @@
     <mat-card-content class="lessons-card-content">
       @if (unfinishedLessons.length === 0) {
       <div class="no-data-found">
-        Sem aulas futuras
+        Sem aulas não finalizadas
         @if (lessonFilter.value) {
         com o termo de busca '{{ lessonFilter.value }}'
         }
@@ -62,12 +62,36 @@
         } @else {
         , selecione um período maior para buscar mais aulas no servidor
         }
-
       </div>
       }
-      @for(lesson of unfinishedLessons; track $index) {
-      <app-lesson-card [lesson]="lesson"></app-lesson-card>
-      }
+
+
+      <div class="col">
+        <div ngbAccordion>
+          @for(group of groupedUnfinishedLessons; track $index) {
+          <div ngbAccordionItem [collapsed]="true">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>{{ group.key }}</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <div class="lessons-card-content">
+                    @for(lesson of group.lessons; track $index) {
+                    <app-lesson-card [lesson]="lesson"></app-lesson-card>
+                    }
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+
+
+
     </mat-card-content>
 
     <br>
@@ -95,9 +119,28 @@
       </div>
       }
 
-      @for(lesson of finishedLessons; track $index) {
-      <app-lesson-card [lesson]="lesson"></app-lesson-card>
-      }
+      <div class="col">
+        <div ngbAccordion>
+          @for(group of groupedFinishedLessons; track $index) {
+          <div ngbAccordionItem [collapsed]="true">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>{{ group.key }}</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <div class="lessons-card-content">
+                    @for(lesson of group.lessons; track $index) {
+                    <app-lesson-card [lesson]="lesson"></app-lesson-card>
+                    }
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
     </mat-card-content>
     }
   </mat-card>

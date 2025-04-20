@@ -1,4 +1,4 @@
-import { AttendanceDTO, LessonDTO, LessonStatus } from '../../../../models/api/data-contracts';
+import { LessonDTO, LessonStatus } from '../../../../models/api/data-contracts';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -15,6 +15,8 @@ import { RouterModule } from '@angular/router';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { LessonCardComponent } from "./lesson-card/lesson-card.component";
 import { FormsModule } from '@angular/forms';
+import { NgbAccordionModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { Utils } from '../../../../../shared';
 
 @Component({
   selector: 'app-lessons-page',
@@ -30,6 +32,8 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     RouterModule,
     LessonCardComponent,
+    NgbCollapseModule,
+    NgbAccordionModule,
   ],
   templateUrl: './lessons-page.component.html',
   styleUrl: './lessons-page.component.scss'
@@ -45,6 +49,8 @@ export class LessonsPageComponent implements OnInit {
 
   unfinishedLessons: LessonDTO[] = []
   finishedLessons: LessonDTO[] = []
+  groupedUnfinishedLessons: { key: string, lessons: LessonDTO[] }[] = [];
+  groupedFinishedLessons: { key: string, lessons: LessonDTO[] }[] = [];
 
   constructor(
     _authService: AuthService,
@@ -58,7 +64,7 @@ export class LessonsPageComponent implements OnInit {
     this.startDate = new Date(today)
     this.startDate.setDate(today.getDate() - 15)
     this.endDate = new Date(today)
-    this.endDate.setDate(today.getDate() + 2)
+    this.endDate.setDate(today.getDate() + 1)
 
     this.findLessonsByPeriod(this.startDate, this.endDate)
   }
@@ -87,10 +93,10 @@ export class LessonsPageComponent implements OnInit {
       endDate = startDate
     }
     this.lessons = (await firstValueFrom(this._lessonService.findByOptions({ startDate: this.formatDate(startDate), endDate: this.formatDate(endDate) })))
-    this.splitLessonsByDate(this.lessons)
+    this.splitLessons(this.lessons)
   }
 
-  splitLessonsByDate(lessons: LessonDTO[]) {
+  splitLessons(lessons: LessonDTO[]) {
     this.finishedLessons = lessons.filter(lesson => {
       return lesson.status === LessonStatus.FINALIZED
     }).sort(this._sortLessons('desc'))
@@ -98,11 +104,14 @@ export class LessonsPageComponent implements OnInit {
     this.unfinishedLessons = lessons.filter(lesson => {
       return lesson.status !== LessonStatus.FINALIZED
     }).sort(this._sortLessons('asc'))
+
+    this.groupUnfinishedLessons()
+    this.groupFinishedLessons()
   }
 
   filterLessons(filter: string) {
     if (!filter || filter === '') {
-      this.splitLessonsByDate(this.lessons)
+      this.splitLessons(this.lessons)
       return
     }
     filter = filter.toLowerCase()
@@ -112,7 +121,52 @@ export class LessonsPageComponent implements OnInit {
         || lesson.number?.toString() === filter
     })
 
-    this.splitLessonsByDate(filteredLessons)
+    this.splitLessons(filteredLessons)
+  }
+
+  groupUnfinishedLessons() {
+    const map = new Map<string, LessonDTO[]>();
+    for (const lesson of this.unfinishedLessons) {
+      if (!lesson.number) {
+        continue
+      }
+      let key
+
+      if (Utils.isPast(lesson.date)) {
+        key = 'Aulas passadas'
+      } else if (Utils.isFuture(lesson.date)) {
+        key = 'Aulas futuras'
+      } else {
+        key = 'Aulas do dia'
+      }
+
+      if (!map.has(key)) {
+        map.set(key, [])
+      }
+      map.get(key)!.push(lesson);
+    }
+    this.groupedUnfinishedLessons = []
+    map.forEach((lessons: LessonDTO[], key: string) => {
+      this.groupedUnfinishedLessons.push({ key: key, lessons: lessons })
+    })
+  }
+
+  groupFinishedLessons() {
+    const map = new Map<string, LessonDTO[]>();
+    for (const lesson of this.finishedLessons) {
+      if (!lesson.number) {
+        continue
+      }
+      const key = 'Lição ' + lesson.number
+      if (!map.has(key)) {
+        map.set(key, [])
+      }
+      map.get(key)!.push(lesson);
+    }
+    this.groupedFinishedLessons = []
+    map.forEach((lessons: LessonDTO[], key: string) => {
+      this.groupedFinishedLessons.push({ key: key, lessons: lessons })
+    })
   }
 
 }

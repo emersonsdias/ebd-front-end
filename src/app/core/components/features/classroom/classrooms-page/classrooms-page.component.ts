@@ -1,4 +1,4 @@
-import { ClassroomDTO, LessonDTO } from '../../../../models/api/data-contracts';
+import { ClassroomDTO, LessonDTO, LessonStatus } from '../../../../models/api/data-contracts';
 import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -52,7 +52,8 @@ export class ClassroomsPageComponent implements OnInit {
     const today = new Date().toISOString().split("T")[0];
 
     return lessons
-      .filter(lesson => lesson.date && lesson.date < today)
+    .filter(lesson => lesson.status === LessonStatus.FINALIZED)
+    .filter(lesson => lesson.date && lesson.date <= today)
       .sort((a, b) => (b.date! > a.date! ? 1 : -1))[0];
   }
 
@@ -63,7 +64,8 @@ export class ClassroomsPageComponent implements OnInit {
     const today = new Date().toISOString().split("T")[0];
 
     return lessons
-      .filter(lesson => lesson.date && lesson.date > today)
+      .filter(lesson => lesson.status !== LessonStatus.FINALIZED)
+      .filter(lesson => lesson.date && lesson.date >= today)
       .sort((a, b) => (a.date! > b.date! ? 1 : -1))[0];
   }
 

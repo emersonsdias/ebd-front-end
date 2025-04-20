@@ -8,7 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ClassroomDTO, ItemDTO, LessonDTO, SimpleLessonDTO } from '../../../../models/api/data-contracts';
+import { ClassroomDTO, ItemDTO, LessonDTO, LessonStatus, SimpleLessonDTO } from '../../../../models/api/data-contracts';
 import { ItemService } from '../../../../services/item/item.service';
 import { firstValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -219,10 +219,15 @@ export class DashboardPageComponent implements OnInit {
       return lessonFilter.length === 0 || lessonFilter.some((lessonNumber: number) => lessonNumber === lesson.number)
     }
 
+    const filterByLessonStatus = (lesson: SimpleLessonDTO) => {
+      return lesson.status === LessonStatus.FINALIZED
+    }
+
     const lessonsIds = this.classrooms
       .filter(filterClassroom)
       .flatMap(classroom => classroom.lessons ?? [])
       .filter(filterLessonPeriod)
+      .filter(filterByLessonStatus)
       .filter(filterLessonNumber)
       .filter(lesson => lesson?.id !== undefined)
       .map(lesson => lesson?.id!)
