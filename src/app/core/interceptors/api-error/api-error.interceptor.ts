@@ -11,7 +11,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(catchError((response: HttpErrorResponse) => {
 
     const defaultAction = (error: any) => {
-      if (error.message) {
+      if (error?.message) {
         notificationService.error(error.message, error.error)
       } else {
         notificationService.error(

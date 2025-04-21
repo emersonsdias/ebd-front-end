@@ -59,6 +59,7 @@ export class AuthService {
 
     LOCAL_USER.accessToken = tokenResponse.access_token
     LOCAL_USER.userId = TOKEN_DATA.user_id
+    LOCAL_USER.personId = TOKEN_DATA.person_id
     LOCAL_USER.nickname = TOKEN_DATA.name
     LOCAL_USER.exp = TOKEN_DATA.exp
     LOCAL_USER.roles = TOKEN_DATA.roles

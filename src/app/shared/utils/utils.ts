@@ -26,6 +26,7 @@ export class Utils {
       date = new Date(date)
     }
     const today = new Date()
+    today.setHours(0, 0)
     const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
     const dateUTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
 
@@ -41,6 +42,7 @@ export class Utils {
     }
 
     const today = new Date()
+    today.setHours(0, 0)
     const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
     const dateUTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
 
@@ -56,6 +58,7 @@ export class Utils {
     }
 
     const today = new Date()
+    today.setHours(0, 0)
     const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
     const dateUTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
 

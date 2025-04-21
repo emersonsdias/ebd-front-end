@@ -114,6 +114,10 @@ export class StorageService {
     return this.getLocalUser().userId || null
   }
 
+  getPersonId(): string | null {
+    return this.getLocalUser().personId || null
+  }
+
   getUserNickname(): string | null {
     return this.getLocalUser().nickname || null
   }

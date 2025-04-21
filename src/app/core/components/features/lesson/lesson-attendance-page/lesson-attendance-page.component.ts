@@ -1,6 +1,6 @@
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AttendanceDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, LessonItemDTO, LessonStatus } from '../../../../models/api/data-contracts';
+import { AttendanceDTO, ClassroomDTO, ItemDTO, LessonDTO, OfferDTO, StudentDTO, VisitorDTO, LessonItemDTO, LessonStatus, TeacherDTO, TeachingDTO } from '../../../../models/api/data-contracts';
 import { firstValueFrom } from 'rxjs';
 import { ClassroomService } from '../../../../services/classroom/classroom.service';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { DialogOfferComponent } from './dialog-offer/dialog-offer.component';
 import { Utils } from '../../../../../shared/utils/utils';
+import { StorageService } from '../../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-lesson-attendance-page',
@@ -54,8 +55,9 @@ export class LessonAttendancePageComponent implements OnInit {
     private _router: Router,
     private _notificationService: NotificationService,
     private _dialogService: DialogService,
+    private _storageService: StorageService,
   ) {
-    this.lesson = this._buildLesson()
+    this.lesson = this._buildFormLesson()
   }
 
   async ngOnInit(): Promise<void> {
@@ -76,7 +78,11 @@ export class LessonAttendancePageComponent implements OnInit {
       this.lesson.patchValue(lesson)
 
       this.lesson.setControl('visitors', this._formBuilder.array(
-        (lesson.visitors || []).map(visitor => this._buildVisitor(visitor))
+        (lesson.visitors || []).map(visitor => this._buildFormVisitor(visitor))
+      ))
+
+      this.lesson.setControl('items', this._formBuilder.array(
+        (lesson.items || []).map(lessonItem => this._buildFormLessonItem(lessonItem))
       ))
 
       if (!lesson?.classroomId) {
@@ -108,7 +114,7 @@ export class LessonAttendancePageComponent implements OnInit {
       this.attendances.clear()
       attendances
         .sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''))
-        .map(attendance => this._buildAttendance(attendance))
+        .map(attendance => this._buildFormAttendance(attendance))
         .forEach(attendanceForm => this.attendances.push(attendanceForm))
     } catch (e) {
       console.error(`Error fetching lesson with id '${lessonId}.'`, e)
@@ -139,7 +145,7 @@ export class LessonAttendancePageComponent implements OnInit {
     this._dialogService.openConfirmation(options)
   }
 
-  private _buildLesson(lesson: LessonDTO | undefined = undefined) {
+  private _buildFormLesson(lesson: LessonDTO | undefined = undefined) {
     return this._formBuilder.group({
       id: [lesson?.id || null],
       number: [lesson?.id || null],
@@ -159,7 +165,7 @@ export class LessonAttendancePageComponent implements OnInit {
     })
   }
 
-  private _buildAttendance(attendance: AttendanceDTO | undefined = undefined): FormGroup {
+  private _buildFormAttendance(attendance: AttendanceDTO | undefined = undefined): FormGroup {
     return this._formBuilder.group({
       id: [attendance?.id || null],
       present: [attendance?.present ?? null],
@@ -172,7 +178,7 @@ export class LessonAttendancePageComponent implements OnInit {
     })
   }
 
-  private _buildVisitor(visitor: VisitorDTO | undefined = undefined): FormGroup {
+  private _buildFormVisitor(visitor: VisitorDTO | undefined = undefined): FormGroup {
     return this._formBuilder.group({
       id: [visitor?.id || null],
       name: [visitor?.name || null, [Validators.required]],
@@ -183,7 +189,7 @@ export class LessonAttendancePageComponent implements OnInit {
     })
   }
 
-  private _buildOffer(offer: OfferDTO | undefined = undefined): FormGroup {
+  private _buildFormOffer(offer: OfferDTO | undefined = undefined): FormGroup {
     return this._formBuilder.group({
       id: [offer?.id || null],
       amount: [offer?.amount || null, [Validators.required, Validators.min(0.00)]],
@@ -193,14 +199,21 @@ export class LessonAttendancePageComponent implements OnInit {
     })
   }
 
-  private _buildLessonItem(item: ItemDTO, quantity: number | null = null): FormGroup {
+  private _buildFormLessonItem(lessonItem: LessonItemDTO | undefined = undefined): FormGroup {
     return this._formBuilder.group({
-      id: [null],
-      quantity: [quantity],
-      item: [item],
-      createdAt: [null],
-      updatedAt: [null]
+      id: [lessonItem?.id ?? null],
+      quantity: [lessonItem?.quantity ?? null],
+      item: [lessonItem?.item ?? null],
+      createdAt: [lessonItem?.createdAt ?? null],
+      updatedAt: [lessonItem?.updatedAt ?? null]
     })
+  }
+
+  private _convertItemToLessonItem(item: ItemDTO, quantity: number | undefined = undefined): LessonItemDTO {
+    return {
+      quantity: quantity,
+      item: item
+    }
   }
 
   get offers(): FormArray {
@@ -258,7 +271,7 @@ export class LessonAttendancePageComponent implements OnInit {
     const lessonItem = lessonItems.controls.find((control) => (control as FormGroup).get('item')?.value?.id === item.id) as FormGroup | undefined
 
     if (!lessonItem) {
-      lessonItems.push(this._buildLessonItem(item, 1))
+      lessonItems.push(this._buildFormLessonItem(this._convertItemToLessonItem(item, 1)))
     } else {
       const quantityControl = lessonItem.get('quantity')
       if (quantityControl) {
@@ -291,14 +304,14 @@ export class LessonAttendancePageComponent implements OnInit {
   async manageOffers(): Promise<void> {
     const offersArray = this.lesson.get('offers') as FormArray
     if (offersArray.length === 0) {
-      offersArray.push(this._buildOffer())
+      offersArray.push(this._buildFormOffer())
     }
     const offerControl = offersArray.at(0) as FormGroup;
     await this._dialogService.openComponent(DialogOfferComponent, offerControl)
   }
 
   async addVisitor(visitorData: VisitorDTO | undefined = undefined): Promise<void> {
-    const visitor: FormGroup = await this._dialogService.openComponent(DialogVisitorComponent, this._buildVisitor(visitorData)).then()
+    const visitor: FormGroup = await this._dialogService.openComponent(DialogVisitorComponent, this._buildFormVisitor(visitorData)).then()
     if (visitor && visitor.valid) {
       this.visitors.push(visitor)
     }
@@ -327,6 +340,27 @@ export class LessonAttendancePageComponent implements OnInit {
     }
     const lesson: LessonDTO = this.lesson.value
 
+    const loggedPersonId = this._storageService.getPersonId()
+    const teacher = this.classroom?.teachers?.find(teacher => teacher?.person?.id === loggedPersonId)
+
+    if (teacher) {
+      if (!lesson.teachings?.some(t => t.teacherId === teacher.id)) {
+        const teaching = this._buildTeaching(lesson, teacher)
+        if (!lesson.teachings) {
+          lesson.teachings = []
+        }
+        lesson.teachings.push(teaching)
+      }
+    } else {
+      const userDecision = await this._dialogService.openConfirmation({
+        title: 'Você não está relacionado como um professor da turma',
+        message: 'Parece que você não está relacionado como um professor ativo da turma, se continuar, essa aula não será atribuida a você. Deseja continuar mesmo assim?'
+      })
+      if (!userDecision) {
+        return
+      }
+    }
+
     if (sendReport) {
       const userConfirm = await this._dialogService.openConfirmation({
         title: 'Confirma envio do relatório?',
@@ -344,6 +378,14 @@ export class LessonAttendancePageComponent implements OnInit {
         this._router.navigate(['/', ROUTES_KEYS.lessons])
       }
     })
+  }
+
+  private _buildTeaching(lesson: LessonDTO, teacher: TeacherDTO): TeachingDTO {
+    return {
+      teacherId: teacher.id,
+      lesson: { id: lesson.id },
+      active: true
+    }
   }
 
   private _isLessonWithinAcademicPeriod(student: StudentDTO, lesson: LessonDTO): boolean {

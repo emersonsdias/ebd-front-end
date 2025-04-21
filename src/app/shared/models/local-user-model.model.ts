@@ -6,6 +6,7 @@ export interface LocalUser {
   exp?: number
   nickname?: string
   userId?: string
+  personId?: string
   accessToken?: string
   roles?: UserRole[]
 
