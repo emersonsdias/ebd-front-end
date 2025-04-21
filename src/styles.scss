@@ -95,6 +95,19 @@ body {
     background-color: var(--color-secondary);
     cursor: pointer;
   }
+
+  .mat-mdc-footer-row {
+    background-color: var(--color-dark);
+    font-weight: bold;
+    color: var(--color-light-gray);
+    border: 1px solid var(--color-dark);
+  }
+
+  .mat-mdc-footer-cell {
+    // border: 1px solid var(--color-light-gray);
+    padding: 12px;
+    font-size: small;
+  }
 }
 
 .notification.success {

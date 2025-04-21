@@ -33,5 +33,13 @@ export const ROUTES_KEYS = {
     teacherAccess: 'acesso-professor',
   },
   signUp: 'usuarios/cadastrar',
+  units: {
+    index: 'licoes',
+    params: {
+      endDate: 'data-final',
+      lessonNumber: 'licao-numero',
+      startDate: 'data-inicial',
+    }
+  },
   userId: 'userId',
 }

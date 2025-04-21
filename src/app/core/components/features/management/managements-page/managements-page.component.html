@@ -200,7 +200,7 @@
       <td mat-cell *matCellDef="let element">
         @for (phoneNumber of element.phoneNumbers; track $index; let first = $first) {
         @if(!first) {
-          <br>
+        <br>
         }
         <span>
           {{ formatPhoneNumber(phoneNumber) }}

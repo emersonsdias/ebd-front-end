@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AgeRangeFormComponent, AgeRangesManagementComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DashboardPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
+import { AccountInformationComponent, ActivityLogComponent, AdminAccessComponent, adminGuard, AgeRangeFormComponent, AgeRangesManagementComponent, AttendanceScoresComponent, authGuard, ClassroomFormPageComponent, ClassroomsPageComponent, DashboardPageComponent, DepartmentsComponent, FinancePageComponent, ForgotPasswordPageComponent, HeadquartersManagementComponent, HelpPageComponent, HomePageComponent, InactiveRecordsComponent, ItemFormComponent, ItemsManagementComponent, LessonAttendancePageComponent, LessonFormPageComponent, LessonsPageComponent, LessonUnitPageComponent, LoginPageComponent, ManagementsPageComponent, PersonDetailsPageComponent, PersonFormPageComponent, SchoolInformationComponent, SettingsPageComponent, TeacherAccessComponent, UserFormComponent, UserRegisterPageComponent } from './core';
 import { NotFoundPageComponent, ROUTES_KEYS, unsavedChangesGuard } from './shared';
 
 export const routes: Routes = [
@@ -28,9 +28,10 @@ export const routes: Routes = [
           path: ROUTES_KEYS.lessons, children:
             [
               { path: '', component: LessonsPageComponent, title: 'Aulas' },
+              { path: `${ROUTES_KEYS.units.index}`, component: LessonUnitPageComponent, title: 'Relatório lições' },
               { path: `${ROUTES_KEYS.register}`, canDeactivate: [unsavedChangesGuard], component: LessonFormPageComponent, title: 'Cadastro de aula' },
               { path: `:${ROUTES_KEYS.lessonId}`, canDeactivate: [unsavedChangesGuard], component: LessonFormPageComponent, title: 'Editar aula' },
-              { path: `:${ROUTES_KEYS.lessonId}/${ROUTES_KEYS.lessonAttendance}`, canDeactivate: [unsavedChangesGuard], component: LessonAttendancePageComponent, title: 'Realizar chamada' }
+              { path: `:${ROUTES_KEYS.lessonId}/${ROUTES_KEYS.lessonAttendance}`, canDeactivate: [unsavedChangesGuard], component: LessonAttendancePageComponent, title: 'Realizar chamada' },
             ]
         },
         {

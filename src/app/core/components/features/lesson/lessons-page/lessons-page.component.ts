@@ -44,8 +44,8 @@ export class LessonsPageComponent implements OnInit {
   lessons: LessonDTO[] = []
   isAdmin: Observable<boolean>
 
-  startDate: Date | undefined
-  endDate: Date | undefined
+  startDate: Date
+  endDate: Date
 
   unfinishedLessons: LessonDTO[] = []
   finishedLessons: LessonDTO[] = []
@@ -57,15 +57,14 @@ export class LessonsPageComponent implements OnInit {
     private _lessonService: LessonService,
   ) {
     this.isAdmin = _authService.isAdmin()
-  }
-
-  async ngOnInit(): Promise<void> {
     const today = new Date
     this.startDate = new Date(today)
     this.startDate.setDate(today.getDate() - 15)
     this.endDate = new Date(today)
     this.endDate.setDate(today.getDate() + 1)
+  }
 
+  async ngOnInit(): Promise<void> {
     this.findLessonsByPeriod(this.startDate, this.endDate)
   }
 
@@ -157,7 +156,7 @@ export class LessonsPageComponent implements OnInit {
       if (!lesson.number) {
         continue
       }
-      const key = 'Lição ' + lesson.number
+      const key = '' + lesson.number
       if (!map.has(key)) {
         map.set(key, [])
       }
@@ -167,6 +166,18 @@ export class LessonsPageComponent implements OnInit {
     map.forEach((lessons: LessonDTO[], key: string) => {
       this.groupedFinishedLessons.push({ key: key, lessons: lessons })
     })
+  }
+
+  getQueryParamsLessonUnit(groupKey: any) {
+    const paramLessonNumber = ROUTES_KEYS.units.params.lessonNumber
+    const paramStartDate = ROUTES_KEYS.units.params.startDate
+    const paramEndDate = ROUTES_KEYS.units.params.endDate
+
+    return {
+      [paramLessonNumber]: groupKey,
+      [paramStartDate]: this.formatDate(this.startDate),
+      [paramEndDate]: this.formatDate(this.endDate)
+    };
   }
 
 }

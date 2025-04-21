@@ -124,11 +124,19 @@
           @for(group of groupedFinishedLessons; track $index) {
           <div ngbAccordionItem [collapsed]="true">
             <h2 ngbAccordionHeader>
-              <button ngbAccordionButton>{{ group.key }}</button>
+              <button ngbAccordionButton>{{ 'Lição ' + group.key }}</button>
             </h2>
             <div ngbAccordionCollapse>
               <div ngbAccordionBody>
                 <ng-template>
+                  <a mat-button class="brn-primary" [routerLink]="[ROUTES_KEYS.units.index]" [queryParams]="getQueryParamsLessonUnit(group.key)">
+                    <mat-icon>description</mat-icon>
+                    Visualizar relatório
+                  </a>
+                  <a mat-button class="brn-primary">
+                    <mat-icon>picture_as_pdf</mat-icon>
+                    Exportar relatório em PDF
+                  </a>
                   <div class="lessons-card-content">
                     @for(lesson of group.lessons; track $index) {
                     <app-lesson-card [lesson]="lesson"></app-lesson-card>
