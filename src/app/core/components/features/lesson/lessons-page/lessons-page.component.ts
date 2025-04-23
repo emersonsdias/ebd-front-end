@@ -16,7 +16,7 @@ import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { LessonCardComponent } from "./lesson-card/lesson-card.component";
 import { FormsModule } from '@angular/forms';
 import { NgbAccordionModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { Utils } from '../../../../../shared';
+import { NotificationService, Utils } from '../../../../../shared';
 
 @Component({
   selector: 'app-lessons-page',
@@ -55,6 +55,7 @@ export class LessonsPageComponent implements OnInit {
   constructor(
     _authService: AuthService,
     private _lessonService: LessonService,
+    private _notificationService: NotificationService,
   ) {
     this.isAdmin = _authService.isAdmin()
     const today = new Date
@@ -178,6 +179,19 @@ export class LessonsPageComponent implements OnInit {
       [paramStartDate]: this.formatDate(this.startDate),
       [paramEndDate]: this.formatDate(this.endDate)
     };
+  }
+
+  // downloadPersonPdf(person: PersonDTO) {
+  //   if (!person.id) {
+  //     this._notificationService.error('Não foi possível baixar PDF pois não foi encontrado o ID da pessoa')
+  //     return
+  //   }
+  //   Utils.downloadPdf(`Relatório ${person.name || person.id}`, this._personService.findPersonPdf(person.id))
+  // }
+
+
+  downloadLessonReportPdf(lessonNumber: string | number, startDate: Date, endDate: Date) {
+    Utils.downloadPdf(`Relatório lição ${lessonNumber}`, this._lessonService.findLessonReportPdf(Number(lessonNumber), this.formatDate(startDate), this.formatDate(endDate)))
   }
 
 }

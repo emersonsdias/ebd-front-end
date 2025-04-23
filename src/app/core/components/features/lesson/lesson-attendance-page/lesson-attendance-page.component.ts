@@ -85,6 +85,10 @@ export class LessonAttendancePageComponent implements OnInit {
         (lesson.items || []).map(lessonItem => this._buildFormLessonItem(lessonItem))
       ))
 
+      this.lesson.setControl('offers', this._formBuilder.array(
+        (lesson.offers || []).map(offer => this._buildFormOffer(offer))
+      ))
+
       if (!lesson?.classroomId) {
         console.error('It is not possible to call a class without an associated group');
         this._router.navigate(['/', ROUTES_KEYS.lessons]);

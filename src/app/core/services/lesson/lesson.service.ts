@@ -39,4 +39,12 @@ export class LessonService {
   findByIds(lessonsIds: number[]): Observable<LessonDTO[]> {
     return this._apiService.httpPost(`${this._path}/batch`, lessonsIds)
   }
+
+  findLessonReportPdf(lessonNumber: number, startDate: string, endDate: string): Observable<Blob> {
+    const params = new Map
+    params.set('lessonNumber', lessonNumber)
+    params.set('startDate', startDate)
+    params.set('endDate', endDate)
+    return this._apiService.httpGetBlob(`${this._path}/report/pdf`, { params: params})
+  }
 }

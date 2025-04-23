@@ -3,6 +3,7 @@ import { Observable, take } from "rxjs";
 export class Utils {
 
   static downloadPdf(fileName: string, observable: Observable<Blob>): void {
+    console.log("ENTROU DOWNLOAD")
     observable.pipe(take(1)).subscribe({
       next: (response: Blob) => {
         const url = window.URL.createObjectURL(response)

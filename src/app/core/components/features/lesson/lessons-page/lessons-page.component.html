@@ -133,7 +133,7 @@
                     <mat-icon>description</mat-icon>
                     Visualizar relatório
                   </a>
-                  <a mat-button class="brn-primary">
+                  <a mat-button class="brn-primary" (click)="downloadLessonReportPdf(group.key, startDate, endDate)">
                     <mat-icon>picture_as_pdf</mat-icon>
                     Exportar relatório em PDF
                   </a>
