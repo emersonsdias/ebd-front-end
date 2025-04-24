@@ -54,7 +54,8 @@
                   @if (!first) {
                   <br>
                   }
-                  <a target="_blank" style="text-decoration: none; color: inherit;" [href]="'https://wa.me/55' + phoneNumber.areaCode + phoneNumber.phoneNumber">
+                  <a target="_blank" style="text-decoration: none; color: inherit;"
+                    [href]="'https://wa.me/55' + phoneNumber.areaCode + phoneNumber.phoneNumber">
                     {{ formatPhoneNumber(phoneNumber) }}
                   </a>
                   }
@@ -63,7 +64,8 @@
               <mat-card-content>
                 E-mail:
                 <span>
-                  <a target="_blank" style="text-decoration: none; color: inherit;" [href]="'mailto:' + report?.person?.email">
+                  <a target="_blank" style="text-decoration: none; color: inherit;"
+                    [href]="'mailto:' + report?.person?.email">
                     {{ report?.person?.email }}
                   </a>
                 </span>
@@ -113,6 +115,7 @@
             Resumo Geral
           </mat-card-subtitle>
         </mat-card-header>
+        @if (report?.attendancesByClassroom?.length ?? 0 > 0) {
         <mat-card-content>
           <div class="row text-center person-resume">
             <div class="col d-flex flex-column">
@@ -195,8 +198,55 @@
             </mat-expansion-panel>
             }
           </mat-accordion>
+        </mat-card-content>
+        }
+
+        @if (report?.teachingsByClassroom?.length ?? 0 > 0) {
+        <mat-card-content class="classroom-atendances">
+          <mat-accordion multi>
+            <mat-expansion-panel disabled>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Histórico de aulas como professor </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            @for(classroomTeaching of report?.teachingsByClassroom; track $index) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> {{ 'Turma: ' + classroomTeaching.classroom?.name }} </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              @for(teaching of classroomTeaching.teachings; track $index) {
+              @let lastMonth = classroomTeaching.teachings?.[$index - 1]?.lesson?.date | date: 'MMMM';
+              @let currentMonth = (teaching.lesson?.date | date: 'MMMM');
+              @if (currentMonth !== lastMonth) {
+              <div class="container text-center">
+                <div class="attendance-mounth">
+                  {{ teaching.lesson?.date | date: 'MMMM' }}
+                </div>
+              </div>
+              }
+              <div class="container attendance-lesson">
+                <div class="row">
+                  <span class="col-md-1 col">
+                    <span class="lesson-date">
+                      {{ teaching.lesson?.date | date: 'dd' }}
+                    </span>
+                  </span>
+                  <span class="col lesson-number">
+                    {{ 'Lição ' + teaching.lesson?.number }}
+                  </span>
+                </div>
+              </div>
+              }
+            </mat-expansion-panel>
+            }
+          </mat-accordion>
 
         </mat-card-content>
+        }
       </mat-card-content>
 
     </mat-card>

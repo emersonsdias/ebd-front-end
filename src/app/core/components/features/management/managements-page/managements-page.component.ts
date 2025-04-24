@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EducationLevel, Gender, MaritalStatus, PersonDTO, PhoneNumberDTO } from '../../../../models/api/data-contracts';
+import { EducationLevel, Gender, MaritalStatus, PersonDTO, PersonType, PhoneNumberDTO } from '../../../../models/api/data-contracts';
 import { EnumTranslatePipe, NotificationService, Utils } from '../../../../../shared';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,7 @@ interface FilterPeople {
   gender: Gender[],
   maritalStatus: MaritalStatus[],
   educationLevel: EducationLevel[],
+  personType: PersonType[],
   startBirthdate: Date,
   endBirthdate: Date
 }
@@ -61,6 +62,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
   genderList = Object.keys(Gender).map(key => Gender[key as keyof typeof Gender])
   maritalStatusList = Object.keys(MaritalStatus).map(key => MaritalStatus[key as keyof typeof MaritalStatus])
   educationLevelList = Object.keys(EducationLevel).map(key => EducationLevel[key as keyof typeof EducationLevel])
+  personTypeList = Object.keys(PersonType).map(key => PersonType[key as keyof typeof PersonType])
 
   ROUTES_KEYS = ROUTES_KEYS
 
@@ -93,6 +95,7 @@ export class ManagementsPageComponent implements OnInit, AfterViewInit, OnDestro
       gender: [[]],
       educationLevel: [[]],
       maritalStatus: [[]],
+      personType: [[]],
       startBirthdate: null,
       endBirthdate: null
     })

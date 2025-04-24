@@ -64,9 +64,18 @@
               }
             </mat-select>
           </mat-form-field>
-        </div>
-        <div class="row">
 
+          <!-- <mat-form-field appearance="outline" class="col-md-6 col-12">
+            <mat-label>Tipo cadastro</mat-label>
+            <mat-select formControlName="personTyoe" multiple>
+              @for (personType of personTypeList; track $index) {
+              <mat-option [value]="personType">{{ personType | enumTranslate }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field> -->
+        </div>
+
+        <div class="row">
           <mat-form-field appearance="outline" class="col-md-4 col-12">
             <mat-label>Aniversário</mat-label>
             <mat-date-range-input [rangePicker]="picker">

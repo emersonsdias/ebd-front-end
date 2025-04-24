@@ -402,9 +402,15 @@ export interface ClassroomAttendanceDTO {
   missedLessons?: number;
 }
 
+export interface ClassroomTeacherDTO {
+  classroom?: SimpleClassroomDTO;
+  teachings?: TeachingDTO[];
+}
+
 export interface PersonReportDTO {
   person?: PersonDTO;
   attendancesByClassroom?: ClassroomAttendanceDTO[];
+  teachingsByClassroom?: ClassroomTeacherDTO[];
   /** @format int32 */
   totalLessons?: number;
   /** @format int32 */
