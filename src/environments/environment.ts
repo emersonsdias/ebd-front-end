@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: '<production_api_url>'
+  apiUrl: 'https://ebd-back-end.onrender.com'
 };
