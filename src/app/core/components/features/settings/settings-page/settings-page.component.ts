@@ -50,19 +50,19 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     this.isAdmin$ = this._authService.isAdmin()
     this.menuItems = [[
       // { route: ROUTES_KEYS.settings.attendanceScores, icon: 'star', label: 'Chamadas e pontuações' },
-      { route: ROUTES_KEYS.settings.inactiveRecords, icon: 'people', label: 'Cadastros inativos' },
+      { route: ROUTES_KEYS.settings.inactiveRecords, icon: 'people', label: 'Cadastros inativos', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
       // { route: ROUTES_KEYS.settings.activityLog, icon: 'lists', label: 'Registro de atividades' },
       // { route: ROUTES_KEYS.settings.departments, icon: 'account_balance', label: 'Departamentos' },
       // { route: ROUTES_KEYS.settings.headquartersManagement, icon: 'business', label: 'Gerenciamento da sede' },
-      { route: ROUTES_KEYS.settings.itemsManagement, icon: 'category', label: 'Gerenciamento de itens' },
-      { route: ROUTES_KEYS.settings.ageRangeManagement, icon: 'family_restroom', label: 'Gerenciamento de faixas etárias' },
+      { route: ROUTES_KEYS.settings.itemsManagement, icon: 'category', label: 'Gerenciamento de itens', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
+      { route: ROUTES_KEYS.settings.ageRangeManagement, icon: 'family_restroom', label: 'Gerenciamento de faixas etárias', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
     ],
     [
       { route: ROUTES_KEYS.settings.adminAccess, icon: 'admin_panel_settings', label: 'Acesso administrativo', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
-      { route: ROUTES_KEYS.settings.teacherAccess, icon: 'school', label: 'Acesso professores' },
+      { route: ROUTES_KEYS.settings.teacherAccess, icon: 'school', label: 'Acesso professores', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
     ],
     [
-      { route: ROUTES_KEYS.settings.schoolInformation, icon: 'menu_book', label: 'Dados da escola' },
+      { route: ROUTES_KEYS.settings.schoolInformation, icon: 'menu_book', label: 'Dados da escola', disable: this.isAdmin$.pipe(map(isAdmin => !isAdmin)) },
       { route: ROUTES_KEYS.settings.accountInformation, icon: 'settings', label: 'Dados da conta' },
     ]
     ]

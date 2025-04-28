@@ -129,7 +129,9 @@
             <div ngbAccordionCollapse>
               <div ngbAccordionBody>
                 <ng-template>
-                  <a mat-button class="brn-primary" [routerLink]="[ROUTES_KEYS.units.index]" [queryParams]="getQueryParamsLessonUnit(group.key)">
+                  @if (isAdmin | async) {
+                  <a mat-button class="brn-primary" [routerLink]="[ROUTES_KEYS.units.index]"
+                    [queryParams]="getQueryParamsLessonUnit(group.key)">
                     <mat-icon>description</mat-icon>
                     Visualizar relatório
                   </a>
@@ -137,6 +139,7 @@
                     <mat-icon>picture_as_pdf</mat-icon>
                     Exportar relatório em PDF
                   </a>
+                  }
                   <div class="lessons-card-content">
                     @for(lesson of group.lessons; track $index) {
                     <app-lesson-card [lesson]="lesson"></app-lesson-card>
