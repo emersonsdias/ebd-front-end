@@ -163,7 +163,7 @@ export class LessonAttendancePageComponent implements OnInit {
       teachings: this._formBuilder.array(lesson?.teachings || []),
       items: this._formBuilder.array(lesson?.items || []),
       offers: this._formBuilder.array(lesson?.offers || []),
-      active: [null],
+      active: [true],
       createdAt: [null],
       updatedAt: [null]
     })
@@ -176,7 +176,7 @@ export class LessonAttendancePageComponent implements OnInit {
       studentId: [attendance?.studentId || null],
       studentName: [attendance?.studentName || null],
       lesson: [attendance?.lesson || null],
-      active: [attendance?.active || null],
+      active: [attendance?.active || true],
       createdAt: [attendance?.createdAt || null],
       updatedAt: [attendance?.updatedAt || null]
     })
@@ -197,7 +197,7 @@ export class LessonAttendancePageComponent implements OnInit {
     return this._formBuilder.group({
       id: [offer?.id || null],
       amount: [offer?.amount || null, [Validators.required, Validators.min(0.00)]],
-      active: [offer?.active || null],
+      active: [offer?.active || true],
       createdAt: [offer?.createdAt || null],
       updatedAt: [offer?.updatedAt || null]
     })

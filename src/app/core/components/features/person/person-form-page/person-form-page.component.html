@@ -46,6 +46,11 @@
         <mat-button-toggle [value]="gender">{{ gender | enumTranslate }}</mat-button-toggle>
         }
       </mat-button-toggle-group>
+      @if(person.get('gender')?.hasError('required') && person.get('gender')?.touched) {
+      <mat-error>
+        * O campo gênero é obrigatório.
+      </mat-error>
+      }
     </p>
   </div>
 
@@ -83,6 +88,11 @@
         <mat-button-toggle [value]="personType">{{ personType | enumTranslate }}</mat-button-toggle>
         }
       </mat-button-toggle-group>
+      @if(person.get('types')?.hasError('minArrayLength') && (person.get('types')?.touched)) {
+      <mat-error>
+        * É obrigatório pelo menos um tipo de pessoa
+      </mat-error>
+      }
     </p>
   </div>
 

@@ -2,9 +2,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AddressDTO, CityDTO, EducationLevel, Gender, MaritalStatus, PersonDTO, PersonType, PhoneNumberDTO, StateDTO } from '../../../../models/api/data-contracts';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { EnumTranslatePipe, NotificationService, ROUTES_KEYS, Utils, ViaCepService } from '../../../../../shared';
+import { EnumTranslatePipe, minArrayLength, NotificationService, ROUTES_KEYS, Utils, ViaCepService } from '../../../../../shared';
 import { firstValueFrom } from 'rxjs';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocationService } from '../../../../services/location/location.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -62,16 +62,16 @@ export class PersonFormPageComponent implements OnInit {
   ) {
     this.person = this._formBuilder.group({
       id: [null],
-      name: [null],
+      name: [null, [Validators.required]],
       birthdate: [null],
-      email: [null],
-      gender: [null],
+      email: [null, [Validators.email]],
+      gender: [null, [Validators.required]],
       educationLevel: [null],
       maritalStatus: [null],
       address: this._buildAddress(),
       phoneNumbers: this._formBuilder.array([]),
-      types: this._formBuilder.control([]),
-      active: [null],
+      types: this._formBuilder.control([PersonType.STUDENT], [minArrayLength(1)]),
+      active: [true],
       createdAt: [null],
       updatedAt: [null],
     })
@@ -152,6 +152,7 @@ export class PersonFormPageComponent implements OnInit {
   }
 
   save(form: FormGroup) {
+    this.markAllAsTouched(form)
     if (form.invalid) {
       console.error('Invalid form')
       return
@@ -207,5 +208,14 @@ export class PersonFormPageComponent implements OnInit {
     this.person.get('address')?.patchValue(address)
     this.stateControl.setValue(address?.city?.state || null)
   }
+
+  markAllAsTouched(form: FormGroup) {
+  Object.values(form.controls).forEach(control => {
+    control.markAsTouched()
+    if (control instanceof FormGroup) {
+      this.markAllAsTouched(control)
+    }
+  });
+}
 
 }

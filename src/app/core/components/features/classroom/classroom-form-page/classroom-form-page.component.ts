@@ -104,7 +104,7 @@ export class ClassroomFormPageComponent implements OnInit {
       teachers: this._formBuilder.array(classroom?.teachers || []),
       students: this._formBuilder.array(classroom?.students || []),
       lessons: [classroom?.lessons || null],
-      active: [classroom?.active || null],
+      active: [classroom?.active || true],
       createdAt: [classroom?.createdAt || null],
       updatedAt: [classroom?.updatedAt || null],
     })
@@ -265,11 +265,13 @@ export class ClassroomFormPageComponent implements OnInit {
     const data = { people: this.teacherList, type: 'teacher' }
     const responseData = await this._dialogService.openComponent(DialogPersonComponent, data)
     this.teachers.push(this._buildTeacher(responseData.person))
+    this.classroomForm.markAsDirty()
   }
 
   async addStudent(): Promise<void> {
     const data = { people: this.studentList, type: 'student' }
     const responseData = await this._dialogService.openComponent(DialogPersonComponent, data)
     this.students.push(this._buildStudent(responseData.person))
+    this.classroomForm.markAsDirty()
   }
 }

@@ -65,7 +65,7 @@ export class ItemFormComponent implements OnInit {
       id: [item?.id ?? null],
       name: [item?.name ?? null],
       icon: [item?.icon ?? null],
-      active: [item?.active ?? null],
+      active: [item?.active ?? true],
       createdAt: [item?.createdAt ?? null],
       updatedAt: [item?.updatedAt ?? null]
     })

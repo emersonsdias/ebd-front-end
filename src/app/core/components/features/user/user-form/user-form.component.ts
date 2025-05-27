@@ -94,7 +94,7 @@ export class UserFormComponent implements OnInit {
       password: [user?.password || null],
       roles: this._formBuilder.control(user?.roles || []),
       person: [user?.person ||  null],
-      active: [user?.active || null],
+      active: [user?.active || true],
       createdAt: [user?.createdAt || null],
       updatedAt: [user?.updatedAt || null],
       changePassword: [null],

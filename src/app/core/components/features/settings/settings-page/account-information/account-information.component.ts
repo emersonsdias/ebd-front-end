@@ -64,7 +64,7 @@ export class AccountInformationComponent implements OnInit {
       password: [null],
       passwordConfirmation: [null],
       roles: this._formBuilder.array(user?.roles || []),
-      active: [user?.active || null],
+      active: [user?.active || true],
       createdAt: [user?.createdAt || null],
       updatedAt: [user?.updatedAt || null],
     })

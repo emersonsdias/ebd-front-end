@@ -66,7 +66,7 @@ export class SchoolInformationComponent implements OnInit {
       name: [schoolProfile?.name || null],
       subtitle: [schoolProfile?.subtitle || null],
       address: this._buildAddress(schoolProfile?.address || undefined),
-      active: [schoolProfile?.active || null],
+      active: [schoolProfile?.active || true],
       createdAt: [schoolProfile?.createdAt || null],
       updatedAt: [schoolProfile?.updatedAt || null]
     })
@@ -82,7 +82,7 @@ export class SchoolInformationComponent implements OnInit {
       zipCode: [address?.zipCode || null],
       state: [address?.city?.state || null],
       city: [address?.city || null],
-      active: [address?.active || null],
+      active: [address?.active || true],
       createdAt: [address?.createdAt || null],
       updatedAt: [address?.updatedAt || null]
     })

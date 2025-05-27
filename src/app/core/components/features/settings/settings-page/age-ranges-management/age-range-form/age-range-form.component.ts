@@ -60,7 +60,7 @@ export class AgeRangeFormComponent implements OnInit {
       name: [ageRange?.name ?? null],
       minAge: [ageRange?.minAge ?? null],
       maxAge: [ageRange?.maxAge ?? null],
-      active: [ageRange?.active ?? null],
+      active: [ageRange?.active ?? true],
       createdAt: [ageRange?.createdAt ?? null],
       updatedAt: [ageRange?.updatedAt ?? null]
     })
