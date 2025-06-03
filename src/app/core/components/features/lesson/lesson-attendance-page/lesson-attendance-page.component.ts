@@ -18,6 +18,7 @@ import { ROUTES_KEYS } from '../../../../../shared/config/routes-keys.config';
 import { DialogOfferComponent } from './dialog-offer/dialog-offer.component';
 import { Utils } from '../../../../../shared/utils/utils';
 import { StorageService } from '../../../../services/storage/storage.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lesson-attendance-page',
@@ -230,6 +231,10 @@ export class LessonAttendancePageComponent implements OnInit {
 
   get visitors(): FormArray {
     return this.lesson.get('visitors') as FormArray
+  }
+
+  get numberOfPresents(): number {
+    return this.attendances.value.filter((a: AttendanceDTO) => a.present).length
   }
 
   private _isOpenLesson(lesson: LessonDTO) {

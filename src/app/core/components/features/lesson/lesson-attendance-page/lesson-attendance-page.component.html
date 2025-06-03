@@ -91,7 +91,8 @@
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
               <div class="d-flex flex-column full-width">
-                <button mat-flat-button class="btn-primary" (click)="manageOffers()" [disabled]="isFormLessonDisabled()">
+                <button mat-flat-button class="btn-primary" (click)="manageOffers()"
+                  [disabled]="isFormLessonDisabled()">
                   <mat-icon>
                     attach_money
                   </mat-icon>
@@ -143,7 +144,8 @@
               </div>
             </mat-card-content>
             <mat-card-actions class="custom-card-actions">
-              <button mat-flat-button class="btn-primary col" (click)="addVisitor()" [disabled]="isFormLessonDisabled()">
+              <button mat-flat-button class="btn-primary col" (click)="addVisitor()"
+                [disabled]="isFormLessonDisabled()">
                 <mat-icon>
                   person_add
                 </mat-icon>
@@ -210,6 +212,20 @@
                   </div>
                   }
                 </div>
+              </div>
+            </mat-card-content>
+            <mat-card-content class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center">
+                <strong>{{ numberOfPresents }}</strong>
+                <span>Presentes</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <strong>{{ attendances.controls.length - numberOfPresents }}</strong>
+                <span>Ausentes</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <strong>{{ attendances.controls.length }}</strong>
+                <span>Total</span>
               </div>
             </mat-card-content>
           </mat-card>
